@@ -9,6 +9,7 @@ import { StatusDot } from "../components/atoms/notifications/StatusDot";
 import { ProgressNotification } from "../components/atoms/notifications/ProgressNotification";
 import { ConfirmDialog } from "../components/atoms/notifications/ConfirmDialog";
 import { InlineMessage } from "../components/atoms/notifications/InlineMessage";
+import ComponentDetailsShell from "../components/organisms/ComponentDetailsShell";
 import "./FormDetails.css";
 
 const details = {
@@ -402,6 +403,13 @@ const previews = {
   ),
 };
 
+const slugMap = {
+  toast: "toast", alert: "alert", banner: "banner", snackbar: "snackbar",
+  notificationCard: "notification-card", notificationBadge: "notification-badge",
+  statusDot: "status-dot", progressNotification: "progress-notification",
+  confirmDialog: "confirm-dialog", inlineMessage: "inline-message",
+};
+
 export default function NotificationDetails({ selected, onBack }) {
   const d = details[selected];
   const [copied, setCopied] = useState(false);
@@ -420,15 +428,11 @@ export default function NotificationDetails({ selected, onBack }) {
   };
 
   return (
-    <div className="form-details-container">
-      <button className="back-button" onClick={onBack}>
-        ← Back to Collection
-      </button>
-
-      <div className="details-header">
-        <h1>{d.name}</h1>
-        <p className="details-description">{d.description}</p>
-      </div>
+    <ComponentDetailsShell
+      slug={slugMap[selected] || selected}
+      sourceCode={d.code}
+      onBack={onBack}
+    >
 
       <section className="details-section preview-section">
         <h2>Live Preview</h2>
@@ -475,27 +479,6 @@ export default function NotificationDetails({ selected, onBack }) {
           <code>{d.code}</code>
         </pre>
       </section>
-
-      <section className="details-section guide-section">
-        <h2>Implementation Guide</h2>
-        <div className="guide-content">
-          <div className="guide-step">
-            <h3>Step 1: Import</h3>
-            <p>Import from the notifications folder</p>
-            <code>{`import { ${d.name.replace(" ", "")} } from "@/components/atoms/notifications"`}</code>
-          </div>
-          <div className="guide-step">
-            <h3>Step 2: Use</h3>
-            <p>Add to your JSX with required props</p>
-            <code>{`<${d.name.replace(" ", "")} type="success" message="Done!" />`}</code>
-          </div>
-          <div className="guide-step">
-            <h3>Step 3: Customize</h3>
-            <p>Pass type, message, action and onClose props</p>
-            <code>{`onClose={() => setVisible(false)}`}</code>
-          </div>
-        </div>
-      </section>
-    </div>
+    </ComponentDetailsShell>
   );
 }

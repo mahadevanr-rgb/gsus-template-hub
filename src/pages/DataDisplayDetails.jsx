@@ -9,6 +9,7 @@ import { Tag }         from "../components/atoms/data-display/Tag";
 import { AvatarGroup, AvatarItem } from "../components/atoms/data-display/AvatarGroup";
 import { Timeline }    from "../components/atoms/data-display/Timeline";
 import { Kbd, Divider, Tooltip } from "../components/atoms/data-display/Misc";
+import ComponentDetailsShell from "../components/organisms/ComponentDetailsShell";
 import "./FormDetails.css";
 
 const details = {
@@ -241,6 +242,12 @@ const previews = {
   ),
 };
 
+const slugMap = {
+  dataTable: "data-table", dataCard: "data-card", skeleton: "skeleton",
+  spinner: "spinner", progressBar: "progress-bar", emptyState: "empty-state",
+  tag: "tag", avatarGroup: "avatar-group", timeline: "timeline", misc: "misc",
+};
+
 export default function DataDisplayDetails({ selected, onBack }) {
   const d = details[selected];
   const [copied, setCopied] = useState(false);
@@ -250,13 +257,11 @@ export default function DataDisplayDetails({ selected, onBack }) {
   const handleCopy = () => { navigator.clipboard.writeText(d.code); setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
   return (
-    <div className="form-details-container">
-      <button className="back-button" onClick={onBack}>← Back to Collection</button>
-
-      <div className="details-header">
-        <h1>{d.name}</h1>
-        <p className="details-description">{d.description}</p>
-      </div>
+    <ComponentDetailsShell
+      slug={slugMap[selected] || selected}
+      sourceCode={d.code}
+      onBack={onBack}
+    >
 
       <section className="details-section preview-section">
         <h2>Live Preview</h2>
@@ -291,15 +296,6 @@ export default function DataDisplayDetails({ selected, onBack }) {
         </div>
         <pre className="code-block"><code>{d.code}</code></pre>
       </section>
-
-      <section className="details-section guide-section">
-        <h2>Implementation Guide</h2>
-        <div className="guide-content">
-          <div className="guide-step"><h3>Step 1: Import</h3><p>Import from the data-display folder</p><code>{`import { ${d.name.split(" ")[0]} } from "@/components/atoms/data-display"`}</code></div>
-          <div className="guide-step"><h3>Step 2: Use</h3><p>Add to your JSX with required props</p><code>{`<${d.name.split(" ")[0]} />`}</code></div>
-          <div className="guide-step"><h3>Step 3: Customize</h3><p>Pass props for data, colors and callbacks</p><code>{`color="#6366f1" value={72}`}</code></div>
-        </div>
-      </section>
-    </div>
+    </ComponentDetailsShell>
   );
 }

@@ -14,6 +14,7 @@ import { OTPInput } from "../components/atoms/forms/OTPInput";
 import { InputLabel } from "../components/atoms/forms/InputLabel";
 import { InputError } from "../components/atoms/forms/InputError";
 import { HelperText } from "../components/atoms/forms/HelperText";
+import ComponentDetailsShell from "../components/organisms/ComponentDetailsShell";
 import "./FormDetails.css";
 
 const formDetails = {
@@ -229,6 +230,15 @@ const formDetails = {
   },
 };
 
+// Map pageId → registry slug
+const slugMap = {
+  textInput: "text-input", passwordInput: "password-input", textarea: "textarea",
+  searchInput: "search-input", selectDropdown: "select-dropdown", checkbox: "checkbox",
+  radioButton: "radio-button", switchToggle: "switch-toggle", rangeSlider: "range-slider",
+  dateInput: "date-input", fileUpload: "file-upload", otpInput: "otp-input",
+  inputLabel: "input-label", inputError: "input-error", helperText: "helper-text",
+};
+
 export default function FormDetails({ selectedForm, onBack }) {
   const details = formDetails[selectedForm];
   const [copied, setCopied] = useState(false);
@@ -314,16 +324,11 @@ export default function FormDetails({ selectedForm, onBack }) {
   };
 
   return (
-    <div className="form-details-container">
-      <button className="back-button" onClick={onBack}>
-        ← Back to Collection
-      </button>
-
-      <div className="details-header">
-        <h1>{details.name}</h1>
-        <p className="details-description">{details.description}</p>
-      </div>
-
+    <ComponentDetailsShell
+      slug={slugMap[selectedForm] || selectedForm}
+      sourceCode={details.code}
+      onBack={onBack}
+    >
       {/* PREVIEW */}
       <section className="details-section preview-section">
         <h2>Live Preview</h2>
@@ -373,28 +378,6 @@ export default function FormDetails({ selectedForm, onBack }) {
           <code>{details.code}</code>
         </pre>
       </section>
-
-      {/* GUIDE */}
-      <section className="details-section guide-section">
-        <h2>Implementation Guide</h2>
-        <div className="guide-content">
-          <div className="guide-step">
-            <h3>Step 1: Import</h3>
-            <p>Import the component from the forms index</p>
-            <code>{`import { ${details.name.replace(" ", "")} } from "@/components/atoms/forms"`}</code>
-          </div>
-          <div className="guide-step">
-            <h3>Step 2: Use</h3>
-            <p>Add the component to your JSX with required props</p>
-            <code>{`<${details.name.replace(" ", "")} />`}</code>
-          </div>
-          <div className="guide-step">
-            <h3>Step 3: Customize</h3>
-            <p>Pass props for validation, state, and styling</p>
-            <code>{`error={hasError} onChange={handler}`}</code>
-          </div>
-        </div>
-      </section>
-    </div>
+    </ComponentDetailsShell>
   );
 }
