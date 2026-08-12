@@ -9,6 +9,7 @@ import DataDisplayPage from "./pages/DataDisplayPage";
 import EcommercePage from "./pages/ecommerce/EcommercePage";
 import InventoryPage from "./pages/inventory/InventoryPage";
 import CreateProjectPage from "./pages/create-project/CreateProjectPage";
+import SyncPage from "./pages/SyncPage";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("dashboard");
@@ -34,6 +35,8 @@ function App() {
         return <InventoryPage />;
       case "create-project":
         return <CreateProjectPage />;
+      case "sync":
+        return <SyncPage />;
       case "dashboard":
       default:
         return (
