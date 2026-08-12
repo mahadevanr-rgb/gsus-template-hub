@@ -1,0 +1,19 @@
+export const products = [
+  { id: 1,  name: "AirPods Pro Max",          category: "Electronics", price: 549,  originalPrice: 699,  rating: 4.8, reviews: 2341, badge: "Best Seller", color: "#6366f1", emoji: "🎧", description: "Premium over-ear headphones with active noise cancellation, spatial audio, and up to 20 hours of battery life. Crafted with a breathable knit mesh canopy and memory foam ear cushions.", tags: ["Wireless", "ANC", "Hi-Fi"], stock: 12 },
+  { id: 2,  name: "MacBook Air M3",            category: "Electronics", price: 1299, originalPrice: 1499, rating: 4.9, reviews: 5120, badge: "New",         color: "#8b5cf6", emoji: "💻", description: "The thinnest and lightest MacBook Air ever. Powered by the M3 chip for blazing-fast performance, 18-hour battery life, and a stunning Liquid Retina display.", tags: ["M3 Chip", "18hr Battery", "Retina"], stock: 5 },
+  { id: 3,  name: "Nike Air Jordan 1",         category: "Fashion",     price: 180,  originalPrice: 220,  rating: 4.7, reviews: 8900, badge: "Hot",         color: "#ef4444", emoji: "👟", description: "The iconic Air Jordan 1 Retro High OG in a classic colorway. Premium leather upper, Air-Sole unit for cushioning, and rubber outsole for traction.", tags: ["Leather", "Retro", "Limited"], stock: 23 },
+  { id: 4,  name: "Sony A7 IV Camera",         category: "Electronics", price: 2499, originalPrice: 2799, rating: 4.9, reviews: 1230, badge: "Pro Pick",    color: "#0ea5e9", emoji: "📷", description: "Full-frame mirrorless camera with 33MP sensor, 4K 60fps video, real-time eye AF, and 10fps burst shooting. Perfect for professionals and enthusiasts.", tags: ["33MP", "4K 60fps", "Full-Frame"], stock: 8 },
+  { id: 5,  name: "Dyson V15 Vacuum",          category: "Home & Living", price: 749, originalPrice: 899, rating: 4.6, reviews: 3450, badge: "Sale",        color: "#f59e0b", emoji: "🌀", description: "The most powerful cordless vacuum with laser dust detection, HEPA filtration, and up to 60 minutes of run time. Automatically adapts suction to the floor type.", tags: ["Cordless", "HEPA", "60min"], stock: 15 },
+  { id: 6,  name: "Levi's 501 Original Jeans", category: "Fashion",     price: 89,   originalPrice: 120,  rating: 4.5, reviews: 12400, badge: "Classic",   color: "#3b82f6", emoji: "👖", description: "The original straight fit jean that started it all. Made from 100% cotton denim with a button fly and five-pocket styling. A timeless wardrobe essential.", tags: ["100% Cotton", "Straight Fit", "Classic"], stock: 50 },
+  { id: 7,  name: "Kindle Paperwhite",         category: "Books",       price: 139,  originalPrice: 169,  rating: 4.8, reviews: 9870, badge: "Top Rated",  color: "#22c55e", emoji: "📚", description: "The thinnest, lightest Kindle Paperwhite ever with a 6.8-inch display, adjustable warm light, 10 weeks of battery life, and IPX8 waterproof rating.", tags: ["Waterproof", "10wk Battery", "6.8in"], stock: 30 },
+  { id: 8,  name: "Instant Pot Duo 7-in-1",    category: "Home & Living", price: 99, originalPrice: 149,  rating: 4.7, reviews: 45000, badge: "Best Value", color: "#ec4899", emoji: "🍲", description: "7-in-1 multi-use programmable pressure cooker, slow cooker, rice cooker, steamer, sauté pan, yogurt maker, and warmer. 6-quart capacity.", tags: ["7-in-1", "6 Quart", "Smart"], stock: 40 },
+];
+
+export const categories = [
+  { name: "Electronics",   emoji: "⚡", count: 240, color: "#6366f1", bg: "#eff6ff" },
+  { name: "Fashion",       emoji: "👗", count: 580, color: "#ec4899", bg: "#fdf2f8" },
+  { name: "Home & Living", emoji: "🏠", count: 320, color: "#f59e0b", bg: "#fffbeb" },
+  { name: "Sports",        emoji: "⚽", count: 190, color: "#22c55e", bg: "#f0fdf4" },
+  { name: "Beauty",        emoji: "💄", count: 410, color: "#8b5cf6", bg: "#f5f3ff" },
+  { name: "Books",         emoji: "📚", count: 870, color: "#0ea5e9", bg: "#f0f9ff" },
+];
