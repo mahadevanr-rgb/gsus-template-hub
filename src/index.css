@@ -8,15 +8,92 @@
   box-sizing: border-box;
 }
 
+/* ============================================
+   THEME DESIGN TOKENS (light / dark)
+   Used by plain CSS files across the app via var(--token)
+   ============================================ */
+:root {
+  --bg-page: black;
+  --bg-surface: #ffffff;
+  --bg-surface-2: #f8f9fa;
+  --bg-elevated: #ffffff;
+  --bg-muted: #f3f4f6;
+  --bg-code: #1f2937;
+
+  --border-color: #e5e7eb;
+  --border-strong: #d1d5db;
+
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-muted: #9ca3af;
+  --text-on-accent: #ffffff;
+
+  --accent: #4f46e5;
+  --accent-hover: #4339ca;
+  --accent-soft: rgba(79, 70, 229, 0.08);
+  --accent-soft-border: rgba(79, 70, 229, 0.2);
+
+  --shadow-color: rgba(15, 23, 42, 0.08);
+  --shadow-color-strong: rgba(15, 23, 42, 0.14);
+
+  color-scheme: light;
+}
+
+html.dark {
+  --bg-page: #0c0f17;
+  --bg-surface: #161a26;
+  --bg-surface-2: #1b2030;
+  --bg-elevated: #1b2030;
+  --bg-muted: #20263a;
+  --bg-code: #0c0f17;
+
+  --border-color: #262c3f;
+  --border-strong: #333b52;
+
+  --text-primary: #f3f4f6;
+  --text-secondary: #b6bccc;
+  --text-muted: #7a8296;
+  --text-on-accent: #ffffff;
+
+  --accent: #6366f1;
+  --accent-hover: #818cf8;
+  --accent-soft: rgba(99, 102, 241, 0.16);
+  --accent-soft-border: rgba(99, 102, 241, 0.32);
+
+  --shadow-color: rgba(0, 0, 0, 0.35);
+  --shadow-color-strong: rgba(0, 0, 0, 0.5);
+
+  color-scheme: dark;
+}
+
 body {
-  @apply bg-gray-50 text-gray-900;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: #3a4258;
 }

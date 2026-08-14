@@ -1,13 +1,13 @@
-export default function Logo() {
+export default function Logo({ compact = false }) {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2.5 min-w-0">
       <img
         src="../src/assets/images/logo.png"
-        width="75px"
-        height="75px"
+        width="34"
+        height="34"
         alt="logo"
+        className="rounded-lg flex-shrink-0"
       />
-      <span className="font-semibold text-lg text-gray-900">TemplateHub</span>
     </div>
   );
 }

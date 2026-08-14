@@ -5,8 +5,9 @@
 .button-showcase {
   width: 100%;
   padding: 3rem 2rem;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: var(--bg-page);
   min-height: 100vh;
+  transition: background-color 0.2s ease;
 }
 
 .showcase-header {
@@ -16,14 +17,14 @@
 
 .showcase-header h2 {
   font-size: 2.5rem;
-  color: #1f2937;
+  color: var(--text-primary);
   margin-bottom: 0.5rem;
   font-weight: 700;
 }
 
 .showcase-header p {
   font-size: 1.1rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   max-width: 600px;
   margin: 0 auto;
 }
@@ -39,11 +40,12 @@
 
 /* BUTTON CARD */
 .button-card {
-  background: white;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 8px var(--shadow-color);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease, border-color 0.2s ease;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -67,7 +69,8 @@
 
 .button-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 12px 32px var(--shadow-color-strong);
+  border-color: var(--border-strong);
 }
 
 .button-card:hover::before {
@@ -81,7 +84,7 @@
 /* BUTTON PREVIEW AREA */
 .button-preview {
   padding: 2rem;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: var(--bg-muted);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -129,19 +132,19 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  background: white;
+  background: var(--bg-surface);
 }
 
 .button-info h3 {
   font-size: 1.25rem;
-  color: #1f2937;
+  color: var(--text-primary);
   margin: 0 0 0.5rem 0;
   font-weight: 600;
 }
 
 .button-info p {
   font-size: 0.95rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   margin: 0 0 1rem 0;
   line-height: 1.5;
   flex-grow: 1;
@@ -151,7 +154,7 @@
   display: inline-block;
   font-size: 0.9rem;
   font-weight: 600;
-  color: #3b82f6;
+  color: var(--accent);
   transition: all 0.3s ease;
 }
 

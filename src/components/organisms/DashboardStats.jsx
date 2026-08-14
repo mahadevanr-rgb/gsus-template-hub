@@ -26,10 +26,10 @@ export default function DashboardStats() {
   return (
     <section className="mb-12">
       <div className="mb-10">
-        <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-primary-700 to-primary-600 mb-2">
+        <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-primary-700 to-primary-600 dark:from-white dark:via-primary-400 dark:to-accent-400 mb-2">
           Dashboard
         </h1>
-        <p className="text-gray-600 text-lg">
+        <p className="text-gray-600 dark:text-slate-400 text-lg">
           Welcome back! Here's your project overview.
         </p>
       </div>

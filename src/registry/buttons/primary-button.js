@@ -16,7 +16,8 @@ export default {
   name: "Primary Button",
   slug: "primary-button",
   category: "buttons",
-  description: "Main call-to-action button with blue gradient. Draws user attention for primary actions.",
+  description:
+    "Main call-to-action button with blue gradient. Draws user attention for primary actions.",
   framework: "react",
   language: "javascript",
   styling: "css",
@@ -27,10 +28,18 @@ export default {
   createdAt: "2024-01-01",
   updatedAt: "2024-01-01",
   files: [
-    { name: "PrimaryButton.jsx", path: "components/atoms/buttons/PrimaryButton.jsx" },
+    {
+      name: "PrimaryButton.jsx",
+      path: "components/atoms/buttons/PrimaryButton.jsx",
+    },
     { name: "buttons.css", path: "components/atoms/buttons/buttons.css" },
   ],
-  uses: ["Submit forms", "Complete purchases", "Primary navigation", "Key actions"],
+  uses: [
+    "Submit forms",
+    "Complete purchases",
+    "Primary navigation",
+    "Key actions",
+  ],
   variants: [
     { size: "Small", className: "btn-sm" },
     { size: "Medium", className: "" },

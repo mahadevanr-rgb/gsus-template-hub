@@ -8,7 +8,7 @@ export default function DashboardPage({ onNavigate, currentPage }) {
     <MainLayout onNavigate={onNavigate} currentPage={currentPage}>
       <SyncBanner />
       <TemplatesSection onNavigate={onNavigate} />
-      <ComponentsSection onNavigate={onNavigate} />
+      {/* <ComponentsSection onNavigate={onNavigate} /> */}
     </MainLayout>
   );
 }

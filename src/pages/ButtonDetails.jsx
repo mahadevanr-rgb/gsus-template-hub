@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { getComponent } from "../registry/index";
-import { getInstallCommand, copyToClipboard } from "../lib/installContract";
-import {
-  FloatingButton,
-  IconButton,
-} from "../components/atoms/buttons/index";
+import { copyToClipboard } from "../lib/installContract";
+import AddToProjectModal from "../components/organisms/AddToProjectModal";
+import "../components/organisms/AddToProjectModal.css";
 import "./ButtonDetails.css";
 
-function CopyButton({ text, label = "Copy" }) {
+function CopyAction({ text, label = "Copy Code", icon = "📋" }) {
   const [copied, setCopied] = useState(false);
   const handle = async () => {
     await copyToClipboard(text);
@@ -15,195 +13,260 @@ function CopyButton({ text, label = "Copy" }) {
     setTimeout(() => setCopied(false), 2000);
   };
   return (
-    <button className="copy-button" onClick={handle}>
+    <button className="action-button-item copy-btn" onClick={handle}>
+      <span className="action-icon">{copied ? "✓" : icon}</span>
       {copied ? "✓ Copied!" : label}
     </button>
   );
 }
 
-export default function ButtonDetails({ selectedButton, onBack }) {
-  const [activeTab, setActiveTab] = useState("preview");
 
+
+export default function ButtonDetails({ selectedButton, onBack }) {
+  // படத்தின் படி தாவல்கள்: Description, Props, Usage, Dependencies
+  const [activeTab, setActiveTab] = useState("description");
+  const [showModal, setShowModal] = useState(false);
   const component = getComponent(selectedButton);
 
   if (!component) {
     return (
       <div className="button-details-empty">
         <p>Component not found in registry.</p>
+        <button onClick={onBack}>Back to Collection</button>
       </div>
     );
   }
 
-  const installCommand = getInstallCommand(component.slug);
-  // slug is already correct from registry
+  // slug logic already correct from registry
   const Component = component.component;
 
-  const renderPreview = () => {
-    if (component.isFloating)
-      return <FloatingButton icon="+" label="Add" onClick={() => {}} />;
-    if (component.isIcon)
+  // Fake date and author for display as in image_0.png
+  const displayDate = "May 12, 2025";
+  const authorName = "UI Team";
+
+  // Pre-configured variant labels for the visual grid
+  const variantLabels = ["Primary", "Secondary", "Outline", "Ghost", "Danger"];
+
+  // A helper function to render a single preview example
+  const renderPreviewExample = (label) => {
+    if (component.isFloating && label === "Primary")
+      return <Component icon="+" label="Add" onClick={() => {}} />;
+    if (component.isIcon && label === "Primary")
       return (
-        <IconButton icon="🎨" label="Action" variant="primary" onClick={() => {}} />
+        <Component
+          icon="🎨"
+          label="Action"
+          variant="primary"
+          onClick={() => {}}
+        />
       );
-    return <Component {...component.previewProps} onClick={() => {}} />;
+
+    const lowerLabel = label.toLowerCase();
+    // Assuming component accepts 'variant' and 'children' props.
+    // Adjust if registry provides other common props.
+    return <Component variant={lowerLabel}>{label}</Component>;
   };
 
-  const variantLabel = (v) =>
-    v.size ?? v.effect ?? v.style ?? v.variant ?? v.elevation ?? v.state ?? "";
-  const variantSub = (v) =>
-    v.className ?? v.description ?? v.shadow ?? v.diameter ?? "";
-
   return (
-    <div className="button-details-container">
-      <button className="back-button" onClick={onBack}>
-        ← Back to Collection
-      </button>
-
-      {/* HEADER */}
-      <div className="details-header">
-        <div>
-          <h1>{component.name}</h1>
-          <p className="details-description">{component.description}</p>
+    <div className="button-details-wrapper">
+      {/* 1. BREADCRUMBS & MAIN BUTTON */}
+      <div className="top-navigation-row">
+        <div className="breadcrumbs">
+          <span>Home</span> &gt; <span>Components</span> &gt;{" "}
+          <span>Buttons</span> &gt;{" "}
+          <span className="active">{component.name}</span>
         </div>
-        <div className="details-meta-badges">
-          <span className="meta-badge">⚛ {component.framework}</span>
-          <span className="meta-badge">🎨 {component.styling}</span>
-          <span className="meta-badge">v{component.version}</span>
-        </div>
-      </div>
-
-      {/* TABS */}
-      <div className="details-tabs">
         <button
-          className={`tab-btn ${activeTab === "preview" ? "active" : ""}`}
-          onClick={() => setActiveTab("preview")}
+          className="top-add-project-btn"
+          onClick={() => setShowModal(true)}
         >
-          Preview
-        </button>
-        <button
-          className={`tab-btn ${activeTab === "code" ? "active" : ""}`}
-          onClick={() => setActiveTab("code")}
-        >
-          Code
+          ⚡ Add to Project
         </button>
       </div>
 
-      {/* PREVIEW TAB */}
-      {activeTab === "preview" && (
-        <>
-          <section className="details-section preview-section">
-            <h2>Live Preview</h2>
-            <div className="preview-area">
-              <div className="preview-item">{renderPreview()}</div>
+      <div className="main-content-layout">
+        {/* ========================================================
+            LEFT COLUMN (Main Content)
+           ======================================================== */}
+        <div className="left-content-column">
+          {/* HEADER SECTION */}
+          <div className="component-header">
+            <div className="title-row">
+              <h1 className="component-title">{component.name}</h1>
+              <span className="type-badge">Button</span>
+              <span className="version-badge">v{component.version}</span>
             </div>
-          </section>
+            <p className="component-description-large">
+              {component.description}
+            </p>
+          </div>
 
-          <section className="details-section variants-section">
-            <h2>Variants &amp; Sizes</h2>
-            <div className="variants-grid">
-              {component.variants?.map((variant, idx) => (
-                <div key={idx} className="variant-item">
-                  <div className="variant-preview">{renderPreview()}</div>
-                  <div className="variant-info">
-                    <h4>{variantLabel(variant)}</h4>
-                    <p>{variantSub(variant)}</p>
-                  </div>
+          {/* VISUAL PREVIEW AREA (The 5 examples grid) */}
+          <section className="preview-showcase-section">
+            <div className="preview-label-row">
+              {variantLabels.map((label) => (
+                <span key={label}>{label}</span>
+              ))}
+            </div>
+            <div className="preview-visual-grid">
+              {variantLabels.map((label) => (
+                <div key={label} className="preview-visual-item">
+                  {renderPreviewExample(label)}
                 </div>
               ))}
             </div>
           </section>
 
-          <section className="details-section use-cases-section">
-            <h2>Best Used For</h2>
-            <div className="use-cases-list">
-              {component.uses?.map((use, idx) => (
-                <div key={idx} className="use-case-item">
-                  <span className="use-case-icon">✓</span>
-                  <span>{use}</span>
-                </div>
-              ))}
+          {/* CODE PREVIEW BOX */}
+          <section className="code-preview-box-section">
+            <div className="code-preview-header">
+              <span className="code-header-title">Code Preview</span>
+              <div className="code-header-controls">
+                <span>Import</span>
+                <span className="es6-badge">ES6</span>
+              </div>
+            </div>
+            <div className="code-preview-body">
+              {/* Note: This assumes component.sourceCode contains the whole App() structure as in image_0.png */}
+              <pre className="code-code-block">
+                <code>{component.sourceCode}</code>
+              </pre>
+              <CopyAction text={component.sourceCode} label="Copy" icon="📄" />
             </div>
           </section>
 
-          {/* TAGS */}
-          <section className="details-section">
-            <h2>Tags</h2>
-            <div className="tags-list">
-              {component.tags?.map((tag) => (
-                <span key={tag} className="tag-chip">
-                  {tag}
+          {/* TABS & TAB CONTENT (Bottom area) */}
+          <section className="info-tabs-section">
+            <div className="info-tabs-list">
+              {["Description", "Props", "Usage", "Dependencies"].map((tab) => (
+                <button
+                  key={tab}
+                  className={`info-tab-btn ${activeTab === tab.toLowerCase() ? "active" : ""}`}
+                  onClick={() => setActiveTab(tab.toLowerCase())}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+
+            <div className="info-tab-content">
+              {activeTab === "description" && (
+                <div className="tab-description-panel">
+                  <p>
+                    The {component.name} component is used to trigger primary
+                    actions.
+                  </p>
+                  <p>
+                    It supports multiple variants, sizes, and loading states.
+                  </p>
+                  <h3>Features</h3>
+                  <ul className="features-list">
+                    {component.tags?.map((tag) => (
+                      <li key={tag} className="feature-item">
+                        <span className="check-icon">✓</span> {tag}
+                      </li>
+                    ))}
+                    {component.uses?.map((use) => (
+                      <li key={use} className="feature-item">
+                        <span className="check-icon">✓</span> Best Used For:{" "}
+                        {use}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {/* Placeholders for other tabs as needed */}
+              {activeTab === "props" && (
+                <div className="tab-props-panel">
+                  Props documentation coming soon...
+                </div>
+              )}
+              {activeTab === "usage" && (
+                <div className="tab-usage-panel">
+                  Usage examples coming soon...
+                </div>
+              )}
+              {activeTab === "dependencies" && (
+                <div className="tab-dependencies-panel">
+                  <h3>Dependencies</h3>
+                  {component.dependencies.length > 0 ? (
+                    <ul className="dependencies-list">
+                      {component.dependencies.map((dep) => (
+                        <li key={dep}>{dep}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>No external dependencies.</p>
+                  )}
+                </div>
+              )}
+            </div>
+          </section>
+        </div>
+
+        {/* ========================================================
+            RIGHT COLUMN (Sidebar)
+           ======================================================== */}
+        <div className="right-sidebar-column">
+          {/* COMPONENT INFORMATION */}
+          <section className="sidebar-info-box">
+            <h3>Component Information</h3>
+            <div className="info-grid">
+              <div className="info-row">
+                <span className="info-label">Category</span>
+                <span className="info-value">Buttons</span>
+              </div>
+              <div className="info-row">
+                <span className="info-label">Dependencies</span>
+                <span className="info-value">{component.dependencies[0]}</span>
+              </div>
+              <div className="info-row">
+                <span className="info-label">Size</span>
+                <span className="info-value">
+                  {component.size || "Unknown"}
                 </span>
-              ))}
+              </div>
+              <div className="info-row">
+                <span className="info-label">Last Updated</span>
+                <span className="info-value">
+                  {component.lastUpdated || displayDate}
+                </span>
+              </div>
+              <div className="info-row">
+                <span className="info-label">Author</span>
+                <span className="info-value">{authorName}</span>
+              </div>
             </div>
           </section>
-        </>
-      )}
 
-      {/* CODE TAB */}
-      {activeTab === "code" && (
-        <section className="details-section code-section">
-          <div className="code-header">
-            <h2>Source Code</h2>
-            <CopyButton text={component.sourceCode} label="Copy Code" />
-          </div>
-          <pre className="code-block">
-            <code>{component.sourceCode}</code>
-          </pre>
-        </section>
-      )}
-
-      {/* INSTALLATION */}
-      <section className="details-section install-section">
-        <h2>Installation</h2>
-
-        <div className="install-command-row">
-          <code className="install-command">{installCommand}</code>
-          <CopyButton text={installCommand} label="Copy Command" />
-        </div>
-
-        <div className="install-info">
-          <div className="install-info-item">
-            <span className="install-info-label">Framework</span>
-            <span className="install-info-value">{component.framework}</span>
-          </div>
-          <div className="install-info-item">
-            <span className="install-info-label">Language</span>
-            <span className="install-info-value">{component.language}</span>
-          </div>
-          <div className="install-info-item">
-            <span className="install-info-label">Styling</span>
-            <span className="install-info-value">{component.styling}</span>
-          </div>
-          <div className="install-info-item">
-            <span className="install-info-label">Version</span>
-            <span className="install-info-value">v{component.version}</span>
-          </div>
-          {component.dependencies.length > 0 && (
-            <div className="install-info-item">
-              <span className="install-info-label">Dependencies</span>
-              <span className="install-info-value">
-                {component.dependencies.join(", ")}
-              </span>
+          {/* ACTIONS */}
+          <section className="sidebar-actions-box">
+            <h3>Actions</h3>
+            <div className="actions-list">
+              <button className="action-button-item add-proj-btn" onClick={() => setShowModal(true)}>
+                <span className="action-icon">⚡</span> Add to Project
+              </button>
+              <CopyAction
+                text={component.sourceCode}
+                label="Copy Code"
+                icon="📋"
+              />
+              <button
+                className="action-button-item github-btn"
+                onClick={() => window.open("https://github.com/mahadevanr-rgb/gsus-template-hub", "_blank")}
+              >
+                <span className="action-icon">🔗</span> View on GitHub
+              </button>
             </div>
-          )}
+          </section>
         </div>
-
-        {/* APPLY TO PROJECT — placeholder for future CLI/VS Code integration */}
-        <button
-          className="apply-button"
-          onClick={() =>
-            alert(
-              "VS Code / CLI integration coming soon!\n\nRun this in your project:\n" +
-                installCommand
-            )
-          }
-        >
-          ⚡ Apply to Project
-        </button>
-        <p className="apply-hint">
-          CLI and VS Code extension integration coming soon.
-        </p>
-      </section>
+      </div>
+      {showModal && (
+        <AddToProjectModal
+          component={component}
+          onClose={() => setShowModal(false)}
+        />
+      )}
     </div>
   );
 }

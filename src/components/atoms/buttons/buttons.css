@@ -8,8 +8,8 @@
   --success-color: #10b981;
   --danger-color: #ef4444;
   --warning-color: #f59e0b;
-  --text-color: #1f2937;
-  --text-light: #6b7280;
+  --text-color: var(--text-primary, #1f2937);
+  --text-light: var(--text-secondary, #6b7280);
   --border-radius: 8px;
   --transition-speed: 0.3s;
 }
