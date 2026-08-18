@@ -3,12 +3,21 @@ import { getComponentsByCategory } from "../../registry/index";
 import { FloatingButton, IconButton } from "../atoms/buttons";
 import "./ButtonShowcase.css";
 
-export default function ButtonShowcase({ onSelectButton }) {
+export default function ButtonShowcase({ onSelectButton, onNavigateHome }) {
   const [hoveredButton, setHoveredButton] = useState(null);
   const buttons = getComponentsByCategory("buttons");
 
   return (
     <section className="button-showcase">
+      {onNavigateHome && (
+        <div className="breadcrumbs" style={{ marginBottom: "1.5rem" }}>
+          <span style={{ cursor: "pointer" }} onClick={onNavigateHome}>Home</span>
+          {" > "}
+          <span style={{ cursor: "pointer" }} onClick={onNavigateHome}>Components</span>
+          {" > "}
+          <span className="active">Buttons</span>
+        </div>
+      )}
       <div className="showcase-header">
         <h2>Button Components Collection</h2>
         <p>Professional, animated button components for every use case</p>

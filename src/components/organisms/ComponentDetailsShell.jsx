@@ -28,7 +28,7 @@ function CopyButton({ text, label = "Copy" }) {
  *   onBack      — back button handler
  *   children    — the existing preview/variants/use-cases sections (shown in Preview tab)
  */
-export default function ComponentDetailsShell({ slug, sourceCode, onBack, children }) {
+export default function ComponentDetailsShell({ slug, sourceCode, onBack, onNavigateHome, breadcrumb, children }) {
   const [activeTab, setActiveTab] = useState("preview");
   const [applyStatus, setApplyStatus] = useState("idle");
 
@@ -72,9 +72,22 @@ export default function ComponentDetailsShell({ slug, sourceCode, onBack, childr
 
   return (
     <div className="button-details-container">
-      <button className="back-button" onClick={onBack}>
-        ← Back to Collection
-      </button>
+      {/* BREADCRUMB / BACK */}
+      {breadcrumb && onNavigateHome ? (
+        <div className="breadcrumbs" style={{ marginBottom: "1.5rem", fontSize: "0.9rem", color: "var(--text-secondary)" }}>
+          <span style={{ cursor: "pointer" }} onClick={onNavigateHome}>Home</span>
+          {" > "}
+          <span style={{ cursor: "pointer" }} onClick={onNavigateHome}>Components</span>
+          {" > "}
+          <span style={{ cursor: "pointer" }} onClick={onBack}>{breadcrumb[0]}</span>
+          {" > "}
+          <span style={{ color: "var(--text-primary)", fontWeight: 600 }}>{breadcrumb[1]}</span>
+        </div>
+      ) : (
+        <button className="back-button" onClick={onBack}>
+          ← Back to Collection
+        </button>
+      )}
 
       {/* HEADER */}
       {component && (

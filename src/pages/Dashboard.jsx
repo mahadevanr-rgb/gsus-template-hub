@@ -1,14 +1,14 @@
+import { useNavigate } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
 import TemplatesSection from "../components/organisms/TemplatesSection";
-import ComponentsSection from "../components/organisms/ComponentsSection";
 import SyncBanner from "../components/organisms/SyncBanner";
 
-export default function DashboardPage({ onNavigate, currentPage }) {
+export default function DashboardPage() {
+  const navigate = useNavigate();
   return (
-    <MainLayout onNavigate={onNavigate} currentPage={currentPage}>
+    <MainLayout>
       <SyncBanner />
-      <TemplatesSection onNavigate={onNavigate} />
-      {/* <ComponentsSection onNavigate={onNavigate} /> */}
+      <TemplatesSection onNavigate={(id) => navigate(id === "dashboard" ? "/" : `/${id}`)} />
     </MainLayout>
   );
 }

@@ -1,67 +1,30 @@
-import { useState } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 
-import DashboardPage from "./pages/Dashboard";
-import ButtonsPage from "./pages/ButtonsPage";
-import FormsPage from "./pages/FormsPage";
-import NotificationsPage from "./pages/NotificationsPage";
-import DataDisplayPage from "./pages/DataDisplayPage";
-import EcommercePage from "./pages/ecommerce/EcommercePage";
-import InventoryPage from "./pages/inventory/InventoryPage";
-import CreateProjectPage from "./pages/create-project/CreateProjectPage";
-import SyncPage from "./pages/SyncPage";
+import DashboardPage      from "./pages/Dashboard";
+import ButtonsPage        from "./pages/ButtonsPage";
+import FormsPage          from "./pages/FormsPage";
+import NotificationsPage  from "./pages/NotificationsPage";
+import DataDisplayPage    from "./pages/DataDisplayPage";
+import EcommercePage      from "./pages/ecommerce/EcommercePage";
+import InventoryPage      from "./pages/inventory/InventoryPage";
+import CreateProjectPage  from "./pages/create-project/CreateProjectPage";
+import SyncPage           from "./pages/SyncPage";
 
 function App() {
-  const [currentPage, setCurrentPage] = useState("dashboard");
-
-  const handleNavigate = (page) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const renderPage = () => {
-    switch (currentPage) {
-      case "buttons":
-        return <ButtonsPage />;
-      case "forms":
-        return <FormsPage />;
-      case "notifications":
-        return <NotificationsPage />;
-      case "data-display":
-        return <DataDisplayPage />;
-      case "ecommerce":
-        return <EcommercePage />;
-      case "inventory":
-        return <InventoryPage />;
-      case "create-project":
-        return <CreateProjectPage />;
-      case "sync":
-        return <SyncPage />;
-      case "dashboard":
-      default:
-        return (
-          <DashboardPage
-            onNavigate={handleNavigate}
-            currentPage={currentPage}
-          />
-        );
-    }
-  };
-
   return (
-    <>
-      {renderPage()}
-
-      {currentPage !== "dashboard" && (
-        <button
-          className="app-back-home"
-          onClick={() => handleNavigate("dashboard")}
-          title="Back to Dashboard"
-        >
-          ← Home
-        </button>
-      )}
-    </>
+    <Routes>
+      <Route path="/"               element={<DashboardPage />} />
+      <Route path="/buttons/*"      element={<ButtonsPage />} />
+      <Route path="/forms/*"        element={<FormsPage />} />
+      <Route path="/notifications/*" element={<NotificationsPage />} />
+      <Route path="/data-display/*" element={<DataDisplayPage />} />
+      <Route path="/ecommerce/*"    element={<EcommercePage />} />
+      <Route path="/inventory/*"    element={<InventoryPage />} />
+      <Route path="/create-project/*" element={<CreateProjectPage />} />
+      <Route path="/sync"           element={<SyncPage />} />
+      <Route path="*"               element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
 

@@ -22,7 +22,7 @@ function CopyAction({ text, label = "Copy Code", icon = "📋" }) {
 
 
 
-export default function ButtonDetails({ selectedButton, onBack }) {
+export default function ButtonDetails({ selectedButton, onBack, onNavigateHome }) {
   // படத்தின் படி தாவல்கள்: Description, Props, Usage, Dependencies
   const [activeTab, setActiveTab] = useState("description");
   const [showModal, setShowModal] = useState(false);
@@ -72,8 +72,27 @@ export default function ButtonDetails({ selectedButton, onBack }) {
       {/* 1. BREADCRUMBS & MAIN BUTTON */}
       <div className="top-navigation-row">
         <div className="breadcrumbs">
-          <span>Home</span> &gt; <span>Components</span> &gt;{" "}
-          <span>Buttons</span> &gt;{" "}
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={onNavigateHome}
+          >
+            Home
+          </span>
+          {" > "}
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={onNavigateHome}
+          >
+            Components
+          </span>
+          {" > "}
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={onBack}
+          >
+            Buttons
+          </span>
+          {" > "}
           <span className="active">{component.name}</span>
         </div>
         <button

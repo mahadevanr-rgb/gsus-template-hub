@@ -1,0 +1,206 @@
+/* ============================================
+   DATA DISPLAY SHOWCASE — mirrors FormsPage.css
+   ============================================ */
+
+.dd-showcase {
+  width: 100%;
+  padding: 3rem 2rem;
+  background: var(--bg-page);
+  min-height: 100vh;
+  transition: background-color 0.2s ease;
+}
+
+.dd-showcase .breadcrumbs {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  max-width: 1400px;
+  margin: 0 auto 1.5rem;
+}
+
+.dd-showcase .breadcrumbs span {
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.dd-showcase .breadcrumbs span:hover { color: var(--accent); }
+
+.dd-showcase .breadcrumbs span.active {
+  color: var(--text-primary);
+  font-weight: 600;
+  cursor: default;
+}
+
+.dd-showcase .showcase-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.dd-showcase .showcase-header h2 {
+  font-size: 2.5rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.dd-showcase .showcase-header p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.dd-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* CARD */
+.dd-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.dd-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: linear-gradient(90deg, #22c55e, #10b981);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+  z-index: 10;
+}
+
+.dd-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px var(--shadow-color-strong);
+  border-color: var(--border-strong);
+}
+
+.dd-card:hover::before { transform: scaleX(1); }
+
+/* PREVIEW */
+.dd-preview {
+  padding: 2rem;
+  background: var(--bg-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dd-preview::before {
+  content: "";
+  position: absolute;
+  top: -50%; right: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.08) 0%, transparent 70%);
+  animation: ddBgShift 8s ease-in-out infinite;
+}
+
+@keyframes ddBgShift {
+  0%, 100% { transform: translate(0, 0); }
+  50%       { transform: translate(20px, -20px); }
+}
+
+.dd-tag-badge {
+  position: relative;
+  z-index: 2;
+  padding: 0.4rem 1rem;
+  background: rgba(34, 197, 94, 0.12);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+/* INFO */
+.dd-info {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+}
+
+.dd-info h3 {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+}
+
+.dd-info p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin: 0 0 1rem 0;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+.dd-info .view-details {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #22c55e;
+  transition: all 0.3s ease;
+}
+
+.dd-card:hover .view-details { transform: translateX(4px); }
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .dd-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+  .dd-showcase { padding: 2rem 1.5rem; }
+}
+
+@media (max-width: 768px) {
+  .dd-grid { grid-template-columns: repeat(auto-fit, minmax(100%, 1fr)); gap: 1rem; }
+  .dd-showcase .showcase-header h2 { font-size: 2rem; }
+  .dd-card { border-radius: 8px; }
+}
+
+@media (max-width: 480px) {
+  .dd-showcase { padding: 1.5rem 1rem; }
+  .dd-showcase .showcase-header h2 { font-size: 1.75rem; }
+  .dd-info { padding: 1rem; }
+}
+
+/* FADE IN ANIMATION */
+@media (prefers-reduced-motion: no-preference) {
+  .dd-card {
+    animation: ddFadeIn 0.6s ease-out forwards;
+    opacity: 0;
+  }
+  .dd-card:nth-child(1)  { animation-delay: 0.1s; }
+  .dd-card:nth-child(2)  { animation-delay: 0.2s; }
+  .dd-card:nth-child(3)  { animation-delay: 0.3s; }
+  .dd-card:nth-child(4)  { animation-delay: 0.4s; }
+  .dd-card:nth-child(5)  { animation-delay: 0.5s; }
+  .dd-card:nth-child(6)  { animation-delay: 0.6s; }
+  .dd-card:nth-child(7)  { animation-delay: 0.7s; }
+  .dd-card:nth-child(8)  { animation-delay: 0.8s; }
+  .dd-card:nth-child(9)  { animation-delay: 0.9s; }
+  .dd-card:nth-child(10) { animation-delay: 1.0s; }
+
+  @keyframes ddFadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+}
