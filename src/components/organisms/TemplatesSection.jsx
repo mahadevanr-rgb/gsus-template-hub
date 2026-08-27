@@ -176,12 +176,12 @@ export default function TemplatesSection({ onNavigate }) {
             >
               Browse Components
             </button>
-            <button
+            {/* <button
               onClick={() => onNavigate && onNavigate("ecommerce")}
               className="px-5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-semibold rounded-xl border border-slate-700 transition-all"
             >
               View Templates
-            </button>
+            </button> */}
           </div>
         </div>
 
