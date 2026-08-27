@@ -7,8 +7,10 @@ export default function DashboardPage() {
   const navigate = useNavigate();
   return (
     <MainLayout>
-      <SyncBanner />
-      <TemplatesSection onNavigate={(id) => navigate(id === "dashboard" ? "/" : `/${id}`)} />
+      {/* <SyncBanner /> */}
+      <TemplatesSection
+        onNavigate={(id) => navigate(id === "dashboard" ? "/" : `/${id}`)}
+      />
     </MainLayout>
   );
 }

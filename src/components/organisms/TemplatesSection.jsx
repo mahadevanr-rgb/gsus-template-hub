@@ -46,20 +46,20 @@ const getCategoryData = () => [
     color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
     count: getComponentsByCategory("data-display").length,
   },
-  {
-    name: "Ecommerce",
-    id: "ecommerce",
-    icon: ShoppingBag,
-    color: "text-orange-400 bg-orange-500/10 border-orange-500/20",
-    count: 6,
-  },
-  {
-    name: "Inventory",
-    id: "inventory",
-    icon: Package,
-    color: "text-indigo-400 bg-indigo-500/10 border-indigo-500/20",
-    count: 5,
-  },
+  // {
+  //   name: "Ecommerce",
+  //   id: "ecommerce",
+  //   icon: ShoppingBag,
+  //   color: "text-orange-400 bg-orange-500/10 border-orange-500/20",
+  //   count: 6,
+  // },
+  // {
+  //   name: "Inventory",
+  //   id: "inventory",
+  //   icon: Package,
+  //   color: "text-indigo-400 bg-indigo-500/10 border-indigo-500/20",
+  //   count: 5,
+  // },
 ];
 
 const getKpiData = () => {
@@ -131,7 +131,8 @@ const popularComponents = [
     id: "notifications",
     title: "Toast Alert",
     badge: "Notification",
-    description: "Animated toast notification with success, error and info variants.",
+    description:
+      "Animated toast notification with success, error and info variants.",
     previewType: "toast",
     version: "v1.0.3",
   },
@@ -152,7 +153,6 @@ export default function TemplatesSection({ onNavigate }) {
 
   return (
     <div className="space-y-10 pb-4 text-slate-200">
-
       {/* 1. HERO BANNER */}
       <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900/90 via-slate-900 to-indigo-950/40 border border-slate-800/80 p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-8">
         <div className="max-w-xl space-y-4 z-10">
@@ -166,7 +166,8 @@ export default function TemplatesSection({ onNavigate }) {
             </span>
           </h1>
           <p className="text-slate-400 text-sm md:text-base leading-relaxed">
-            Discover, preview and integrate enterprise-ready components into your projects in seconds.
+            Discover, preview and integrate enterprise-ready components into
+            your projects in seconds.
           </p>
           <div className="flex gap-3 flex-wrap">
             <button
@@ -191,7 +192,9 @@ export default function TemplatesSection({ onNavigate }) {
               <Layers className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-lg font-bold text-white leading-none">{totalComponents}+</p>
+              <p className="text-lg font-bold text-white leading-none">
+                {totalComponents}+
+              </p>
               <p className="text-xs text-slate-400 mt-1">Components</p>
             </div>
           </div>
@@ -200,7 +203,9 @@ export default function TemplatesSection({ onNavigate }) {
               <FolderKanban className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-lg font-bold text-white leading-none">{categories.length}</p>
+              <p className="text-lg font-bold text-white leading-none">
+                {categories.length}
+              </p>
               <p className="text-xs text-slate-400 mt-1">Categories</p>
             </div>
           </div>
@@ -224,7 +229,9 @@ export default function TemplatesSection({ onNavigate }) {
               </div>
               <div>
                 <p className="text-2xl font-bold text-white">{kpi.value}</p>
-                <p className="text-sm font-medium text-slate-300 mt-0.5">{kpi.label}</p>
+                <p className="text-sm font-medium text-slate-300 mt-0.5">
+                  {kpi.label}
+                </p>
                 <p className="text-xs text-slate-500 mt-0.5">{kpi.sub}</p>
               </div>
               <div className="flex items-center gap-1 text-xs text-emerald-400">
@@ -250,11 +257,17 @@ export default function TemplatesSection({ onNavigate }) {
                 onClick={() => onNavigate && onNavigate(cat.id)}
                 className="flex flex-col items-center text-center p-4 rounded-xl bg-slate-900/60 border border-slate-800/80 hover:border-slate-700 hover:bg-slate-800/50 cursor-pointer transition-all duration-200 group"
               >
-                <div className={`p-2.5 rounded-xl border mb-2.5 transition-transform group-hover:scale-110 ${cat.color}`}>
+                <div
+                  className={`p-2.5 rounded-xl border mb-2.5 transition-transform group-hover:scale-110 ${cat.color}`}
+                >
                   <Icon className="w-5 h-5" />
                 </div>
-                <p className="text-xs font-semibold text-white truncate w-full">{cat.name}</p>
-                <p className="text-[10px] text-slate-500 mt-0.5">{cat.count} components</p>
+                <p className="text-xs font-semibold text-white truncate w-full">
+                  {cat.name}
+                </p>
+                <p className="text-[10px] text-slate-500 mt-0.5">
+                  {cat.count} components
+                </p>
               </div>
             );
           })}
@@ -319,7 +332,9 @@ export default function TemplatesSection({ onNavigate }) {
                       {["Row A", "Row B"].map((r) => (
                         <div key={r} className="flex gap-2 text-slate-400">
                           <span className="flex-1">{r}</span>
-                          <span className="flex-1 text-emerald-400">Active</span>
+                          <span className="flex-1 text-emerald-400">
+                            Active
+                          </span>
                           <span className="flex-1">—</span>
                         </div>
                       ))}
