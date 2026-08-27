@@ -12,6 +12,7 @@ import {
   ShoppingBag,
   Package,
 } from "lucide-react";
+import logo from "../../assets/images/logo.png";
 
 const menuItems = [
   { icon: LayoutGrid, label: "Home", path: "/" },
@@ -33,9 +34,16 @@ export default function Sidebar({ currentPage, isCollapsed, setIsCollapsed }) {
       <div>
         {/* Logo */}
         <div
-          className={`flex items-center gap-3 px-2 py-4 border-b border-slate-800/50 mb-3 ${isCollapsed ? "justify-center" : ""}`}
+          className={`flex items-center gap-3 px-2 py-4 border-b border-slate-800/50 mb-3 ${
+            isCollapsed ? "justify-center" : ""
+          }`}
         >
-          <Atom className="w-7 h-7 text-indigo-500 shrink-0" />
+          <img
+            src={logo}
+            alt="Logo"
+            className={`object-contain ${isCollapsed ? "w-5 h-5" : "w-12 h-6"}`}
+          />
+
           {!isCollapsed && (
             <span className="font-bold text-lg text-white tracking-tight truncate">
               TemplateHub
