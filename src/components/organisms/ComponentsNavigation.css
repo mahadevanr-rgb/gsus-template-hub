@@ -1,0 +1,176 @@
+/* ============================================
+   COMPONENTS NAVIGATION STYLES
+   ============================================ */
+
+.components-navigation {
+  width: 100%;
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.nav-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.nav-header h2 {
+  font-size: 2.5rem;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.nav-header p {
+  font-size: 1.1rem;
+  color: #6b7280;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.nav-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nav-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.nav-card-purple::before {
+  background: linear-gradient(90deg, #8b5cf6, #7c3aed);
+}
+
+.nav-card-green::before {
+  background: linear-gradient(90deg, #10b981, #059669);
+}
+
+.nav-card-orange::before {
+  background: linear-gradient(90deg, #f59e0b, #d97706);
+}
+
+.nav-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+.nav-card:hover::before {
+  transform: scaleX(1);
+}
+
+.nav-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  animation: floatIcon 3s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.nav-card:hover .nav-icon {
+  animation: bounceIcon 0.6s ease;
+}
+
+@keyframes bounceIcon {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+.nav-card h3 {
+  font-size: 1.25rem;
+  color: #1f2937;
+  margin: 0 0 0.75rem 0;
+  font-weight: 600;
+}
+
+.nav-card p {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+.nav-arrow {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #3b82f6;
+  transition: all 0.3s ease;
+}
+
+.nav-card:hover .nav-arrow {
+  transform: translateX(4px);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .nav-grid {
+    grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+    gap: 1.5rem;
+  }
+
+  .components-navigation {
+    padding: 2rem 1.5rem;
+  }
+
+  .nav-header h2 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .components-navigation {
+    padding: 1.5rem 1rem;
+  }
+
+  .nav-header h2 {
+    font-size: 1.75rem;
+  }
+
+  .nav-card {
+    padding: 1.5rem;
+  }
+
+  .nav-icon {
+    font-size: 2.5rem;
+  }
+}

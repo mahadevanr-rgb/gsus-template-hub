@@ -1,0 +1,130 @@
+/* ============================================
+   NOTIFICATIONS SHOWCASE — mirrors FormsPage.css
+   ============================================ */
+
+.notif-showcase {
+  width: 100%;
+  padding: 3rem 2rem;
+  background: var(--bg-page);
+  min-height: 100vh;
+  transition: background-color 0.2s ease;
+}
+
+.notif-showcase .breadcrumbs {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  max-width: 1400px;
+  margin: 0 auto 1.5rem;
+}
+
+.notif-showcase .breadcrumbs span { color: var(--text-secondary); transition: color 0.2s; }
+.notif-showcase .breadcrumbs span:hover { color: var(--accent); }
+.notif-showcase .breadcrumbs span.active { color: var(--text-primary); font-weight: 600; cursor: default; }
+
+.notif-showcase .showcase-header { text-align: center; margin-bottom: 3rem; }
+.notif-showcase .showcase-header h2 { font-size: 2.5rem; color: var(--text-primary); margin-bottom: 0.5rem; font-weight: 700; }
+.notif-showcase .showcase-header p  { font-size: 1.1rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto; }
+
+.notif-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.notif-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.notif-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: linear-gradient(90deg, #f59e0b, #f97316);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+  z-index: 10;
+}
+
+.notif-card:hover { transform: translateY(-8px); box-shadow: 0 12px 32px var(--shadow-color-strong); border-color: var(--border-strong); }
+.notif-card:hover::before { transform: scaleX(1); }
+
+.notif-preview {
+  padding: 2rem;
+  background: var(--bg-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  position: relative;
+  overflow: hidden;
+}
+
+.notif-preview::before {
+  content: "";
+  position: absolute;
+  top: -50%; right: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
+  animation: notifBgShift 8s ease-in-out infinite;
+}
+
+@keyframes notifBgShift {
+  0%, 100% { transform: translate(0, 0); }
+  50%       { transform: translate(20px, -20px); }
+}
+
+.notif-tag-badge {
+  position: relative;
+  z-index: 2;
+  padding: 0.4rem 1rem;
+  background: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.notif-info { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; background: var(--bg-surface); }
+.notif-info h3 { font-size: 1.25rem; color: var(--text-primary); margin: 0 0 0.5rem 0; font-weight: 600; }
+.notif-info p  { font-size: 0.95rem; color: var(--text-secondary); margin: 0 0 1rem 0; line-height: 1.5; flex-grow: 1; }
+
+.notif-info .view-details { display: inline-block; font-size: 0.9rem; font-weight: 600; color: #f59e0b; transition: all 0.3s ease; }
+.notif-card:hover .view-details { transform: translateX(4px); }
+
+@media (max-width: 1024px) { .notif-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; } .notif-showcase { padding: 2rem 1.5rem; } }
+@media (max-width: 768px)  { .notif-grid { grid-template-columns: 1fr; gap: 1rem; } .notif-showcase .showcase-header h2 { font-size: 2rem; } }
+@media (max-width: 480px)  { .notif-showcase { padding: 1.5rem 1rem; } .notif-info { padding: 1rem; } }
+
+@media (prefers-reduced-motion: no-preference) {
+  .notif-card { animation: notifFadeIn 0.6s ease-out forwards; opacity: 0; }
+  .notif-card:nth-child(1)  { animation-delay: 0.1s; }
+  .notif-card:nth-child(2)  { animation-delay: 0.2s; }
+  .notif-card:nth-child(3)  { animation-delay: 0.3s; }
+  .notif-card:nth-child(4)  { animation-delay: 0.4s; }
+  .notif-card:nth-child(5)  { animation-delay: 0.5s; }
+  .notif-card:nth-child(6)  { animation-delay: 0.6s; }
+  .notif-card:nth-child(7)  { animation-delay: 0.7s; }
+  .notif-card:nth-child(8)  { animation-delay: 0.8s; }
+  .notif-card:nth-child(9)  { animation-delay: 0.9s; }
+  .notif-card:nth-child(10) { animation-delay: 1.0s; }
+
+  @keyframes notifFadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+}
