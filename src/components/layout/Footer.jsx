@@ -8,6 +8,7 @@ import {
   Bell,
   Monitor,
   Combine,
+  CreditCard,
 } from "lucide-react";
 
 export default function Footer() {
@@ -53,6 +54,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {[
                 { label: "Buttons", path: "/buttons", icon: MousePointerClick },
+                { label: "Cards", path: "/cards", icon: CreditCard },
                 { label: "Forms", path: "/forms", icon: FormInput },
                 {
                   label: "Form Compositions",

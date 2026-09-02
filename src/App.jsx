@@ -4,6 +4,7 @@ import "./App.css";
 import DashboardPage      from "./pages/Dashboard";
 import ButtonsPage        from "./pages/ButtonsPage";
 import FormsPage          from "./pages/FormsPage";
+import CardsPage          from "./pages/CardsPage";
 import NotificationsPage  from "./pages/NotificationsPage";
 import DataDisplayPage    from "./pages/DataDisplayPage";
 import EcommercePage      from "./pages/ecommerce/EcommercePage";
@@ -18,6 +19,7 @@ function App() {
     <Routes>
       <Route path="/"               element={<DashboardPage />} />
       <Route path="/buttons/*"      element={<ButtonsPage />} />
+      <Route path="/cards/*"        element={<CardsPage />} />
       <Route path="/forms/*"        element={<FormsPage />} />
       <Route path="/form-compositions" element={<FormCompositionsPage />} />
       <Route path="/form-compositions/:slug" element={<FormCompositionDetails />} />

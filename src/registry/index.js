@@ -12,6 +12,7 @@ import iconButton from "./buttons/icon-button";
 import formComponents from "./forms/index";
 import notificationComponents from "./notifications/index";
 import dataDisplayComponents from "./data-display/index";
+import cardComponents from "./cards/index";
 
 /** All registered components — single source of truth */
 const registry = [
@@ -25,6 +26,7 @@ const registry = [
   outlineButton,
   floatingButton,
   iconButton,
+  ...cardComponents,
   ...formComponents,
   ...notificationComponents,
   ...dataDisplayComponents,

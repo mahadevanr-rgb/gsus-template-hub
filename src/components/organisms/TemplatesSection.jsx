@@ -13,6 +13,7 @@ import {
   TrendingUp,
   Code2,
   Zap,
+  CreditCard,
 } from "lucide-react";
 import { getComponentsByCategory } from "../../registry/index";
 
@@ -24,6 +25,13 @@ const getCategoryData = () => [
     icon: MousePointerClick,
     color: "text-purple-400 bg-purple-500/10 border-purple-500/20",
     count: getComponentsByCategory("buttons").length,
+  },
+  {
+    name: "Cards",
+    id: "cards",
+    icon: CreditCard,
+    color: "text-rose-400 bg-rose-500/10 border-rose-500/20",
+    count: getComponentsByCategory("cards").length,
   },
   {
     name: "Forms",
@@ -64,10 +72,11 @@ const getCategoryData = () => [
 
 const getKpiData = () => {
   const buttons = getComponentsByCategory("buttons").length;
+  const cards = getComponentsByCategory("cards").length;
   const forms = getComponentsByCategory("forms").length;
   const notifications = getComponentsByCategory("notifications").length;
   const dataDisplay = getComponentsByCategory("data-display").length;
-  const total = buttons + forms + notifications + dataDisplay + 11; // +templates
+  const total = buttons + cards + forms + notifications + dataDisplay + 11; // +templates
 
   return [
     {

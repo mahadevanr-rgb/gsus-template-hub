@@ -12,11 +12,13 @@ import {
   ShoppingBag,
   Package,
   Combine,
+  CreditCard,
 } from "lucide-react";
 
 const menuItems = [
   { icon: LayoutGrid, label: "Home", path: "/" },
   { icon: MousePointerClick, label: "Buttons", path: "/buttons" },
+  { icon: CreditCard, label: "Cards", path: "/cards" },
   { icon: FormInput, label: "Forms", path: "/forms" },
   { icon: Combine, label: "Form Compositions", path: "/form-compositions" },
   { icon: Bell, label: "Notifications", path: "/notifications" },
