@@ -5,22 +5,22 @@ import DashboardPage      from "./pages/Dashboard";
 import ButtonsPage        from "./pages/ButtonsPage";
 import FormsPage          from "./pages/FormsPage";
 import NotificationsPage  from "./pages/NotificationsPage";
-import CardsPage          from "./pages/CardsPage";
-import CardDetails        from "./pages/CardDetails";
 import DataDisplayPage    from "./pages/DataDisplayPage";
 import EcommercePage      from "./pages/ecommerce/EcommercePage";
 import InventoryPage      from "./pages/inventory/InventoryPage";
 import CreateProjectPage  from "./pages/create-project/CreateProjectPage";
 import SyncPage           from "./pages/SyncPage";
+import FormCompositionsPage from "./pages/FormCompositionsPage";
+import FormCompositionDetails from "./pages/FormCompositionDetails";
 
 function App() {
   return (
     <Routes>
       <Route path="/"               element={<DashboardPage />} />
       <Route path="/buttons/*"      element={<ButtonsPage />} />
-      <Route path="/cards"          element={<CardsPage />} />
-      <Route path="/cards/:slug"    element={<CardDetails />} />
       <Route path="/forms/*"        element={<FormsPage />} />
+      <Route path="/form-compositions" element={<FormCompositionsPage />} />
+      <Route path="/form-compositions/:slug" element={<FormCompositionDetails />} />
       <Route path="/notifications/*" element={<NotificationsPage />} />
       <Route path="/data-display/*" element={<DataDisplayPage />} />
       <Route path="/ecommerce/*"    element={<EcommercePage />} />

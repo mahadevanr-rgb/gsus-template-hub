@@ -1,11 +1,6 @@
 import { useState } from "react";
 import { getComponent } from "../../registry/index";
-import {
-  getInstallCommand,
-  copyToClipboard,
-  getComponentInstallDir,
-  getComponentFileName,
-} from "../../lib/installContract";
+import { getInstallCommand, copyToClipboard } from "../../lib/installContract";
 
 function CopyButton({ text, label = "Copy" }) {
   const [copied, setCopied] = useState(false);
@@ -50,10 +45,12 @@ export default function ComponentDetailsShell({ slug, sourceCode, onBack, onNavi
       const dirHandle = await window.showDirectoryPicker({ mode: "readwrite" });
       setApplyStatus("writing");
 
-      // Write the component file into target directory inside chosen folder
-      const targetDir = getComponentInstallDir(component);
-      const fileName = getComponentFileName(component);
-      const uiDir = await getOrCreateDir(dirHandle, targetDir);
+      // Write the component file into components/ui/ inside chosen folder
+      const uiDir = await getOrCreateDir(dirHandle, "components/ui");
+      const fileName = slug
+        .split("-")
+        .map((w) => w[0].toUpperCase() + w.slice(1))
+        .join("") + ".jsx";
 
       const fileHandle = await uiDir.getFileHandle(fileName, { create: true });
       const writable = await fileHandle.createWritable();

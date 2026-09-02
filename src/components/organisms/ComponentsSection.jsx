@@ -5,7 +5,6 @@ import SearchBar from "../atoms/SearchBar";
 
 const CATEGORY_META = {
   buttons:      { icon: "🔘", color: "border-blue-400",   badge: "bg-blue-50 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400",   page: "buttons" },
-  cards:        { icon: "🎴", color: "border-purple-400", badge: "bg-purple-50 dark:bg-purple-500/15 text-purple-600 dark:text-purple-400", page: "cards" },
   forms:        { icon: "📝", color: "border-indigo-400", badge: "bg-indigo-50 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-400", page: "forms" },
   notifications:{ icon: "🔔", color: "border-amber-400",  badge: "bg-amber-50 dark:bg-amber-500/15 text-amber-600 dark:text-amber-400",  page: "notifications" },
   "data-display":{ icon: "📊", color: "border-green-400", badge: "bg-green-50 dark:bg-green-500/15 text-green-600 dark:text-green-400",  page: "data-display" },

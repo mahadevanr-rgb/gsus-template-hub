@@ -1,10 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import {
-  getComponentInstallDir,
-  getComponentFileName,
-  getComponentOutputPath,
-  getComponentImportSnippet,
-} from "../../lib/installContract";
 
 async function getOrCreateDir(root, path) {
   const parts = path.split("/");
@@ -56,9 +50,9 @@ function Stage1({ component, onNext, onClose }) {
   };
 
   const willInstall = [
-    `${getComponentFileName(component)} component file`,
-    ...(component.category === "buttons" ? ["buttons.css (shared styles)"] : []),
-    ...(component.dependencies && component.dependencies.length > 0 ? component.dependencies : []),
+    `${component.name} component file`,
+    "buttons.css (shared styles)",
+    ...(component.dependencies.length > 0 ? component.dependencies : []),
   ];
 
   return (
@@ -124,21 +118,22 @@ function Stage2({ component, dirHandle, onDone }) {
         tick(10);
         await delay(400);
 
-        const targetDir = getComponentInstallDir(component);
-        const fileName = getComponentFileName(component);
-
-        addLog(`Creating ${targetDir}/ directory...`);
+        addLog("Creating components/ui/ directory...");
         tick(25);
-        const uiDir = await getOrCreateDir(dirHandle, targetDir);
+        const uiDir = await getOrCreateDir(dirHandle, "components/ui");
         await delay(300);
 
-        addLog(`Writing ${fileName} component file...`);
+        addLog(`Writing ${component.name} component file...`);
         tick(50);
+        const fileName = component.slug
+          .split("-")
+          .map((w) => w[0].toUpperCase() + w.slice(1))
+          .join("") + ".jsx";
         const fileHandle = await uiDir.getFileHandle(fileName, { create: true });
         const writable = await fileHandle.createWritable();
         await writable.write(component.sourceCode);
         await writable.close();
-        addLog(`✓ ${fileName} created in ${targetDir}/`, "success");
+        addLog(`✓ ${fileName} created`, "success");
         tick(70);
         await delay(400);
 
@@ -146,7 +141,7 @@ function Stage2({ component, dirHandle, onDone }) {
         tick(85);
         await delay(300);
 
-        if (component.dependencies && component.dependencies.length > 0) {
+        if (component.dependencies.length > 0) {
           for (const dep of component.dependencies) {
             addLog(`Installing ${dep}...`);
             await delay(500);
@@ -194,9 +189,7 @@ function Stage2({ component, dirHandle, onDone }) {
 }
 
 function Stage3({ component, fileName, onClose }) {
-  const outputPath = getComponentOutputPath(component);
-  const importSnippet = getComponentImportSnippet(component);
-  const componentTag = getComponentFileName(component).replace(/\.jsx?$/, "");
+  const outputPath = `components/ui/${fileName}`;
 
   return (
     <div className="atp-stage atp-stage-complete">
@@ -213,7 +206,7 @@ function Stage3({ component, fileName, onClose }) {
 
       <div className="atp-usage-box">
         <p className="atp-usage-label">Usage</p>
-        <pre className="atp-usage-code">{`${importSnippet}\n\n<${componentTag} />`}</pre>
+        <pre className="atp-usage-code">{`import ${component.name.replace(/ /g, "")} from "./${outputPath}";\n\n<${component.name.replace(/ /g, "")} label="Click me" onClick={() => {}} />`}</pre>
       </div>
 
       <div className="atp-footer">

@@ -13,7 +13,6 @@ import {
   TrendingUp,
   Code2,
   Zap,
-  CreditCard,
 } from "lucide-react";
 import { getComponentsByCategory } from "../../registry/index";
 
@@ -25,13 +24,6 @@ const getCategoryData = () => [
     icon: MousePointerClick,
     color: "text-purple-400 bg-purple-500/10 border-purple-500/20",
     count: getComponentsByCategory("buttons").length,
-  },
-  {
-    name: "Cards",
-    id: "cards",
-    icon: CreditCard,
-    color: "text-pink-400 bg-pink-500/10 border-pink-500/20",
-    count: getComponentsByCategory("cards").length,
   },
   {
     name: "Forms",
@@ -72,11 +64,10 @@ const getCategoryData = () => [
 
 const getKpiData = () => {
   const buttons = getComponentsByCategory("buttons").length;
-  const cards = getComponentsByCategory("cards").length;
   const forms = getComponentsByCategory("forms").length;
   const notifications = getComponentsByCategory("notifications").length;
   const dataDisplay = getComponentsByCategory("data-display").length;
-  const total = buttons + cards + forms + notifications + dataDisplay + 11; // +templates
+  const total = buttons + forms + notifications + dataDisplay + 11; // +templates
 
   return [
     {
@@ -91,7 +82,7 @@ const getKpiData = () => {
     {
       icon: FolderKanban,
       label: "Categories",
-      value: 7,
+      value: 6,
       sub: "Component categories",
       color: "text-purple-400",
       bg: "bg-purple-500/10 border-purple-500/20",
@@ -250,7 +241,7 @@ export default function TemplatesSection({ onNavigate }) {
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold text-white">Browse by Categories</h2>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {categories.map((cat) => {
             const Icon = cat.icon;
             return (
