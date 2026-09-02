@@ -1,9 +1,23 @@
 import profileCards from "./profile/index";
 import statsCards from "./stats/index";
+import pricingCards from "./pricing/index";
+import socialCards from "./social/index";
+import notificationCards from "./notifications/index";
+import eventCards from "./events/index";
+import taskCards from "./tasks/index";
+import contentCards from "./content/index";
+import financeCards from "./finance/index";
 
 export const cardComponents = [
   ...profileCards,
   ...statsCards,
+  ...pricingCards,
+  ...socialCards,
+  ...notificationCards,
+  ...eventCards,
+  ...taskCards,
+  ...contentCards,
+  ...financeCards,
 ];
 
 /** Get all card components */

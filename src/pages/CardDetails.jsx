@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getComponent, getAllComponents } from "../registry/index";
-import { getCardsBySubCategory } from "../registry/cards/index";
+import { getCardsBySubCategory, getCardComponents } from "../registry/cards/index";
 import { copyToClipboard } from "../lib/installContract";
 import AddToProjectModal from "../components/organisms/AddToProjectModal";
 import "../components/organisms/AddToProjectModal.css";
@@ -37,6 +37,14 @@ export default function CardDetails({
   // Active slug can come from prop or URL route param
   const activeSlug = selectedCard || params.slug || "profile-card";
   const [currentSlug, setCurrentSlug] = useState(activeSlug);
+
+  useEffect(() => {
+    if (selectedCard) {
+      setCurrentSlug(selectedCard);
+    } else if (params.slug) {
+      setCurrentSlug(params.slug);
+    }
+  }, [selectedCard, params.slug]);
 
   const component = getComponent(currentSlug);
 
@@ -126,8 +134,24 @@ export default function CardDetails({
               <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {component.name}
               </h1>
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-50 dark:bg-purple-500/15 text-purple-600 dark:text-purple-400 border border-purple-200/60 dark:border-purple-500/30">
-                {component.subCategory === "stats" ? "Stat / KPI" : "Profile / Team"}
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-50 dark:bg-purple-500/15 text-purple-600 dark:text-purple-400 border border-purple-200/60 dark:border-purple-500/30 capitalize">
+                {component.subCategory === "stats"
+                  ? "Stat / KPI"
+                  : component.subCategory === "notifications"
+                  ? "Notification & Alert"
+                  : component.subCategory === "events"
+                  ? "Event & Booking"
+                  : component.subCategory === "tasks"
+                  ? "Task & Kanban"
+                  : component.subCategory === "content"
+                  ? "Testimonial & Feature"
+                  : component.subCategory === "finance"
+                  ? "Invoice & Finance"
+                  : component.subCategory === "pricing"
+                  ? "Pricing & Plan"
+                  : component.subCategory === "social"
+                  ? "User Profile"
+                  : "Profile & Team"}
               </span>
               <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
                 v{component.version || "1.0.0"}
