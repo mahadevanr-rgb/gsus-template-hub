@@ -10,6 +10,8 @@ import EcommercePage      from "./pages/ecommerce/EcommercePage";
 import InventoryPage      from "./pages/inventory/InventoryPage";
 import CreateProjectPage  from "./pages/create-project/CreateProjectPage";
 import SyncPage           from "./pages/SyncPage";
+import FormCompositionsPage from "./pages/FormCompositionsPage";
+import FormCompositionDetails from "./pages/FormCompositionDetails";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
       <Route path="/"               element={<DashboardPage />} />
       <Route path="/buttons/*"      element={<ButtonsPage />} />
       <Route path="/forms/*"        element={<FormsPage />} />
+      <Route path="/form-compositions" element={<FormCompositionsPage />} />
+      <Route path="/form-compositions/:slug" element={<FormCompositionDetails />} />
       <Route path="/notifications/*" element={<NotificationsPage />} />
       <Route path="/data-display/*" element={<DataDisplayPage />} />
       <Route path="/ecommerce/*"    element={<EcommercePage />} />
