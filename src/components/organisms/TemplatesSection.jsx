@@ -7,13 +7,12 @@ import {
   FormInput,
   Bell,
   Monitor,
-  ShoppingBag,
-  Package,
   Atom,
   TrendingUp,
   Code2,
   Zap,
   CreditCard,
+  Combine,
 } from "lucide-react";
 import { getComponentsByCategory } from "../../registry/index";
 
@@ -54,20 +53,6 @@ const getCategoryData = () => [
     color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
     count: getComponentsByCategory("data-display").length,
   },
-  {
-    name: "Ecommerce",
-    id: "ecommerce",
-    icon: ShoppingBag,
-    color: "text-orange-400 bg-orange-500/10 border-orange-500/20",
-    count: 6,
-  },
-  {
-    name: "Inventory",
-    id: "inventory",
-    icon: Package,
-    color: "text-indigo-400 bg-indigo-500/10 border-indigo-500/20",
-    count: 5,
-  },
 ];
 
 const getKpiData = () => {
@@ -76,7 +61,7 @@ const getKpiData = () => {
   const forms = getComponentsByCategory("forms").length;
   const notifications = getComponentsByCategory("notifications").length;
   const dataDisplay = getComponentsByCategory("data-display").length;
-  const total = buttons + cards + forms + notifications + dataDisplay + 11; // +templates
+  const total = buttons + cards + forms + notifications + dataDisplay;
 
   return [
     {
@@ -91,7 +76,7 @@ const getKpiData = () => {
     {
       icon: FolderKanban,
       label: "Categories",
-      value: 6,
+      value: 5,
       sub: "Component categories",
       color: "text-purple-400",
       bg: "bg-purple-500/10 border-purple-500/20",
@@ -107,13 +92,13 @@ const getKpiData = () => {
       trend: "Zero config needed",
     },
     {
-      icon: Zap,
-      label: "Templates",
-      value: 11,
-      sub: "Full page templates",
+      icon: Combine,
+      label: "Form Compositions",
+      value: 4,
+      sub: "Pre-built workflows",
       color: "text-yellow-400",
       bg: "bg-yellow-500/10 border-yellow-500/20",
-      trend: "Ecommerce + Inventory",
+      trend: "Full flow templates",
     },
   ];
 };
@@ -185,10 +170,10 @@ export default function TemplatesSection({ onNavigate }) {
               Browse Components
             </button>
             <button
-              onClick={() => onNavigate && onNavigate("ecommerce")}
+              onClick={() => onNavigate && onNavigate("cards")}
               className="px-5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-semibold rounded-xl border border-slate-700 transition-all"
             >
-              View Templates
+              Explore Cards
             </button>
           </div>
         </div>
@@ -250,7 +235,7 @@ export default function TemplatesSection({ onNavigate }) {
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold text-white">Browse by Categories</h2>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
           {categories.map((cat) => {
             const Icon = cat.icon;
             return (

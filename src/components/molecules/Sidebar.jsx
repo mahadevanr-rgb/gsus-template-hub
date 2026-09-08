@@ -9,8 +9,6 @@ import {
   ChevronRight,
   Atom,
   GitFork,
-  ShoppingBag,
-  Package,
   Combine,
   CreditCard,
 } from "lucide-react";
@@ -23,8 +21,6 @@ const menuItems = [
   { icon: Combine, label: "Form Compositions", path: "/form-compositions" },
   { icon: Bell, label: "Notifications", path: "/notifications" },
   { icon: Monitor, label: "Data Display", path: "/data-display" },
-  { icon: ShoppingBag, label: "Ecommerce", path: "/ecommerce" },
-  { icon: Package, label: "Inventory", path: "/inventory" },
 ];
 
 export default function Sidebar({ currentPage, isCollapsed, setIsCollapsed }) {

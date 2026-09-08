@@ -17,7 +17,7 @@ export default function Footer() {
   return (
     <footer className="border-t border-slate-800/80 bg-[#0b0f19] mt-8">
       <div className="px-6 py-10 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
           {/* Brand */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
@@ -70,27 +70,6 @@ export default function Footer() {
                     className="flex items-center gap-2 text-sm text-slate-400 hover:text-indigo-400 transition-colors"
                   >
                     <item.icon className="w-3.5 h-3.5" />
-                    {item.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Templates */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-white">Templates</h4>
-            <ul className="space-y-2">
-              {[
-                { label: "Ecommerce Store", path: "/ecommerce" },
-                { label: "Inventory Manager", path: "/inventory" },
-                { label: "Create Project", path: "/create-project" },
-              ].map((item) => (
-                <li key={item.path}>
-                  <button
-                    onClick={() => navigate(item.path)}
-                    className="text-sm text-slate-400 hover:text-indigo-400 transition-colors"
-                  >
                     {item.label}
                   </button>
                 </li>

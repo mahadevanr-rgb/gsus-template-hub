@@ -7,9 +7,6 @@ import FormsPage          from "./pages/FormsPage";
 import CardsPage          from "./pages/CardsPage";
 import NotificationsPage  from "./pages/NotificationsPage";
 import DataDisplayPage    from "./pages/DataDisplayPage";
-import EcommercePage      from "./pages/ecommerce/EcommercePage";
-import InventoryPage      from "./pages/inventory/InventoryPage";
-import CreateProjectPage  from "./pages/create-project/CreateProjectPage";
 import SyncPage           from "./pages/SyncPage";
 import FormCompositionsPage from "./pages/FormCompositionsPage";
 import FormCompositionDetails from "./pages/FormCompositionDetails";
@@ -25,9 +22,6 @@ function App() {
       <Route path="/form-compositions/:slug" element={<FormCompositionDetails />} />
       <Route path="/notifications/*" element={<NotificationsPage />} />
       <Route path="/data-display/*" element={<DataDisplayPage />} />
-      <Route path="/ecommerce/*"    element={<EcommercePage />} />
-      <Route path="/inventory/*"    element={<InventoryPage />} />
-      <Route path="/create-project/*" element={<CreateProjectPage />} />
       <Route path="/sync"           element={<SyncPage />} />
       <Route path="*"               element={<Navigate to="/" replace />} />
     </Routes>
