@@ -1,102 +1,250 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import NotificationDetails from "./NotificationDetails";
 import { Bell, ArrowRight } from "lucide-react";
 
-const notificationComponents = [
-  { id: "toast",                name: "Toast Notification",    description: "Dismissible status feedback popups with custom icons and timeout support.",    tag: "Feedback", color: "text-amber-400 bg-amber-500/10 border-amber-500/20" },
-  { id: "alert",                name: "Alert Banner",          description: "Inline alert messages with title, description, and dismiss capability.",        tag: "Feedback", color: "text-blue-400 bg-blue-500/10 border-blue-500/20" },
-  { id: "banner",               name: "System Announcement",   description: "Full-width announcement bar with call-to-action button and close icon.",       tag: "Banner",   color: "text-purple-400 bg-purple-500/10 border-purple-500/20" },
-  { id: "snackbar",             name: "Snackbar Toast",        description: "Compact floating snackbar with optional undo action at bottom viewport.",      tag: "Snackbar", color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" },
-  { id: "notificationCard",     name: "Notification Card",     description: "Rich inbox notification card with user avatar, timestamp and unread badge.",   tag: "Card",     color: "text-indigo-400 bg-indigo-500/10 border-indigo-500/20" },
-  { id: "notificationBadge",    name: "Notification Badge",    description: "Numeric counter and active ping dot overlays for buttons and avatars.",        tag: "Badge",    color: "text-rose-400 bg-rose-500/10 border-rose-500/20" },
-  { id: "statusDot",            name: "Status Indicator Dot",  description: "Live presence status indicator (online, away, busy, offline).",               tag: "Status",   color: "text-teal-400 bg-teal-500/10 border-teal-500/20" },
-  { id: "progressNotification", name: "Progress Notification", description: "Dynamic upload / async task progress card with linear percentage bar.",        tag: "Progress", color: "text-cyan-400 bg-cyan-500/10 border-cyan-500/20" },
-  { id: "confirmDialog",        name: "Confirm Dialog Modal",  description: "Accessible confirmation prompt with destructive and neutral action states.",   tag: "Dialog",   color: "text-red-400 bg-red-500/10 border-red-500/20" },
-  { id: "inlineMessage",        name: "Inline Helper Message", description: "Subtle inline helper indicator with status icons and contextual text.",         tag: "Inline",   color: "text-slate-400 bg-slate-500/10 border-slate-500/20" },
-];
+import NotificationDetails from "./NotificationDetails";
+import NotificationPreview from "./NotificationPreview";
+
+import {
+  notificationComponents,
+  notificationThemes,
+} from "./notification.config";
+
+/* -------------------------------------------------------------------------- */
+/* Reusable Components                                                        */
+/* -------------------------------------------------------------------------- */
+
+function Breadcrumbs({ onHome }) {
+  return (
+    <div className="flex items-center gap-2 text-xs text-slate-500">
+      <button
+        type="button"
+        onClick={onHome}
+        className="transition-colors hover:text-white"
+      >
+        Home
+      </button>
+
+      <span>/</span>
+
+      <button
+        type="button"
+        onClick={onHome}
+        className="transition-colors hover:text-white"
+      >
+        Components
+      </button>
+
+      <span>/</span>
+
+      <span className="font-medium text-white">Notifications</span>
+    </div>
+  );
+}
+
+function PageHeader() {
+  return (
+    <header className="relative overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-950/50 px-5 py-5 shadow-xl shadow-black/10 sm:px-6">
+      <div className="pointer-events-none absolute -left-16 -top-16 h-40 w-40 rounded-full bg-purple-600/10 blur-3xl" />
+
+      <div className="pointer-events-none absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-blue-600/10 blur-3xl" />
+
+      <div className="relative flex items-center gap-4">
+        <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 text-white shadow-xl shadow-indigo-500/25 sm:flex">
+          <Bell className="h-5 w-5" />
+        </div>
+
+        <div className="min-w-0">
+          <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-purple-500/25 bg-purple-500/10 px-2.5 py-1 text-[11px] font-semibold text-purple-300">
+            <Bell className="h-3.5 w-3.5" />
+            10 Notification Patterns
+          </div>
+
+          <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+            Notification{" "}
+            <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent">
+              & Feedback Systems
+            </span>
+          </h1>
+
+          <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-slate-400">
+            Toasts, alerts, banners, status dots, and confirmation modals for
+            seamless user communication.
+          </p>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+function NotificationCard({ item, onSelect }) {
+  const theme = notificationThemes[item.theme];
+
+  return (
+    <article
+      onClick={() => onSelect(item.id)}
+      className={`
+        group
+        relative
+        cursor-pointer
+        overflow-hidden
+        rounded-2xl
+        border
+        ${theme.border}
+        bg-slate-900/65
+        p-4
+        shadow-xl
+        shadow-black/20
+        transition-all
+        duration-300
+        hover:-translate-y-1
+        hover:bg-slate-900/90
+      `}
+    >
+      {/* Card glow */}
+      <div
+        className={`
+          pointer-events-none
+          absolute
+          -right-16
+          -top-16
+          h-36
+          w-36
+          rounded-full
+          ${theme.glow}
+          opacity-60
+          blur-3xl
+          transition-opacity
+          group-hover:opacity-100
+        `}
+      />
+
+      <div className="relative space-y-4">
+        {/* Card meta */}
+        <div className="flex items-center justify-between">
+          <span
+            className={`
+              rounded-full
+              border
+              px-2.5
+              py-1
+              text-[10px]
+              font-semibold
+              ${theme.tag}
+            `}
+          >
+            {item.tag}
+          </span>
+
+          <span className="font-mono text-[10px] text-slate-600">v1.0.0</span>
+        </div>
+
+        {/* Live preview */}
+        <NotificationPreview id={item.id} />
+
+        {/* Content */}
+        <div>
+          <h3
+            className={`
+              text-base
+              font-semibold
+              text-white
+              transition-colors
+              ${theme.hover}
+            `}
+          >
+            {item.name}
+          </h3>
+
+          <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-slate-400">
+            {item.description}
+          </p>
+        </div>
+
+        {/* Footer */}
+        <div
+          className={`
+            flex
+            items-center
+            justify-between
+            border-t
+            border-slate-800/70
+            pt-3
+            text-xs
+            font-medium
+            text-slate-500
+            transition-colors
+            ${theme.hover}
+          `}
+        >
+          <span>View Details & Live Demo</span>
+
+          <span
+            className={`
+              flex
+              h-7
+              w-7
+              items-center
+              justify-center
+              rounded-lg
+              border
+              border-slate-800
+              bg-slate-950/60
+              transition-all
+              ${theme.arrow}
+            `}
+          >
+            <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+          </span>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Page                                                                       */
+/* -------------------------------------------------------------------------- */
 
 export default function NotificationsPage() {
   const [selected, setSelected] = useState(null);
   const navigate = useNavigate();
 
-  const handleSelect = (id) => {
+  const selectNotification = (id) => {
     setSelected(id);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleBack = () => {
+  const goBack = () => {
     setSelected(null);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  if (selected) {
+    return (
+      <NotificationDetails
+        selected={selected}
+        onBack={goBack}
+        onNavigateHome={() => navigate("/")}
+      />
+    );
+  }
+
   return (
-    <div className="space-y-6">
-      {selected ? (
-        <NotificationDetails
-          selected={selected}
-          onBack={handleBack}
-          onNavigateHome={() => navigate("/")}
-        />
-      ) : (
-        <div className="space-y-6">
-          {/* Breadcrumbs */}
-          <div className="flex items-center gap-2 text-xs text-slate-400">
-            <span className="hover:text-white cursor-pointer transition-colors" onClick={() => navigate("/")}>Home</span>
-            <span>/</span>
-            <span className="hover:text-white cursor-pointer transition-colors" onClick={() => navigate("/")}>Components</span>
-            <span>/</span>
-            <span className="text-white font-medium">Notifications</span>
-          </div>
+    <main className="space-y-7">
+      <Breadcrumbs onHome={() => navigate("/")} />
 
-          {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-800/80">
-            <div>
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold mb-2">
-                <Bell className="w-3.5 h-3.5" />
-                <span>10 Notification Patterns</span>
-              </div>
-              <h1 className="text-2xl font-bold text-white tracking-tight">Notification & Feedback Systems</h1>
-              <p className="text-sm text-slate-400 mt-1">Toasts, alerts, banners, status dots, and confirmation modals for seamless user communication.</p>
-            </div>
-          </div>
+      <PageHeader />
 
-          {/* Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {notificationComponents.map((item) => (
-              <div
-                key={item.id}
-                onClick={() => handleSelect(item.id)}
-                className="group relative p-5 rounded-2xl bg-slate-900/60 border border-slate-800/80 hover:border-amber-500/50 hover:bg-slate-900/90 transition-all duration-200 cursor-pointer flex flex-col justify-between space-y-4 shadow-lg hover:shadow-amber-500/5"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${item.color}`}>
-                      {item.tag}
-                    </span>
-                    <span className="text-xs text-slate-500 group-hover:text-amber-400 font-mono transition-colors">
-                      v1.0.0
-                    </span>
-                  </div>
-                  <div>
-                    <h3 className="text-base font-semibold text-white group-hover:text-amber-300 transition-colors">
-                      {item.name}
-                    </h3>
-                    <p className="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="pt-3 border-t border-slate-800/60 flex items-center justify-between text-xs font-medium text-slate-400 group-hover:text-amber-400 transition-colors">
-                  <span>View Details & Live Demo</span>
-                  <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
+      <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+        {notificationComponents.map((item) => (
+          <NotificationCard
+            key={item.id}
+            item={item}
+            onSelect={selectNotification}
+          />
+        ))}
+      </section>
+    </main>
   );
 }
