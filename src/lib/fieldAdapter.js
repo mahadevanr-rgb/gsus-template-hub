@@ -1,19 +1,19 @@
 import { createElement } from "react";
-import { TextInput } from "../components/atoms/forms/TextInput";
-import { PasswordInput } from "../components/atoms/forms/PasswordInput";
-import { Checkbox } from "../components/atoms/forms/Checkbox";
-import { DateInput } from "../components/atoms/forms/DateInput";
-import { FileUpload } from "../components/atoms/forms/FileUpload";
-import { HelperText } from "../components/atoms/forms/HelperText";
-import { InputError } from "../components/atoms/forms/InputError";
-import { InputLabel } from "../components/atoms/forms/InputLabel";
-import { OTPInput } from "../components/atoms/forms/OTPInput";
-import { RadioButton } from "../components/atoms/forms/RadioButton";
-import { RangeSlider } from "../components/atoms/forms/RangeSlider";
-import { SearchInput } from "../components/atoms/forms/SearchInput";
-import { SelectDropdown } from "../components/atoms/forms/SelectDropdown";
-import { SwitchToggle } from "../components/atoms/forms/SwitchToggle";
-import { Textarea } from "../components/atoms/forms/Textarea";
+import { TextInput } from '@/pages/Forms/components/TextInput/TextInput';
+import { PasswordInput } from '@/pages/Forms/components/PasswordInput/PasswordInput';
+import { Checkbox } from '@/pages/Forms/components/Checkbox/Checkbox';
+import { DateInput } from '@/pages/Forms/components/DateInput/DateInput';
+import { FileUpload } from '@/pages/Forms/components/FileUpload/FileUpload';
+import { HelperText } from '@/pages/Forms/components/HelperText/HelperText';
+import { InputError } from '@/pages/Forms/components/InputError/InputError';
+import { InputLabel } from '@/pages/Forms/components/InputLabel/InputLabel';
+import { OTPInput } from '@/pages/Forms/components/OTPInput/OTPInput';
+import { RadioButton } from '@/pages/Forms/components/RadioButton/RadioButton';
+import { RangeSlider } from '@/pages/Forms/components/RangeSlider/RangeSlider';
+import { SearchInput } from '@/pages/Forms/components/SearchInput/SearchInput';
+import { SelectDropdown } from '@/pages/Forms/components/SelectDropdown/SelectDropdown';
+import { SwitchToggle } from '@/pages/Forms/components/SwitchToggle/SwitchToggle';
+import { Textarea } from '@/pages/Forms/components/Textarea/Textarea';
 
 /** Bridges registry field data to the existing atom prop contracts. */
 export default function FieldAdapter({ field, value, onChange }) {

@@ -1,0 +1,6 @@
+/* Header layout styles */
+.header-layout {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
