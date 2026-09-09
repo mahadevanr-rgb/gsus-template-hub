@@ -77,130 +77,7 @@ function PageHeader() {
   );
 }
 
-function NotificationCard({ item, onSelect }) {
-  const theme = notificationThemes[item.theme];
-
-  return (
-    <article
-      onClick={() => onSelect(item.id)}
-      className={`
-        group
-        relative
-        cursor-pointer
-        overflow-hidden
-        rounded-2xl
-        border
-        ${theme.border}
-        bg-slate-900/65
-        p-4
-        shadow-xl
-        shadow-black/20
-        transition-all
-        duration-300
-        hover:-translate-y-1
-        hover:bg-slate-900/90
-      `}
-    >
-      {/* Card glow */}
-      <div
-        className={`
-          pointer-events-none
-          absolute
-          -right-16
-          -top-16
-          h-36
-          w-36
-          rounded-full
-          ${theme.glow}
-          opacity-60
-          blur-3xl
-          transition-opacity
-          group-hover:opacity-100
-        `}
-      />
-
-      <div className="relative space-y-4">
-        {/* Card meta */}
-        <div className="flex items-center justify-between">
-          <span
-            className={`
-              rounded-full
-              border
-              px-2.5
-              py-1
-              text-[10px]
-              font-semibold
-              ${theme.tag}
-            `}
-          >
-            {item.tag}
-          </span>
-
-          <span className="font-mono text-[10px] text-slate-600">v1.0.0</span>
-        </div>
-
-        {/* Live preview */}
-        <NotificationPreview id={item.id} />
-
-        {/* Content */}
-        <div>
-          <h3
-            className={`
-              text-base
-              font-semibold
-              text-white
-              transition-colors
-              ${theme.hover}
-            `}
-          >
-            {item.name}
-          </h3>
-
-          <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-slate-400">
-            {item.description}
-          </p>
-        </div>
-
-        {/* Footer */}
-        <div
-          className={`
-            flex
-            items-center
-            justify-between
-            border-t
-            border-slate-800/70
-            pt-3
-            text-xs
-            font-medium
-            text-slate-500
-            transition-colors
-            ${theme.hover}
-          `}
-        >
-          <span>View Details & Live Demo</span>
-
-          <span
-            className={`
-              flex
-              h-7
-              w-7
-              items-center
-              justify-center
-              rounded-lg
-              border
-              border-slate-800
-              bg-slate-950/60
-              transition-all
-              ${theme.arrow}
-            `}
-          >
-            <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-          </span>
-        </div>
-      </div>
-    </article>
-  );
-}
+import ShowcaseCard from "@/components/common/ShowcaseCard/ShowcaseCard";
 
 /* -------------------------------------------------------------------------- */
 /* Page                                                                       */
@@ -238,10 +115,14 @@ export default function NotificationsPage() {
 
       <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
         {notificationComponents.map((item) => (
-          <NotificationCard
+          <ShowcaseCard
             key={item.id}
-            item={item}
-            onSelect={selectNotification}
+            title={item.name}
+            description={item.description}
+            tag={item.tag}
+            theme={item.theme}
+            preview={<NotificationPreview id={item.id} />}
+            onClick={() => selectNotification(item.id)}
           />
         ))}
       </section>

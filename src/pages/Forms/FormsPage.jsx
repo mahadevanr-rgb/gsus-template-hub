@@ -1,24 +1,234 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FormInput } from "lucide-react";
+import ShowcaseCard from "@/components/common/ShowcaseCard/ShowcaseCard";
 import FormDetails from "./FormDetails";
-import { FormInput, Sparkles, ArrowRight } from "lucide-react";
+
+import { TextInput } from "@/pages/Forms/components/TextInput/TextInput";
+import { PasswordInput } from "@/pages/Forms/components/PasswordInput/PasswordInput";
+import { Textarea } from "@/pages/Forms/components/Textarea/Textarea";
+import { SearchInput } from "@/pages/Forms/components/SearchInput/SearchInput";
+import { SelectDropdown } from "@/pages/Forms/components/SelectDropdown/SelectDropdown";
+import { Checkbox } from "@/pages/Forms/components/Checkbox/Checkbox";
+import { RadioButton } from "@/pages/Forms/components/RadioButton/RadioButton";
+import { SwitchToggle } from "@/pages/Forms/components/SwitchToggle/SwitchToggle";
+import { RangeSlider } from "@/pages/Forms/components/RangeSlider/RangeSlider";
+import { DateInput } from "@/pages/Forms/components/DateInput/DateInput";
+import { FileUpload } from "@/pages/Forms/components/FileUpload/FileUpload";
+import { OTPInput } from "@/pages/Forms/components/OTPInput/OTPInput";
+import { InputLabel } from "@/pages/Forms/components/InputLabel/InputLabel";
+import { InputError } from "@/pages/Forms/components/InputError/InputError";
+import { HelperText } from "@/pages/Forms/components/HelperText/HelperText";
+
+function FormAtomPreview({ id }) {
+  switch (id) {
+    case "textInput":
+      return (
+        <div className="w-full px-2">
+          <TextInput placeholder="Jane Doe" className="w-full pointer-events-none" />
+        </div>
+      );
+    case "passwordInput":
+      return (
+        <div className="w-full px-2">
+          <PasswordInput placeholder="••••••••" className="w-full pointer-events-none" />
+        </div>
+      );
+    case "textarea":
+      return (
+        <div className="w-full px-2">
+          <Textarea placeholder="Write a short summary..." rows={2} className="w-full pointer-events-none" />
+        </div>
+      );
+    case "searchInput":
+      return (
+        <div className="w-full px-2">
+          <SearchInput placeholder="Search records..." className="w-full pointer-events-none" />
+        </div>
+      );
+    case "selectDropdown":
+      return (
+        <div className="w-full px-2">
+          <SelectDropdown
+            placeholder="Select option..."
+            options={[{ value: "1", label: "Enterprise Plan" }]}
+            className="w-full pointer-events-none"
+          />
+        </div>
+      );
+    case "checkbox":
+      return (
+        <div className="flex items-center justify-center">
+          <Checkbox label="Agree to Terms & Conditions" checked={true} onChange={() => {}} />
+        </div>
+      );
+    case "radioButton":
+      return (
+        <div className="flex gap-4 items-center justify-center">
+          <RadioButton label="Monthly" value="m" selected="m" onChange={() => {}} />
+          <RadioButton label="Annual" value="a" selected="m" onChange={() => {}} />
+        </div>
+      );
+    case "switchToggle":
+      return (
+        <div className="flex items-center justify-between w-full max-w-[220px] px-3 py-2 rounded-xl bg-slate-950/60 border border-slate-800">
+          <span className="text-xs font-medium text-slate-300">Auto-Renew</span>
+          <SwitchToggle checked={true} onChange={() => {}} />
+        </div>
+      );
+    case "rangeSlider":
+      return (
+        <div className="w-full px-3">
+          <RangeSlider min={0} max={100} value={65} onChange={() => {}} className="w-full" />
+        </div>
+      );
+    case "dateInput":
+      return (
+        <div className="w-full px-2">
+          <DateInput className="w-full pointer-events-none" />
+        </div>
+      );
+    case "fileUpload":
+      return (
+        <div className="w-full p-3 rounded-xl border border-dashed border-slate-700 bg-slate-950/60 text-center text-xs text-slate-400">
+          📁 Drop files or click to upload
+        </div>
+      );
+    case "otpInput":
+      return (
+        <div className="flex justify-center scale-90">
+          <OTPInput length={6} className="pointer-events-none" />
+        </div>
+      );
+    case "inputLabel":
+      return (
+        <div className="w-full px-3 text-left">
+          <InputLabel required>Email Address</InputLabel>
+        </div>
+      );
+    case "inputError":
+      return (
+        <div className="w-full px-2">
+          <InputError message="Please enter a valid email format" />
+        </div>
+      );
+    case "helperText":
+      return (
+        <div className="w-full px-2">
+          <HelperText text="Must contain at least 8 characters & 1 symbol" />
+        </div>
+      );
+    default:
+      return null;
+  }
+}
 
 const formComponents = [
-  { id: "textInput",      name: "Text Input",       description: "Standard text input with icon prefix and error state support.",          tag: "Input",    color: "text-blue-400 bg-blue-500/10 border-blue-500/20" },
-  { id: "passwordInput",  name: "Password Input",   description: "Password field with show/hide toggle for enhanced UX.",                 tag: "Input",    color: "text-indigo-400 bg-indigo-500/10 border-indigo-500/20" },
-  { id: "textarea",       name: "Textarea",         description: "Multi-line text input for longer content with resizable height.",       tag: "Input",    color: "text-blue-400 bg-blue-500/10 border-blue-500/20" },
-  { id: "searchInput",    name: "Search Input",     description: "Search field with built-in search icon and callback.",                 tag: "Input",    color: "text-cyan-400 bg-cyan-500/10 border-cyan-500/20" },
-  { id: "selectDropdown", name: "Select Dropdown",  description: "Custom styled dropdown with options list and clear state.",             tag: "Select",   color: "text-purple-400 bg-purple-500/10 border-purple-500/20" },
-  { id: "checkbox",       name: "Checkbox",         description: "Accessible custom checkbox with checkmark animation.",                  tag: "Choice",   color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" },
-  { id: "radioButton",    name: "Radio Button",     description: "Radio button group for mutually exclusive options.",                     tag: "Choice",   color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" },
-  { id: "switchToggle",   name: "Switch Toggle",    description: "Smooth animated switch toggle for boolean flags.",                      tag: "Toggle",   color: "text-teal-400 bg-teal-500/10 border-teal-500/20" },
-  { id: "rangeSlider",    name: "Range Slider",     description: "Interactive slider for selecting numeric range values.",                tag: "Slider",   color: "text-amber-400 bg-amber-500/10 border-amber-500/20" },
-  { id: "dateInput",      name: "Date Input",       description: "Native date picker formatted with calendar indicators.",                tag: "Picker",   color: "text-orange-400 bg-orange-500/10 border-orange-500/20" },
-  { id: "fileUpload",     name: "File Upload",      description: "Drag-and-drop file upload zone with file preview.",                     tag: "Upload",   color: "text-rose-400 bg-rose-500/10 border-rose-500/20" },
-  { id: "otpInput",       name: "OTP Input",        description: "Split 6-digit verification code input with auto-advance.",              tag: "Input",    color: "text-violet-400 bg-violet-500/10 border-violet-500/20" },
-  { id: "inputLabel",     name: "Input Label",      description: "Accessible form field label with required star indicator.",             tag: "Helper",   color: "text-slate-400 bg-slate-500/10 border-slate-500/20" },
-  { id: "inputError",     name: "Input Error",      description: "Validation error message banner with alert styling.",                   tag: "Feedback", color: "text-red-400 bg-red-500/10 border-red-500/20" },
-  { id: "helperText",     name: "Helper Text",      description: "Subtle hint text with info icon for field guidance.",                  tag: "Helper",   color: "text-slate-400 bg-slate-500/10 border-slate-500/20" },
+  {
+    id: "textInput",
+    name: "Text Input",
+    description: "Standard text input with icon prefix and error state support.",
+    tag: "Input",
+    theme: "blue",
+  },
+  {
+    id: "passwordInput",
+    name: "Password Input",
+    description: "Password field with show/hide toggle for enhanced UX.",
+    tag: "Input",
+    theme: "indigo",
+  },
+  {
+    id: "textarea",
+    name: "Textarea",
+    description: "Multi-line text input for longer content with resizable height.",
+    tag: "Input",
+    theme: "blue",
+  },
+  {
+    id: "searchInput",
+    name: "Search Input",
+    description: "Search field with built-in search icon and callback.",
+    tag: "Input",
+    theme: "cyan",
+  },
+  {
+    id: "selectDropdown",
+    name: "Select Dropdown",
+    description: "Custom styled dropdown with options list and clear state.",
+    tag: "Select",
+    theme: "purple",
+  },
+  {
+    id: "checkbox",
+    name: "Checkbox",
+    description: "Accessible custom checkbox with checkmark animation.",
+    tag: "Choice",
+    theme: "emerald",
+  },
+  {
+    id: "radioButton",
+    name: "Radio Button",
+    description: "Radio button group for mutually exclusive options.",
+    tag: "Choice",
+    theme: "emerald",
+  },
+  {
+    id: "switchToggle",
+    name: "Switch Toggle",
+    description: "Smooth animated switch toggle for boolean flags.",
+    tag: "Toggle",
+    theme: "teal",
+  },
+  {
+    id: "rangeSlider",
+    name: "Range Slider",
+    description: "Interactive slider for selecting numeric range values.",
+    tag: "Slider",
+    theme: "amber",
+  },
+  {
+    id: "dateInput",
+    name: "Date Input",
+    description: "Native date picker formatted with calendar indicators.",
+    tag: "Picker",
+    theme: "orange",
+  },
+  {
+    id: "fileUpload",
+    name: "File Upload",
+    description: "Drag-and-drop file upload zone with file preview.",
+    tag: "Upload",
+    theme: "rose",
+  },
+  {
+    id: "otpInput",
+    name: "OTP Input",
+    description: "Split 6-digit verification code input with auto-advance.",
+    tag: "Input",
+    theme: "fuchsia",
+  },
+  {
+    id: "inputLabel",
+    name: "Input Label",
+    description: "Accessible form field label with required star indicator.",
+    tag: "Helper",
+    theme: "slate",
+  },
+  {
+    id: "inputError",
+    name: "Input Error",
+    description: "Validation error message banner with alert styling.",
+    tag: "Feedback",
+    theme: "red",
+  },
+  {
+    id: "helperText",
+    name: "Helper Text",
+    description: "Subtle hint text with info icon for field guidance.",
+    tag: "Helper",
+    theme: "slate",
+  },
 ];
 
 export default function FormsPage() {
@@ -47,59 +257,71 @@ export default function FormsPage() {
         <div className="space-y-6">
           {/* Breadcrumbs */}
           <div className="flex items-center gap-2 text-xs text-slate-400">
-            <span className="hover:text-white cursor-pointer transition-colors" onClick={() => navigate("/")}>Home</span>
+            <span
+              className="hover:text-white cursor-pointer transition-colors"
+              onClick={() => navigate("/")}
+            >
+              Home
+            </span>
             <span>/</span>
-            <span className="hover:text-white cursor-pointer transition-colors" onClick={() => navigate("/")}>Components</span>
+            <span
+              className="hover:text-white cursor-pointer transition-colors"
+              onClick={() => navigate("/")}
+            >
+              Components
+            </span>
             <span>/</span>
             <span className="text-white font-medium">Forms</span>
           </div>
 
           {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-800/80">
-            <div>
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-2">
-                <FormInput className="w-3.5 h-3.5" />
-                <span>15 Form Atoms</span>
+          <header className="relative overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-950/50 px-5 py-5 shadow-xl shadow-black/10 sm:px-6">
+            <div className="pointer-events-none absolute -left-16 -top-16 h-40 w-40 rounded-full bg-emerald-600/10 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-teal-600/10 blur-3xl" />
+
+            <div className="relative flex items-center gap-4">
+              <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 text-white shadow-xl shadow-emerald-500/25 sm:flex">
+                <FormInput className="h-5 w-5" />
               </div>
-              <h1 className="text-2xl font-bold text-white tracking-tight">Form Components Collection</h1>
-              <p className="text-sm text-slate-400 mt-1">Complete set of accessible, theme-aware form inputs and helper primitives.</p>
+
+              <div className="min-w-0">
+                <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-300">
+                  <FormInput className="h-3.5 w-3.5" />
+                  15 Form Atoms
+                </div>
+
+                <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                  Form{" "}
+                  <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent">
+                    Components Collection
+                  </span>
+                </h1>
+
+                <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-slate-400">
+                  Complete set of accessible, theme-aware form inputs, toggles, pickers, and helper primitives.
+                </p>
+              </div>
             </div>
-          </div>
+          </header>
 
-          {/* Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {/* Cards Grid using global ShowcaseCard */}
+          <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
             {formComponents.map((form) => (
-              <div
+              <ShowcaseCard
                 key={form.id}
+                title={form.name}
+                description={form.description}
+                tag={form.tag}
+                theme={form.theme}
+                preview={
+                  <div className="w-full h-24 rounded-xl bg-slate-950/70 border border-slate-800/80 flex items-center justify-center p-3">
+                    <FormAtomPreview id={form.id} />
+                  </div>
+                }
                 onClick={() => handleSelect(form.id)}
-                className="group relative p-5 rounded-2xl bg-slate-900/60 border border-slate-800/80 hover:border-emerald-500/50 hover:bg-slate-900/90 transition-all duration-200 cursor-pointer flex flex-col justify-between space-y-4 shadow-lg hover:shadow-emerald-500/5"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${form.color}`}>
-                      {form.tag}
-                    </span>
-                    <span className="text-xs text-slate-500 group-hover:text-emerald-400 font-mono transition-colors">
-                      v1.0.0
-                    </span>
-                  </div>
-                  <div>
-                    <h3 className="text-base font-semibold text-white group-hover:text-emerald-300 transition-colors">
-                      {form.name}
-                    </h3>
-                    <p className="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">
-                      {form.description}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="pt-3 border-t border-slate-800/60 flex items-center justify-between text-xs font-medium text-slate-400 group-hover:text-emerald-400 transition-colors">
-                  <span>View Details & Live Demo</span>
-                  <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-                </div>
-              </div>
+              />
             ))}
-          </div>
+          </section>
         </div>
       )}
     </div>
