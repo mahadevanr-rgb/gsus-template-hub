@@ -33,6 +33,7 @@ export default function ComponentDetailsView({
   onBack,
   onNavigateHome,
   renderCustomPreview,
+  renderSidebar,
 }) {
   const [activeTab, setActiveTab] = useState("description");
   const [showModal, setShowModal] = useState(false);
@@ -354,6 +355,8 @@ export default function ComponentDetailsView({
               </button>
             </div>
           </section>
+
+          {renderSidebar?.()}
         </div>
       </div>
 

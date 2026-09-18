@@ -3,12 +3,41 @@ import { useNavigate, useParams } from "react-router-dom";
 import { fetchFormComposition } from "@/services/db";
 import { formCompositions } from "@/codeRegistry/formCompositionsRegistry";
 import ComponentDetailsView from "@/components/common/ComponentDetailsView/ComponentDetailsView";
+import { Check } from "lucide-react";
 import { TextInput } from "@/pages/Forms/components/TextInput/TextInput";
 import { PasswordInput } from "@/pages/Forms/components/PasswordInput/PasswordInput";
 import { Textarea } from "@/pages/Forms/components/Textarea/Textarea";
 import { Checkbox } from "@/pages/Forms/components/Checkbox/Checkbox";
 import { OTPInput } from "@/pages/Forms/components/OTPInput/OTPInput";
 import PrimaryButton from "@/pages/Buttons/components/PrimaryButton/PrimaryButton";
+
+const themePresets = {
+  default: {
+    primaryColor: "#4f46e5", borderRadius: 12, background: "#020617",
+    inputBackground: "#0f172a", inputText: "#f8fafc", labelColor: "#cbd5e1",
+  },
+  bootstrap: {
+    primaryColor: "#0d6efd", borderRadius: 6, background: "#f8f9fa",
+    inputBackground: "#ffffff", inputText: "#212529", labelColor: "#212529",
+  },
+  minimal: {
+    primaryColor: "#111827", borderRadius: 2, background: "#ffffff",
+    inputBackground: "transparent", inputText: "#111827", labelColor: "#111827",
+  },
+  modern: {
+    primaryColor: "#7c3aed", borderRadius: 18, background: "#f5f3ff",
+    inputBackground: "#ffffff", inputText: "#1e1b4b", labelColor: "#312e81",
+  },
+};
+
+const themeColors = [
+  { name: "Purple", value: "#6c4cf1" },
+  { name: "Blue", value: "#2563eb" },
+  { name: "Teal", value: "#0d9488" },
+  { name: "Orange", value: "#ea580c" },
+  { name: "Pink", value: "#db2777" },
+  { name: "Red", value: "#dc2626" },
+];
 
 function generateCompositionCode(composition) {
   if (!composition) return "";
@@ -31,6 +60,7 @@ export default function FormCompositionDetails() {
 
   // Form values state for live interactive preview
   const [formData, setFormData] = useState({});
+  const [formTheme, setFormTheme] = useState({ theme: "default", ...themePresets.default });
 
   useEffect(() => {
     let active = true;
@@ -93,7 +123,19 @@ export default function FormCompositionDetails() {
 
   const renderLiveFormPreview = () => {
     return (
-      <div className="w-full max-w-sm p-6 bg-slate-950/80 border border-slate-800 rounded-2xl shadow-xl space-y-4">
+      <div
+        className="composition-preview w-full max-w-sm p-6 border shadow-xl space-y-4"
+        style={{
+          "--composition-primary": formTheme.primaryColor,
+          "--composition-radius": `${formTheme.borderRadius}px`,
+          "--composition-input-background": formTheme.inputBackground,
+          "--composition-input-text": formTheme.inputText,
+          "--composition-label": formTheme.labelColor,
+          backgroundColor: formTheme.background,
+          borderRadius: `${formTheme.borderRadius}px`,
+          borderColor: formTheme.primaryColor,
+        }}
+      >
         <div className="border-b border-slate-800/80 pb-3">
           <h3 className="text-sm font-bold text-white">{activeComp.name}</h3>
           <p className="text-[11px] text-slate-400 mt-0.5">{activeComp.description}</p>
@@ -188,7 +230,7 @@ export default function FormCompositionDetails() {
 
         <div className="pt-2">
           <PrimaryButton
-            className="w-full"
+            className="composition-submit w-full"
             onClick={() => alert(`Form submitted successfully for ${activeComp.name}!`)}
           >
             {activeComp.action?.label || "Submit"}
@@ -197,6 +239,58 @@ export default function FormCompositionDetails() {
       </div>
     );
   };
+
+  const renderCustomizePanel = () => (
+    <section className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-5 space-y-4 shadow-sm">
+      <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Customize</h3>
+      <label className="block text-xs font-medium text-slate-600 dark:text-slate-300">
+        Theme
+        <select
+          value={formTheme.theme}
+          onChange={(event) => {
+            const theme = event.target.value;
+            setFormTheme({ theme, ...themePresets[theme] });
+          }}
+          className="mt-1.5 w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs text-slate-800 dark:text-slate-100"
+        >
+          {Object.keys(themePresets).map((theme) => (
+            <option key={theme} value={theme}>{theme[0].toUpperCase() + theme.slice(1)}</option>
+          ))}
+        </select>
+      </label>
+      <div>
+        <p className="mb-2 text-xs font-medium text-slate-600 dark:text-slate-300">Primary color</p>
+        <div className="flex flex-wrap gap-2">
+          {themeColors.map((color) => {
+            const active = formTheme.primaryColor.toLowerCase() === color.value.toLowerCase();
+            return (
+              <button
+                key={color.value}
+                type="button"
+                title={color.name}
+                aria-label={`Use ${color.name}`}
+                onClick={() => setFormTheme((current) => ({ ...current, primaryColor: color.value }))}
+                className={`flex h-7 w-7 items-center justify-center rounded-lg border-2 text-white transition-transform hover:-translate-y-0.5 ${active ? "border-slate-900 dark:border-white ring-2 ring-indigo-400/50" : "border-transparent"}`}
+                style={{ backgroundColor: color.value }}
+              >
+                {active && <Check className="h-3.5 w-3.5" strokeWidth={3} />}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+      <label className="block text-xs font-medium text-slate-600 dark:text-slate-300">
+        Input style
+        <select
+          value={formTheme.borderRadius}
+          onChange={(event) => setFormTheme((current) => ({ ...current, borderRadius: Number(event.target.value) }))}
+          className="mt-1.5 w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs text-slate-800 dark:text-slate-100"
+        >
+          <option value={2}>Square</option><option value={6}>Soft</option><option value={12}>Rounded</option><option value={18}>Large rounded</option>
+        </select>
+      </label>
+    </section>
+  );
 
   return (
     <ComponentDetailsView
@@ -212,6 +306,7 @@ export default function FormCompositionDetails() {
       onBack={handleBack}
       onNavigateHome={handleHome}
       renderCustomPreview={renderLiveFormPreview}
+      renderSidebar={renderCustomizePanel}
     />
   );
 }
