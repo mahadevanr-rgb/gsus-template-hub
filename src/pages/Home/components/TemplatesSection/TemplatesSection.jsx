@@ -12,6 +12,7 @@ import {
   TrendingUp,
   Eye,
   ChevronRight,
+  ListCollapse,
 } from "lucide-react";
 
 const categories = [
@@ -20,6 +21,7 @@ const categories = [
   { id: "forms", name: "Forms", count: 20, icon: FormInput, color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" },
   { id: "notifications", name: "Notifications", count: 9, icon: Bell, color: "bg-amber-500/10 text-amber-400 border-amber-500/20" },
   { id: "data-display", name: "Data Display", count: 11, icon: BarChart3, color: "bg-pink-500/10 text-pink-400 border-pink-500/20" },
+  { id: "accordion", name: "Accordion", count: 6, icon: ListCollapse, color: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20" },
 ];
 
 const kpis = [

@@ -12,6 +12,7 @@ import shadowButton from "./buttons/shadow-button";
 import { cardComponents } from "./cardsRegistry";
 import { formComponents } from "./formsRegistry";
 import { formCompositions } from "./formCompositionsRegistry";
+import { accordionComponents } from "./accordionRegistry";
 
 export const allComponents = [
   primaryButton,
@@ -26,6 +27,7 @@ export const allComponents = [
   floatingButton,
   ...(cardComponents || []),
   ...(formComponents || []),
+  ...(accordionComponents || []),
 ];
 
 export function getAllComponents() {

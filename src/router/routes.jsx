@@ -12,6 +12,8 @@ import NotificationsPage from '@/pages/Notifications/NotificationsPage';
 import NotificationDetails from '@/pages/Notifications/NotificationDetails';
 import DataDisplayPage from '@/pages/DataDisplay/DataDisplayPage';
 import DataDisplayDetails from '@/pages/DataDisplay/DataDisplayDetails';
+import AccordionPage from '@/pages/Accordion/AccordionPage';
+import AccordionDetails from '@/pages/Accordion/AccordionDetails';
 
 export const routes = [
   { path: '/', element: <HomePage /> },
@@ -28,4 +30,6 @@ export const routes = [
   { path: '/notifications/:id', element: <NotificationDetails /> },
   { path: '/data-display', element: <DataDisplayPage /> },
   { path: '/data-display/:id', element: <DataDisplayDetails /> },
+  { path: '/accordion', element: <AccordionPage /> },
+  { path: '/accordion/:id', element: <AccordionDetails /> },
 ];

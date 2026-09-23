@@ -11,6 +11,7 @@ import {
   GitFork,
   Combine,
   CreditCard,
+  ListCollapse,
 } from "lucide-react";
 
 const menuItems = [
@@ -21,6 +22,7 @@ const menuItems = [
   { icon: Combine, label: "Form Compositions", path: "/form-compositions" },
   { icon: Bell, label: "Notifications", path: "/notifications" },
   { icon: Monitor, label: "Data Display", path: "/data-display" },
+  { icon: ListCollapse, label: "Accordion", path: "/accordion" },
 ];
 
 export default function Sidebar({ currentPage, isCollapsed, setIsCollapsed }) {
