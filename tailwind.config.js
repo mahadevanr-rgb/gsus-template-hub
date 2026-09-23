@@ -1,5 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  // ThemeContext toggles the `dark` class on <html>, so Tailwind must use
+  // class-based dark mode rather than the operating-system media query.
+  darkMode: "class",
   content: ["./index.html", "./src/**/*.{js,jsx}"],
   theme: {
     extend: {

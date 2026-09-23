@@ -171,9 +171,15 @@ function CompositionBuilder({ onClose }) {
       tags: ["custom", "form", category.toLowerCase()],
     };
 
-    await saveFormComposition(compositionData);
-    setSaving(false);
-    onClose();
+    try {
+      const result = await saveFormComposition(compositionData);
+      if (!result?.data) throw new Error(result?.error || "Unable to save composition.");
+      navigate(`/form-compositions/${result.data.slug}`);
+    } catch (error) {
+      alert(error.message || "Unable to save composition. Please try again.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (

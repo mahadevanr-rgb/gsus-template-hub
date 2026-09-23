@@ -8,7 +8,7 @@ const errorStyles =
 
 export const TextInput = ({ error, icon, className = "", ...props }) => {
   return (
-    <div className="relative group w-full">
+    <div className="relative flex w-full items-center group">
       {icon && (
         <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-teal-500 transition-colors">
           {icon}

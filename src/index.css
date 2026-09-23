@@ -5,3 +5,44 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.composition-preview input,
+.composition-preview textarea,
+.composition-preview select {
+  color: var(--composition-input-text) !important;
+  background-color: var(--composition-input-background) !important;
+  border-color: var(--composition-primary) !important;
+  border-radius: calc(var(--composition-radius, 12px) - 2px) !important;
+}
+
+.composition-preview label,
+.composition-preview > div:first-child h3,
+.composition-preview > div:first-child p {
+  color: var(--composition-label) !important;
+}
+
+.composition-preview input::placeholder,
+.composition-preview textarea::placeholder {
+  color: color-mix(in srgb, var(--composition-input-text) 55%, transparent) !important;
+}
+
+.composition-preview input:focus,
+.composition-preview textarea:focus,
+.composition-preview select:focus {
+  --tw-ring-color: color-mix(in srgb, var(--composition-primary) 22%, transparent) !important;
+  border-color: var(--composition-primary) !important;
+}
+
+.composition-preview .composition-submit {
+  background: var(--composition-primary) !important;
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--composition-primary) 30%, transparent) !important;
+}
+
+.composition-preview button:not([aria-label]) {
+  border-radius: var(--composition-radius, 12px);
+}
+
+.composition-preview label:has(input[type="checkbox"]:checked) > div > div {
+  background-color: var(--composition-primary) !important;
+  border-color: var(--composition-primary) !important;
+}

@@ -8,6 +8,8 @@ import FormsPage from '@/pages/Forms/FormsPage';
 import FormDetails from '@/pages/Forms/FormDetails';
 import FormCompositionsPage from '@/pages/FormCompositions/FormCompositionsPage';
 import FormCompositionDetails from '@/pages/FormCompositions/FormCompositionDetails';
+import LayoutsPage from '@/pages/Layouts/LayoutsPage';
+import LayoutDetails from '@/pages/Layouts/LayoutDetails';
 import NotificationsPage from '@/pages/Notifications/NotificationsPage';
 import NotificationDetails from '@/pages/Notifications/NotificationDetails';
 import DataDisplayPage from '@/pages/DataDisplay/DataDisplayPage';
@@ -26,6 +28,8 @@ export const routes = [
   { path: '/forms/:id', element: <FormDetails /> },
   { path: '/form-compositions', element: <FormCompositionsPage /> },
   { path: '/form-compositions/:id', element: <FormCompositionDetails /> },
+  { path: '/layouts', element: <LayoutsPage /> },
+  { path: '/layouts/:slug', element: <LayoutDetails /> },
   { path: '/notifications', element: <NotificationsPage /> },
   { path: '/notifications/:id', element: <NotificationDetails /> },
   { path: '/data-display', element: <DataDisplayPage /> },
