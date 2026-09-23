@@ -11,6 +11,7 @@ import {
   GitFork,
   Combine,
   CreditCard,
+  PanelsTopLeft,
 } from "lucide-react";
 
 const menuItems = [
@@ -19,6 +20,7 @@ const menuItems = [
   { icon: CreditCard, label: "Cards", path: "/cards" },
   { icon: FormInput, label: "Forms", path: "/forms" },
   { icon: Combine, label: "Form Compositions", path: "/form-compositions" },
+  { icon: PanelsTopLeft, label: "Layout Module", path: "/layouts" },
   { icon: Bell, label: "Notifications", path: "/notifications" },
   { icon: Monitor, label: "Data Display", path: "/data-display" },
 ];

@@ -17,9 +17,12 @@ export default function AddToProjectModal({ component, onClose }) {
   const [dirHandle, setDirHandle] = useState(null);
   const [dirName, setDirName] = useState("");
   const [fileName, setFileName] = useState("");
+  const [targetDirectory, setTargetDirectory] = useState("src/components");
   const [logs, setLogs] = useState([]);
   const [progress, setProgress] = useState(0);
   const [copiedUsage, setCopiedUsage] = useState(false);
+  const [copiedDependencies, setCopiedDependencies] = useState(false);
+  const [copiedTailwind, setCopiedTailwind] = useState(false);
   const logRef = useRef(null);
 
   if (!component) return null;
@@ -27,11 +30,29 @@ export default function AddToProjectModal({ component, onClose }) {
   const componentName = component.name || "Component";
   const slug = component.slug || component.id || "component";
   const pascalName = componentName.replace(/[^a-zA-Z0-9]/g, "");
-  const targetFileName = `${pascalName}.jsx`;
+  const installName = component.installName || pascalName;
+  const targetFileName = `${installName}.jsx`;
+  const safeTargetDirectory = targetDirectory
+    .replace(/\\/g, "/")
+    .split("/")
+    .filter((part) => part && part !== "." && part !== "..")
+    .join("/") || "src/components";
+  const targetFilePath = `${safeTargetDirectory}/${targetFileName}`;
+  const usageImportPath = safeTargetDirectory.startsWith("src/")
+    ? `./${safeTargetDirectory.slice(4)}/${installName}`
+    : `./${installName}`;
   const codeContent =
     component.sourceCode ||
     component.code ||
     `// ${componentName}\nexport default function ${pascalName}() {\n  return <div>${componentName}</div>;\n}`;
+  const dependencies = Array.isArray(component.dependencies)
+    ? component.dependencies.filter((dependency) => dependency && dependency !== "None")
+    : [];
+  const dependencyCommand = dependencies.length
+    ? `npm install ${dependencies.join(" ")}`
+    : "";
+  const usesTailwind = String(component.styling || "").toLowerCase().includes("tailwind");
+  const tailwindInstallCommand = "npm install -D tailwindcss@3 postcss autoprefixer\nnpx tailwindcss init -p";
 
   // Download directly as .jsx file
   const downloadFile = () => {
@@ -103,9 +124,9 @@ export default function AddToProjectModal({ component, onClose }) {
           tick(35);
           await delay(300);
 
-          addLog("Creating components/ui/ folder...");
+          addLog(`Creating ${safeTargetDirectory}/ folder...`);
           let current = dirHandle;
-          for (const part of ["components", "ui"]) {
+          for (const part of safeTargetDirectory.split("/")) {
             current = await current.getDirectoryHandle(part, { create: true });
           }
           await delay(300);
@@ -118,7 +139,7 @@ export default function AddToProjectModal({ component, onClose }) {
           const writable = await fileHandle.createWritable();
           await writable.write(codeContent);
           await writable.close();
-          addLog(`✓ components/ui/${targetFileName} written successfully!`, "success");
+          addLog(`✓ ${targetFilePath} written successfully!`, "success");
         } else {
           addLog(`Preparing ${targetFileName} for direct download...`);
           tick(50);
@@ -130,11 +151,9 @@ export default function AddToProjectModal({ component, onClose }) {
         tick(80);
         await delay(350);
 
-        addLog("Checking dependencies and Tailwind styling tokens...");
-        if (component.dependencies?.length > 0 && component.dependencies[0] !== "None") {
-          for (const dep of component.dependencies) {
-            addLog(`Dependency checked: ${dep}`, "info");
-          }
+        addLog("Reviewing component dependencies...");
+        if (dependencies.length) {
+          addLog(`Run in your project terminal: ${dependencyCommand}`, "info");
         } else {
           addLog("✓ Zero external dependencies required", "success");
         }
@@ -158,13 +177,26 @@ export default function AddToProjectModal({ component, onClose }) {
     return () => {
       cancelled = true;
     };
-  }, [stage]);
+  }, [stage, dependencyCommand, dependencies.length, safeTargetDirectory, targetFilePath]);
 
   const copyUsageCode = async () => {
-    const code = `import ${pascalName} from "@/components/ui/${pascalName}";\n\nexport default function Example() {\n  return <${pascalName} />;\n}`;
+    const code = `import ${installName} from "${usageImportPath}";\n\nexport default function Example() {\n  return <${installName} />;\n}`;
     await copyToClipboard(code);
     setCopiedUsage(true);
     setTimeout(() => setCopiedUsage(false), 2000);
+  };
+
+  const copyDependencyCommand = async () => {
+    if (!dependencyCommand) return;
+    await copyToClipboard(dependencyCommand);
+    setCopiedDependencies(true);
+    setTimeout(() => setCopiedDependencies(false), 2000);
+  };
+
+  const copyTailwindCommand = async () => {
+    await copyToClipboard(tailwindInstallCommand);
+    setCopiedTailwind(true);
+    setTimeout(() => setCopiedTailwind(false), 2000);
   };
 
   return (
@@ -172,7 +204,7 @@ export default function AddToProjectModal({ component, onClose }) {
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="relative w-full max-w-lg bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden text-slate-200">
+      <div className="relative flex max-h-[calc(100dvh-2rem)] w-full max-w-lg flex-col overflow-hidden rounded-3xl border border-slate-800 bg-slate-900 text-slate-200 shadow-2xl">
         {/* Modal Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-950/80">
           <div className="flex items-center gap-2.5">
@@ -234,7 +266,7 @@ export default function AddToProjectModal({ component, onClose }) {
 
         {/* STAGE 1: Configuration */}
         {stage === 1 && (
-          <div className="p-6 space-y-5">
+          <div className="min-h-0 flex-1 overflow-y-auto p-6 space-y-5">
             <div>
               <label className="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2">
                 Installation Method
@@ -277,10 +309,42 @@ export default function AddToProjectModal({ component, onClose }) {
               <span className="text-[11px] text-slate-500 uppercase tracking-wider font-semibold">
                 Destination File
               </span>
-              <p className="text-xs font-mono text-indigo-400">
-                src/components/ui/{targetFileName}
-              </p>
+              <p className="text-xs font-mono text-indigo-400">{targetFilePath}</p>
             </div>
+
+            <label className="block space-y-1.5">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Component folder</span>
+              <input
+                value={targetDirectory}
+                onChange={(event) => setTargetDirectory(event.target.value)}
+                placeholder="src/components"
+                spellCheck="false"
+                className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-xs font-mono text-slate-200 outline-none transition-colors placeholder:text-slate-600 focus:border-indigo-500"
+              />
+              <span className="block text-[11px] text-slate-500">Choose the folder already used by your project. The installer never creates a separate UI folder unless you enter one.</span>
+            </label>
+
+            {dependencyCommand && (
+              <div className="rounded-2xl border border-amber-500/25 bg-amber-500/5 p-3.5 space-y-2">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-amber-200">Required before running</span>
+                  <button type="button" onClick={copyDependencyCommand} className="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-300 hover:text-indigo-200"><Copy className="h-3 w-3" />{copiedDependencies ? "Copied" : "Copy command"}</button>
+                </div>
+                <code className="block overflow-x-auto rounded-lg bg-slate-950 px-3 py-2 text-xs text-amber-100">{dependencyCommand}</code>
+                <p className="text-[11px] leading-relaxed text-slate-400">Run this once from the target project's root after adding the component.</p>
+              </div>
+            )}
+
+            {usesTailwind && (
+              <div className="rounded-2xl border border-sky-500/25 bg-sky-500/5 p-3.5 space-y-2">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-sky-200">Tailwind CSS required</span>
+                  <button type="button" onClick={copyTailwindCommand} className="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-300 hover:text-indigo-200"><Copy className="h-3 w-3" />{copiedTailwind ? "Copied" : "Copy setup"}</button>
+                </div>
+                <pre className="overflow-x-auto rounded-lg bg-slate-950 px-3 py-2 text-xs text-sky-100"><code>{tailwindInstallCommand}</code></pre>
+                <p className="text-[11px] leading-relaxed text-slate-400">This component uses Tailwind utility classes. Add <code className="text-slate-200">@tailwind base;</code>, <code className="text-slate-200">@tailwind components;</code>, and <code className="text-slate-200">@tailwind utilities;</code> to your main CSS file.</p>
+              </div>
+            )}
 
             {/* What Will Be Installed */}
             <div className="space-y-2">
@@ -321,7 +385,7 @@ export default function AddToProjectModal({ component, onClose }) {
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>
-                  {installMethod === "folder" ? "Install into Project" : "Download & Install"}
+                  {installMethod === "folder" ? "Add to Project" : "Download Component"}
                 </span>
               </button>
             </div>
@@ -330,7 +394,7 @@ export default function AddToProjectModal({ component, onClose }) {
 
         {/* STAGE 2: Installation Runner */}
         {stage === 2 && (
-          <div className="p-6 space-y-4">
+          <div className="min-h-0 flex-1 overflow-y-auto p-6 space-y-4">
             <div className="space-y-1">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-semibold text-white">Installing {componentName}...</span>
@@ -373,15 +437,15 @@ export default function AddToProjectModal({ component, onClose }) {
 
         {/* STAGE 3: Complete */}
         {stage === 3 && (
-          <div className="p-6 space-y-5 text-center">
+          <div className="min-h-0 flex-1 overflow-y-auto p-6 space-y-5 text-center">
             <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
               <CheckCircle2 className="w-6 h-6" />
             </div>
 
             <div>
-              <h3 className="text-base font-bold text-white">Installation Complete!</h3>
+              <h3 className="text-base font-bold text-white">Component Added!</h3>
               <p className="text-xs text-slate-400 mt-1">
-                {componentName} is ready to use in your React application.
+                {dependencyCommand ? "Install the required package below, then the component is ready to use." : `${componentName} is ready to use in your React application.`}
               </p>
             </div>
 
@@ -401,9 +465,30 @@ export default function AddToProjectModal({ component, onClose }) {
                 </button>
               </div>
               <pre className="text-xs font-mono text-slate-300 overflow-x-auto">
-                <code>{`import ${pascalName} from "@/components/ui/${pascalName}";\n\n<${pascalName} />`}</code>
+                <code>{`import ${installName} from "${usageImportPath}";\n\n<${installName} />`}</code>
               </pre>
             </div>
+
+            {dependencyCommand && (
+              <div className="p-4 rounded-2xl border border-amber-500/25 bg-amber-500/5 text-left space-y-2">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-amber-200">One required terminal command</span>
+                  <button type="button" onClick={copyDependencyCommand} className="inline-flex items-center gap-1 text-[10px] font-semibold text-indigo-300 hover:text-indigo-200"><Copy className="h-3 w-3" />{copiedDependencies ? "Copied!" : "Copy"}</button>
+                </div>
+                <code className="block overflow-x-auto rounded-lg bg-slate-950 px-3 py-2 text-xs text-amber-100">{dependencyCommand}</code>
+              </div>
+            )}
+
+            {usesTailwind && (
+              <div className="p-4 rounded-2xl border border-sky-500/25 bg-sky-500/5 text-left space-y-2">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-sky-200">Tailwind setup required</span>
+                  <button type="button" onClick={copyTailwindCommand} className="inline-flex items-center gap-1 text-[10px] font-semibold text-indigo-300 hover:text-indigo-200"><Copy className="h-3 w-3" />{copiedTailwind ? "Copied!" : "Copy"}</button>
+                </div>
+                <pre className="overflow-x-auto rounded-lg bg-slate-950 px-3 py-2 text-xs text-sky-100"><code>{tailwindInstallCommand}</code></pre>
+                <p className="text-[11px] leading-relaxed text-slate-400">Then add the three Tailwind directives to <code className="text-slate-200">src/index.css</code> and restart the dev server.</p>
+              </div>
+            )}
 
             <div className="pt-2">
               <button

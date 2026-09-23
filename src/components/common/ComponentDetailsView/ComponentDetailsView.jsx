@@ -111,7 +111,7 @@ export default function ComponentDetailsView({
             {/* Subtle dot grid */}
             <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none opacity-60" />
 
-            <div className="relative z-10 w-full max-w-md flex items-center justify-center">
+            <div className={`relative z-10 flex w-full items-center justify-center ${renderCustomPreview ? "max-w-full" : "max-w-md"}`}>
               {renderCustomPreview ? (
                 renderCustomPreview()
               ) : Component ? (
@@ -283,45 +283,45 @@ export default function ComponentDetailsView({
             </h3>
 
             <div className="divide-y divide-slate-100 dark:divide-slate-800/80 text-xs">
-              <div className="flex items-center justify-between py-2.5">
-                <span className="text-slate-500">Category</span>
-                <span className="font-semibold text-slate-800 dark:text-slate-200">
+              <div className="flex items-start justify-between gap-4 py-2.5">
+                <span className="shrink-0 text-slate-500">Category</span>
+                <span className="min-w-0 max-w-[65%] break-words text-right font-semibold text-slate-800 dark:text-slate-200">
                   {categoryName} {component.subCategory ? `(${component.subCategory})` : ""}
                 </span>
               </div>
-              <div className="flex items-center justify-between py-2.5">
-                <span className="text-slate-500">Framework</span>
-                <span className="font-semibold text-slate-800 dark:text-slate-200">
+              <div className="flex items-start justify-between gap-4 py-2.5">
+                <span className="shrink-0 text-slate-500">Framework</span>
+                <span className="min-w-0 max-w-[65%] break-words text-right font-semibold text-slate-800 dark:text-slate-200">
                   {component.framework || "react"}
                 </span>
               </div>
-              <div className="flex items-center justify-between py-2.5">
-                <span className="text-slate-500">Styling</span>
-                <span className="font-semibold text-slate-800 dark:text-slate-200">
+              <div className="flex items-start justify-between gap-4 py-2.5">
+                <span className="shrink-0 text-slate-500">Styling</span>
+                <span className="min-w-0 max-w-[65%] break-words text-right font-semibold text-slate-800 dark:text-slate-200">
                   {component.styling || "Tailwind CSS"}
                 </span>
               </div>
-              <div className="flex items-center justify-between py-2.5">
-                <span className="text-slate-500">Dependencies</span>
-                <span className="font-semibold text-slate-800 dark:text-slate-200">
+              <div className="flex items-start justify-between gap-4 py-2.5">
+                <span className="shrink-0 text-slate-500">Dependencies</span>
+                <span className="min-w-0 max-w-[65%] break-words text-right font-semibold text-slate-800 dark:text-slate-200">
                   {component.dependencies?.length ? component.dependencies.join(", ") : "None"}
                 </span>
               </div>
-              <div className="flex items-center justify-between py-2.5">
-                <span className="text-slate-500">Size</span>
-                <span className="font-semibold text-slate-800 dark:text-slate-200">
+              <div className="flex items-start justify-between gap-4 py-2.5">
+                <span className="shrink-0 text-slate-500">Size</span>
+                <span className="min-w-0 max-w-[65%] break-words text-right font-semibold text-slate-800 dark:text-slate-200">
                   {component.size || "~2.5 KB"}
                 </span>
               </div>
-              <div className="flex items-center justify-between py-2.5">
-                <span className="text-slate-500">Last Updated</span>
-                <span className="font-semibold text-slate-800 dark:text-slate-200">
+              <div className="flex items-start justify-between gap-4 py-2.5">
+                <span className="shrink-0 text-slate-500">Last Updated</span>
+                <span className="min-w-0 max-w-[65%] break-words text-right font-semibold text-slate-800 dark:text-slate-200">
                   {component.lastUpdated || "May 12, 2025"}
                 </span>
               </div>
-              <div className="flex items-center justify-between py-2.5">
-                <span className="text-slate-500">Author</span>
-                <span className="font-semibold text-slate-800 dark:text-slate-200">
+              <div className="flex items-start justify-between gap-4 py-2.5">
+                <span className="shrink-0 text-slate-500">Author</span>
+                <span className="min-w-0 max-w-[65%] break-words text-right font-semibold text-slate-800 dark:text-slate-200">
                   {component.author || "TemplateHub UI Team"}
                 </span>
               </div>
