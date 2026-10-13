@@ -13,6 +13,9 @@ import { cardComponents } from "./cardsRegistry";
 import { formComponents } from "./formsRegistry";
 import { formCompositions } from "./formCompositionsRegistry";
 import { accordionComponents } from "./accordionRegistry";
+import { modalOverlayComponents } from "./modalOverlayRegistry";
+import { fileSystemComponents } from "./fileSystemRegistry";
+import { navigationComponents } from "./navigationRegistry";
 
 export const allComponents = [
   primaryButton,
@@ -28,6 +31,9 @@ export const allComponents = [
   ...(cardComponents || []),
   ...(formComponents || []),
   ...(accordionComponents || []),
+  ...(modalOverlayComponents || []),
+  ...(fileSystemComponents || []),
+  ...(navigationComponents || []),
 ];
 
 export function getAllComponents() {

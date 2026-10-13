@@ -13,6 +13,9 @@ import {
   CreditCard,
   ListCollapse,
   PanelsTopLeft,
+  Layers,
+  FolderUp,
+  Compass,
 } from "lucide-react";
 
 const menuItems = [
@@ -25,6 +28,9 @@ const menuItems = [
   { icon: Bell, label: "Notifications", path: "/notifications" },
   { icon: Monitor, label: "Data Display", path: "/data-display" },
   { icon: ListCollapse, label: "Accordion", path: "/accordion" },
+  { icon: Layers, label: "Modal & Overlay", path: "/modal-overlay" },
+  { icon: FolderUp, label: "File System", path: "/file-system" },
+  { icon: Compass, label: "Navigation", path: "/navigation" },
 ];
 
 export default function Sidebar({ currentPage, isCollapsed, setIsCollapsed }) {
@@ -34,10 +40,10 @@ export default function Sidebar({ currentPage, isCollapsed, setIsCollapsed }) {
     <aside
       className={`fixed left-0 top-0 h-screen z-40 flex flex-col justify-between bg-[#0b0f19] border-r border-slate-800/80 p-3 transition-all duration-300 ease-in-out ${isCollapsed ? "w-20" : "w-60"}`}
     >
-      <div>
+      <div className="flex flex-col flex-1 min-h-0">
         {/* Logo */}
         <div
-          className={`flex items-center gap-3 px-2 py-4 border-b border-slate-800/50 mb-3 ${isCollapsed ? "justify-center" : ""}`}
+          className={`flex items-center gap-3 px-2 py-4 border-b border-slate-800/50 mb-3 shrink-0 ${isCollapsed ? "justify-center" : ""}`}
         >
           <Atom className="w-7 h-7 text-indigo-500 shrink-0" />
           {!isCollapsed && (
@@ -48,7 +54,7 @@ export default function Sidebar({ currentPage, isCollapsed, setIsCollapsed }) {
         </div>
 
         {/* Nav */}
-        <nav className="space-y-1">
+        <nav className="flex-1 overflow-y-auto min-h-0 space-y-1 pr-1 overscroll-contain [scrollbar-width:thin] [scrollbar-color:#334155_transparent] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-slate-800/80 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-slate-700">
           {menuItems.map((item) => {
             const Icon = item.icon;
             const id = item.path === "/" ? "dashboard" : item.path.slice(1);
@@ -72,7 +78,7 @@ export default function Sidebar({ currentPage, isCollapsed, setIsCollapsed }) {
         </nav>
       </div>
 
-      <div className="space-y-3 pt-3 border-t border-slate-800/50">
+      <div className="space-y-3 pt-3 border-t border-slate-800/50 shrink-0">
         {/* GitHub link button */}
         <a
           href="https://github.com/mahadevanr-rgb/gsus-template-hub"

@@ -13,6 +13,8 @@ import {
   Eye,
   ChevronRight,
   ListCollapse,
+  FolderUp,
+  Compass,
 } from "lucide-react";
 
 const categories = [
@@ -22,24 +24,27 @@ const categories = [
   { id: "notifications", name: "Notifications", count: 9, icon: Bell, color: "bg-amber-500/10 text-amber-400 border-amber-500/20" },
   { id: "data-display", name: "Data Display", count: 11, icon: BarChart3, color: "bg-pink-500/10 text-pink-400 border-pink-500/20" },
   { id: "accordion", name: "Accordion", count: 6, icon: ListCollapse, color: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20" },
+  { id: "modal-overlay", name: "Modal & Overlay", count: 13, icon: Layers, color: "bg-fuchsia-500/10 text-fuchsia-400 border-fuchsia-500/20" },
+  { id: "file-system", name: "File System", count: 18, icon: FolderUp, color: "bg-teal-500/10 text-teal-400 border-teal-500/20" },
+  { id: "navigation", name: "Navigation", count: 14, icon: Compass, color: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20" },
 ];
 
 const kpis = [
-  { label: "Total Components", value: "76+", sub: "Ready-to-use UI elements", trend: "+12 this week", icon: Layers, color: "text-indigo-400", bg: "bg-indigo-500/10 border-indigo-500/20" },
-  { label: "Active Categories", value: "7", sub: "Modular domains", trend: "Full coverage", icon: FolderKanban, color: "text-purple-400", bg: "bg-purple-500/10 border-purple-500/20" },
+  { label: "Total Components", value: "121+", sub: "Ready-to-use UI elements", trend: "+14 new navigation", icon: Layers, color: "text-indigo-400", bg: "bg-indigo-500/10 border-indigo-500/20" },
+  { label: "Active Categories", value: "10", sub: "Modular domains", trend: "Full coverage", icon: FolderKanban, color: "text-purple-400", bg: "bg-purple-500/10 border-purple-500/20" },
   { label: "Design System", value: "100%", sub: "Tailwind & SCSS tokens", trend: "Standardized", icon: Atom, color: "text-blue-400", bg: "bg-blue-500/10 border-blue-500/20" },
   { label: "Production Ready", value: "Vite", sub: "React 19 optimized", trend: "High perf", icon: Sparkles, color: "text-amber-400", bg: "bg-amber-500/10 border-amber-500/20" },
 ];
 
 const popularComponents = [
+  { id: "file-system", title: "File System & Upload", description: "Dropzones, batch queues, MIME validation, image crop & compression.", badge: "File System", previewType: "button", version: "v1.0" },
+  { id: "modal-overlay", title: "Modal & Overlays", description: "Accessible modals, sliding drawers, tooltips, and global ⌘K command menu.", badge: "Overlays", previewType: "button", version: "v1.0" },
   { id: "buttons", title: "Button Showcase", description: "Interactive button collection with various states, variants, and glowing styles.", badge: "Buttons", previewType: "button", version: "v1.0" },
   { id: "forms", title: "Text Input & Controls", description: "Accessible text inputs with validation states, icons, and error handling.", badge: "Forms", previewType: "input", version: "v1.0" },
-  { id: "notifications", title: "Toast & Feedback", description: "Modern toast alerts and inline messages for seamless user communication.", badge: "Notifications", previewType: "toast", version: "v1.0" },
-  { id: "data-display", title: "Data Table & Cards", description: "Dense, responsive tabular and card data displays with sorting states.", badge: "Data Display", previewType: "table", version: "v1.0" },
 ];
 
 export default function TemplatesSection({ onNavigate }) {
-  const totalComponents = 76;
+  const totalComponents = 107;
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

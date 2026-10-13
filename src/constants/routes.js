@@ -7,5 +7,9 @@ export const ROUTES = {
   FORM_COMPOSITIONS: '/form-compositions',
   NOTIFICATIONS: '/notifications',
   DATA_DISPLAY: '/data-display',
+  ACCORDION: '/accordion',
+  MODAL_OVERLAY: '/modal-overlay',
+  FILE_SYSTEM: '/file-system',
+  NAVIGATION: '/navigation',
   SYNC: '/sync',
 };

@@ -6,6 +6,10 @@ export const COMPONENT_CATEGORIES = {
   NOTIFICATIONS: 'notifications',
   DATA_DISPLAY: 'data-display',
   FORM_COMPOSITIONS: 'form-compositions',
+  ACCORDION: 'accordion',
+  MODAL_OVERLAY: 'modal-overlay',
+  FILE_SYSTEM: 'file-system',
+  NAVIGATION: 'navigation',
 };
 
 /** Component type labels for display */
@@ -16,4 +20,8 @@ export const CATEGORY_LABELS = {
   notifications: 'Notifications',
   'data-display': 'Data Display',
   'form-compositions': 'Form Compositions',
+  accordion: 'Accordion',
+  'modal-overlay': 'Modal & Overlay',
+  'file-system': 'File System',
+  navigation: 'Navigation',
 };

@@ -1,21 +1,29 @@
-import React from 'react';
-import HomePage from '@/pages/Home/HomePage';
-import ButtonsPage from '@/pages/Buttons/ButtonsPage';
-import ButtonDetails from '@/pages/Buttons/ButtonDetails';
-import CardsPage from '@/pages/Cards/CardsPage';
-import CardDetails from '@/pages/Cards/CardDetails';
-import FormsPage from '@/pages/Forms/FormsPage';
-import FormDetails from '@/pages/Forms/FormDetails';
-import FormCompositionsPage from '@/pages/FormCompositions/FormCompositionsPage';
-import FormCompositionDetails from '@/pages/FormCompositions/FormCompositionDetails';
-import LayoutsPage from '@/pages/Layouts/LayoutsPage';
-import LayoutDetails from '@/pages/Layouts/LayoutDetails';
-import NotificationsPage from '@/pages/Notifications/NotificationsPage';
-import NotificationDetails from '@/pages/Notifications/NotificationDetails';
-import DataDisplayPage from '@/pages/DataDisplay/DataDisplayPage';
-import DataDisplayDetails from '@/pages/DataDisplay/DataDisplayDetails';
-import AccordionPage from '@/pages/Accordion/AccordionPage';
-import AccordionDetails from '@/pages/Accordion/AccordionDetails';
+import React, { lazy } from 'react';
+
+// Code-split route pages using dynamic imports
+const HomePage = lazy(() => import('@/pages/Home/HomePage'));
+const ButtonsPage = lazy(() => import('@/pages/Buttons/ButtonsPage'));
+const ButtonDetails = lazy(() => import('@/pages/Buttons/ButtonDetails'));
+const CardsPage = lazy(() => import('@/pages/Cards/CardsPage'));
+const CardDetails = lazy(() => import('@/pages/Cards/CardDetails'));
+const FormsPage = lazy(() => import('@/pages/Forms/FormsPage'));
+const FormDetails = lazy(() => import('@/pages/Forms/FormDetails'));
+const FormCompositionsPage = lazy(() => import('@/pages/FormCompositions/FormCompositionsPage'));
+const FormCompositionDetails = lazy(() => import('@/pages/FormCompositions/FormCompositionDetails'));
+const LayoutsPage = lazy(() => import('@/pages/Layouts/LayoutsPage'));
+const LayoutDetails = lazy(() => import('@/pages/Layouts/LayoutDetails'));
+const NotificationsPage = lazy(() => import('@/pages/Notifications/NotificationsPage'));
+const NotificationDetails = lazy(() => import('@/pages/Notifications/NotificationDetails'));
+const DataDisplayPage = lazy(() => import('@/pages/DataDisplay/DataDisplayPage'));
+const DataDisplayDetails = lazy(() => import('@/pages/DataDisplay/DataDisplayDetails'));
+const AccordionPage = lazy(() => import('@/pages/Accordion/AccordionPage'));
+const AccordionDetails = lazy(() => import('@/pages/Accordion/AccordionDetails'));
+const ModalOverlayPage = lazy(() => import('@/pages/ModalOverlay/ModalOverlayPage'));
+const ModalOverlayDetails = lazy(() => import('@/pages/ModalOverlay/ModalOverlayDetails'));
+const FileSystemPage = lazy(() => import('@/pages/FileSystem/FileSystemPage'));
+const FileSystemDetails = lazy(() => import('@/pages/FileSystem/FileSystemDetails'));
+const NavigationPage = lazy(() => import('@/pages/Navigation/NavigationPage'));
+const NavigationDetails = lazy(() => import('@/pages/Navigation/NavigationDetails'));
 
 export const routes = [
   { path: '/', element: <HomePage /> },
@@ -36,4 +44,10 @@ export const routes = [
   { path: '/data-display/:id', element: <DataDisplayDetails /> },
   { path: '/accordion', element: <AccordionPage /> },
   { path: '/accordion/:id', element: <AccordionDetails /> },
+  { path: '/modal-overlay', element: <ModalOverlayPage /> },
+  { path: '/modal-overlay/:id', element: <ModalOverlayDetails /> },
+  { path: '/file-system', element: <FileSystemPage /> },
+  { path: '/file-system/:id', element: <FileSystemDetails /> },
+  { path: '/navigation', element: <NavigationPage /> },
+  { path: '/navigation/:id', element: <NavigationDetails /> },
 ];
