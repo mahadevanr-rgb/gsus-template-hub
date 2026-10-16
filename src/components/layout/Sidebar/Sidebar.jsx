@@ -17,6 +17,8 @@ import {
   Layers,
   FolderUp,
   Compass,
+  Palette,
+  Table2,
 } from "lucide-react";
 
 const menuItems = [
@@ -28,15 +30,15 @@ const menuItems = [
   { icon: PanelsTopLeft, label: "Layout Module", path: "/layouts" },
   { icon: Bell, label: "Notifications", path: "/notifications" },
   { icon: Monitor, label: "Data Display", path: "/data-display" },
+  { icon: Table2, label: "Tables & Dashboards", path: "/tables-dashboard" },
   { icon: ListCollapse, label: "Accordion", path: "/accordion" },
-<<<<<<< Updated upstream
+
   { icon: Layers, label: "Modal & Overlay", path: "/modal-overlay" },
   { icon: FolderUp, label: "File System", path: "/file-system" },
   { icon: Compass, label: "Navigation", path: "/navigation" },
-=======
+
   { icon: Search, label: "Selection & Search", path: "/selection-search" },
-  { icon: Search, label: "Design System", path: "/design-system" },
->>>>>>> Stashed changes
+  { icon: Palette, label: "Design System", path: "/design-system" },
 ];
 
 export default function Sidebar({ currentPage, isCollapsed, setIsCollapsed }) {

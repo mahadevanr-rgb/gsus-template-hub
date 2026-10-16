@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FormInput } from "lucide-react";
+import { FormInput, Palette } from "lucide-react";
 import ShowcaseCard from "@/components/common/ShowcaseCard/ShowcaseCard";
 import FormDetails from "./FormDetails";
 
@@ -279,7 +279,8 @@ export default function FormsPage() {
             <div className="pointer-events-none absolute -left-16 -top-16 h-40 w-40 rounded-full bg-emerald-600/10 blur-3xl" />
             <div className="pointer-events-none absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-teal-600/10 blur-3xl" />
 
-            <div className="relative flex items-center gap-4">
+            <div className="relative flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex min-w-0 items-center gap-4">
               <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 text-white shadow-xl shadow-emerald-500/25 sm:flex">
                 <FormInput className="h-5 w-5" />
               </div>
@@ -301,6 +302,15 @@ export default function FormsPage() {
                   Complete set of accessible, theme-aware form inputs, toggles, pickers, and helper primitives.
                 </p>
               </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => navigate("/forms/customize/textInput")}
+                className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-indigo-500/30 bg-indigo-500/10 px-4 py-2.5 text-xs font-semibold text-indigo-300 transition-colors hover:border-indigo-400/50 hover:bg-indigo-500/20 hover:text-white"
+              >
+                <Palette className="h-4 w-4" />
+                Customize a Form
+              </button>
             </div>
           </header>
 

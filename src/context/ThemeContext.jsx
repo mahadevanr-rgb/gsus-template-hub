@@ -69,11 +69,50 @@ const fallbackTokens = {
   radius: 12,
   spacing: 16,
   shadow: "md",
+  borderStyle: "solid",
+  typography: {
+    fontFamily: "Inter, sans-serif",
+    h1Size: "32px",
+    h2Size: "24px",
+    h3Size: "20px",
+    bodySize: "16px",
+    captionSize: "12px",
+  },
 };
 
 const ThemeContext = createContext(null);
 
 const STORAGE_KEY = "templatehub-theme";
+const TOKENS_STORAGE_KEY = "templatehub-design-tokens";
+
+function getInitialTokens() {
+  if (typeof window === "undefined") return initialTokens || fallbackTokens;
+
+  try {
+    const stored = window.localStorage.getItem(TOKENS_STORAGE_KEY);
+    if (!stored) return initialTokens || fallbackTokens;
+
+    const parsed = JSON.parse(stored);
+    return {
+      ...fallbackTokens,
+      ...initialTokens,
+      ...parsed,
+      colors: {
+        ...fallbackTokens.colors,
+        ...initialTokens?.colors,
+        ...parsed.colors,
+      },
+      typography: {
+        ...fallbackTokens.typography,
+        ...initialTokens?.typography,
+        ...parsed.typography,
+      },
+    };
+  } catch (error) {
+    console.warn("Could not load saved design tokens:", error);
+    return initialTokens || fallbackTokens;
+  }
+}
 
 function getInitialTheme() {
   if (typeof window === "undefined") return "light";
@@ -90,7 +129,7 @@ export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(getInitialTheme);
 
   // 2. Design System Tokens State
-  const [tokens, setTokens] = useState(() => initialTokens || fallbackTokens);
+  const [tokens, setTokens] = useState(getInitialTokens);
   const [activePage, setActivePage] = useState("theme"); // 'theme' | 'card-builder'
   const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
   const [highlightedStep, setHighlightedStep] = useState(null);
@@ -128,6 +167,16 @@ export function ThemeProvider({ children }) {
 
     root.style.setProperty("--theme-radius", `${tokens?.radius ?? 12}px`);
     root.style.setProperty("--theme-spacing", `${tokens?.spacing ?? 16}px`);
+    root.style.setProperty("--theme-border-style", tokens?.borderStyle || "solid");
+    root.style.setProperty(
+      "--font-family",
+      tokens?.typography?.fontFamily || "Inter, sans-serif",
+    );
+    root.style.setProperty("--font-h1-size", tokens?.typography?.h1Size || "32px");
+    root.style.setProperty("--font-h2-size", tokens?.typography?.h2Size || "24px");
+    root.style.setProperty("--font-h3-size", tokens?.typography?.h3Size || "20px");
+    root.style.setProperty("--font-body-size", tokens?.typography?.bodySize || "16px");
+    root.style.setProperty("--font-caption-size", tokens?.typography?.captionSize || "12px");
 
     // Dynamic Shadows
     let shadowVal = "0 10px 15px -3px rgba(0, 0, 0, 0.3)";
@@ -136,12 +185,19 @@ export function ThemeProvider({ children }) {
     if (currentShadow === "xs") shadowVal = "0 1px 2px 0 rgba(0, 0, 0, 0.2)";
     if (currentShadow === "sm") shadowVal = "0 1px 3px 0 rgba(0, 0, 0, 0.3)";
     if (currentShadow === "md") shadowVal = "0 4px 6px -1px rgba(0, 0, 0, 0.3)";
+    if (currentShadow === "lg") shadowVal = "0 10px 15px -3px rgba(0, 0, 0, 0.3)";
     if (currentShadow === "xl")
       shadowVal = "0 20px 25px -5px rgba(0, 0, 0, 0.4)";
     if (currentShadow === "glow")
       shadowVal = `0 0 20px ${colors.primary || "#6366f1"}66`;
 
     root.style.setProperty("--theme-shadow", shadowVal);
+
+    try {
+      window.localStorage.setItem(TOKENS_STORAGE_KEY, JSON.stringify(tokens));
+    } catch (error) {
+      console.warn("Could not persist design tokens:", error);
+    }
   }, [tokens]);
 
   // Handlers
@@ -158,6 +214,13 @@ export function ThemeProvider({ children }) {
   const updateRadius = (val) => setTokens((p) => ({ ...p, radius: val }));
   const updateSpacing = (val) => setTokens((p) => ({ ...p, spacing: val }));
   const updateShadow = (val) => setTokens((p) => ({ ...p, shadow: val }));
+  const updateBorderStyle = (val) =>
+    setTokens((p) => ({ ...p, borderStyle: val }));
+  const updateTypography = (key, val) =>
+    setTokens((p) => ({
+      ...p,
+      typography: { ...(p.typography || fallbackTokens.typography), [key]: val },
+    }));
 
   const resetTheme = () => setTokens(initialTokens || fallbackTokens);
 
@@ -176,6 +239,8 @@ export function ThemeProvider({ children }) {
         updateRadius,
         updateSpacing,
         updateShadow,
+        updateBorderStyle,
+        updateTypography,
         resetTheme,
         activePage,
         setActivePage,
@@ -207,6 +272,8 @@ export function useTheme() {
       updateRadius: () => {},
       updateSpacing: () => {},
       updateShadow: () => {},
+      updateBorderStyle: () => {},
+      updateTypography: () => {},
       resetTheme: () => {},
       activePage: "theme",
       setActivePage: () => {},

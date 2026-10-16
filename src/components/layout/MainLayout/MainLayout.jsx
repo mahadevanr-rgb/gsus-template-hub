@@ -10,7 +10,12 @@ export default function MainLayout({ children }) {
 
   // derive currentPage from URL
   const currentPage = pathname === "/" ? "dashboard" : pathname.split("/")[1];
-  const isCustomizer = pathname.startsWith("/cards/customize");
+  const isCustomizer =
+    pathname.startsWith("/cards/customize") ||
+    pathname.startsWith("/buttons/customize") ||
+    pathname.startsWith("/forms/customize") ||
+    pathname.startsWith("/notifications/customize") ||
+    pathname.startsWith("/tables-dashboard/customize");
 
   if (isCustomizer) {
     return (
@@ -50,4 +55,3 @@ export default function MainLayout({ children }) {
     </div>
   );
 }
-

@@ -29,6 +29,7 @@ export default function ButtonsPage() {
         <ButtonShowcase
           onSelectButton={handleSelectButton}
           onNavigateHome={() => navigate("/")}
+          onCustomizeButton={(slug) => navigate(`/buttons/customize/${slug}`)}
         />
       )}
     </div>

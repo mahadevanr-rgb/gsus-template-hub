@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bell, ArrowRight } from "lucide-react";
+import { Bell, ArrowRight, Palette } from "lucide-react";
 
 import NotificationDetails from "./NotificationDetails";
 import NotificationPreview from "./NotificationPreview";
@@ -42,36 +42,46 @@ function Breadcrumbs({ onHome }) {
   );
 }
 
-function PageHeader() {
+function PageHeader({ onCustomize }) {
   return (
     <header className="relative overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-950/50 px-5 py-5 shadow-xl shadow-black/10 sm:px-6">
       <div className="pointer-events-none absolute -left-16 -top-16 h-40 w-40 rounded-full bg-purple-600/10 blur-3xl" />
 
       <div className="pointer-events-none absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-blue-600/10 blur-3xl" />
 
-      <div className="relative flex items-center gap-4">
-        <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 text-white shadow-xl shadow-indigo-500/25 sm:flex">
-          <Bell className="h-5 w-5" />
-        </div>
-
-        <div className="min-w-0">
-          <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-purple-500/25 bg-purple-500/10 px-2.5 py-1 text-[11px] font-semibold text-purple-300">
-            <Bell className="h-3.5 w-3.5" />
-            10 Notification Patterns
+      <div className="relative flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex min-w-0 items-center gap-4">
+          <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 text-white shadow-xl shadow-indigo-500/25 sm:flex">
+            <Bell className="h-5 w-5" />
           </div>
 
-          <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-            Notification{" "}
-            <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent">
-              & Feedback Systems
-            </span>
-          </h1>
+          <div className="min-w-0">
+            <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-purple-500/25 bg-purple-500/10 px-2.5 py-1 text-[11px] font-semibold text-purple-300">
+              <Bell className="h-3.5 w-3.5" />
+              10 Notification Patterns
+            </div>
 
-          <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-slate-400">
-            Toasts, alerts, banners, status dots, and confirmation modals for
-            seamless user communication.
-          </p>
+            <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+              Notification{" "}
+              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent">
+                & Feedback Systems
+              </span>
+            </h1>
+
+            <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-slate-400">
+              Toasts, alerts, banners, status dots, and confirmation modals for
+              seamless user communication.
+            </p>
+          </div>
         </div>
+        <button
+          type="button"
+          onClick={onCustomize}
+          className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-indigo-500/30 bg-indigo-500/10 px-4 py-2.5 text-xs font-semibold text-indigo-300 transition-colors hover:border-indigo-400/50 hover:bg-indigo-500/20 hover:text-white"
+        >
+          <Palette className="h-4 w-4" />
+          Customize a Notification
+        </button>
       </div>
     </header>
   );
@@ -111,7 +121,7 @@ export default function NotificationsPage() {
     <main className="space-y-7">
       <Breadcrumbs onHome={() => navigate("/")} />
 
-      <PageHeader />
+      <PageHeader onCustomize={() => navigate("/notifications/customize/toast")} />
 
       <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
         {notificationComponents.map((item) => (

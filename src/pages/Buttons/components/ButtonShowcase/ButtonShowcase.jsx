@@ -1,5 +1,5 @@
 import React from "react";
-import { MousePointerClick } from "lucide-react";
+import { MousePointerClick, Palette } from "lucide-react";
 import ShowcaseCard from "@/components/common/ShowcaseCard/ShowcaseCard";
 import PrimaryButton from "@/pages/Buttons/components/PrimaryButton/PrimaryButton";
 import SecondaryButton from "@/pages/Buttons/components/SecondaryButton/SecondaryButton";
@@ -95,7 +95,7 @@ const buttonList = [
   },
 ];
 
-export default function ButtonShowcase({ onSelectButton, onNavigateHome }) {
+export default function ButtonShowcase({ onSelectButton, onNavigateHome, onCustomizeButton }) {
   return (
     <div className="space-y-6">
       {/* Breadcrumbs */}
@@ -122,7 +122,8 @@ export default function ButtonShowcase({ onSelectButton, onNavigateHome }) {
         <div className="pointer-events-none absolute -left-16 -top-16 h-40 w-40 rounded-full bg-blue-600/10 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-indigo-600/10 blur-3xl" />
 
-        <div className="relative flex items-center gap-4">
+        <div className="relative flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex min-w-0 items-center gap-4">
           <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 text-white shadow-xl shadow-indigo-500/25 sm:flex">
             <MousePointerClick className="h-5 w-5" />
           </div>
@@ -144,6 +145,15 @@ export default function ButtonShowcase({ onSelectButton, onNavigateHome }) {
               Explore interactive, theme-aware button primitives with animations, gradients, and accessible states.
             </p>
           </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => onCustomizeButton && onCustomizeButton("primary-button")}
+            className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-indigo-500/30 bg-indigo-500/10 px-4 py-2.5 text-xs font-semibold text-indigo-300 transition-colors hover:border-indigo-400/50 hover:bg-indigo-500/20 hover:text-white"
+          >
+            <Palette className="h-4 w-4" />
+            Customize a Button
+          </button>
         </div>
       </header>
 

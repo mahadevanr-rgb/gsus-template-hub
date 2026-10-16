@@ -23,7 +23,6 @@ import { notificationComponents } from "@/pages/Notifications/notification.confi
 import { dataDisplayComponents } from "@/pages/DataDisplay/dataDisplay.config";
 
 const categories = [
-<<<<<<< Updated upstream
   { id: "buttons", name: "Buttons", count: 10, icon: MousePointerClick, color: "bg-blue-500/10 text-blue-400 border-blue-500/20" },
   { id: "cards", name: "Cards", count: 26, icon: CreditCard, color: "bg-purple-500/10 text-purple-400 border-purple-500/20" },
   { id: "forms", name: "Forms", count: 20, icon: FormInput, color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" },
@@ -35,21 +34,6 @@ const categories = [
   { id: "navigation", name: "Navigation", count: 14, icon: Compass, color: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20" },
 ];
 
-const kpis = [
-  { label: "Total Components", value: "121+", sub: "Ready-to-use UI elements", trend: "+14 new navigation", icon: Layers, color: "text-indigo-400", bg: "bg-indigo-500/10 border-indigo-500/20" },
-  { label: "Active Categories", value: "10", sub: "Modular domains", trend: "Full coverage", icon: FolderKanban, color: "text-purple-400", bg: "bg-purple-500/10 border-purple-500/20" },
-  { label: "Design System", value: "100%", sub: "Tailwind & SCSS tokens", trend: "Standardized", icon: Atom, color: "text-blue-400", bg: "bg-blue-500/10 border-blue-500/20" },
-  { label: "Production Ready", value: "Vite", sub: "React 19 optimized", trend: "High perf", icon: Sparkles, color: "text-amber-400", bg: "bg-amber-500/10 border-amber-500/20" },
-];
-=======
-  { id: "buttons", name: "Buttons", icon: MousePointerClick, color: "bg-blue-500/10 text-blue-400 border-blue-500/20" },
-  { id: "cards", name: "Cards", icon: CreditCard, color: "bg-purple-500/10 text-purple-400 border-purple-500/20" },
-  { id: "forms", name: "Forms", icon: FormInput, color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" },
-  { id: "notifications", name: "Notifications", icon: Bell, color: "bg-amber-500/10 text-amber-400 border-amber-500/20" },
-  { id: "data-display", name: "Data Display", icon: BarChart3, color: "bg-pink-500/10 text-pink-400 border-pink-500/20" },
-  { id: "accordion", name: "Accordion", icon: ListCollapse, color: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20" },
-];
-
 const componentCounts = {
   buttons: allComponents.filter((component) => component.category === "buttons"),
   cards: allComponents.filter((component) => component.category === "cards"),
@@ -57,13 +41,22 @@ const componentCounts = {
   notifications: notificationComponents,
   "data-display": dataDisplayComponents,
   accordion: allComponents.filter((component) => component.category === "accordion"),
+  "modal-overlay": allComponents.filter((component) => component.category === "modal-overlay"),
+  "file-system": allComponents.filter((component) => component.category === "file-system"),
+  navigation: allComponents.filter((component) => component.category === "navigation"),
 };
 
 const categoriesWithCounts = categories.map((category) => ({
   ...category,
   count: componentCounts[category.id].length,
 }));
->>>>>>> Stashed changes
+
+const kpis = [
+  { label: "Total Components", value: "121+", sub: "Ready-to-use UI elements", trend: "+14 new navigation", icon: Layers, color: "text-indigo-400", bg: "bg-indigo-500/10 border-indigo-500/20" },
+  { label: "Active Categories", value: "10", sub: "Modular domains", trend: "Full coverage", icon: FolderKanban, color: "text-purple-400", bg: "bg-purple-500/10 border-purple-500/20" },
+  { label: "Design System", value: "100%", sub: "Tailwind & SCSS tokens", trend: "Standardized", icon: Atom, color: "text-blue-400", bg: "bg-blue-500/10 border-blue-500/20" },
+  { label: "Production Ready", value: "Vite", sub: "React 19 optimized", trend: "High perf", icon: Sparkles, color: "text-amber-400", bg: "bg-amber-500/10 border-amber-500/20" },
+];
 
 const popularComponents = [
   { id: "file-system", title: "File System & Upload", description: "Dropzones, batch queues, MIME validation, image crop & compression.", badge: "File System", previewType: "button", version: "v1.0" },
@@ -73,20 +66,10 @@ const popularComponents = [
 ];
 
 export default function TemplatesSection({ onNavigate }) {
-<<<<<<< Updated upstream
-  const totalComponents = 107;
-=======
   const totalComponents = Object.values(componentCounts).reduce(
     (total, components) => total + components.length,
     0
   );
-  const kpis = [
-    { label: "Total Components", value: totalComponents, sub: "Ready-to-use UI elements", trend: "Live catalog", icon: Layers, color: "text-indigo-400", bg: "bg-indigo-500/10 border-indigo-500/20" },
-    { label: "Active Categories", value: categoriesWithCounts.length, sub: "Modular domains", trend: "Full coverage", icon: FolderKanban, color: "text-purple-400", bg: "bg-purple-500/10 border-purple-500/20" },
-    { label: "Design System", value: "100%", sub: "Tailwind & SCSS tokens", trend: "Standardized", icon: Atom, color: "text-blue-400", bg: "bg-blue-500/10 border-blue-500/20" },
-    { label: "Production Ready", value: "Vite", sub: "React 19 optimized", trend: "High perf", icon: Sparkles, color: "text-amber-400", bg: "bg-amber-500/10 border-amber-500/20" },
-  ];
->>>>>>> Stashed changes
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
