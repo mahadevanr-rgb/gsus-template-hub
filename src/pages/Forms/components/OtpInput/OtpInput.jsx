@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-export const OTPInput = ({ length = 6, onChange }) => {
+export const OtpInput = ({ length = 6, onChange }) => {
   const inputs = useRef([]);
 
   const handleChange = (e, idx) => {
@@ -34,4 +34,4 @@ export const OTPInput = ({ length = 6, onChange }) => {
   );
 };
 
-export default OTPInput;
+export default OtpInput;
