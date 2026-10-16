@@ -15,7 +15,7 @@ import { SwitchToggle } from "@/pages/Forms/components/SwitchToggle/SwitchToggle
 import { RangeSlider } from "@/pages/Forms/components/RangeSlider/RangeSlider";
 import { DateInput } from "@/pages/Forms/components/DateInput/DateInput";
 import { FileUpload } from "@/pages/Forms/components/FileUpload/FileUpload";
-import { OTPInput } from "@/pages/Forms/components/OTPInput/OTPInput";
+import { OTPInput } from "@/pages/Forms/components/OtpInput/OtpInput";
 import { InputLabel } from "@/pages/Forms/components/InputLabel/InputLabel";
 import { InputError } from "@/pages/Forms/components/InputError/InputError";
 import { HelperText } from "@/pages/Forms/components/HelperText/HelperText";
@@ -25,25 +25,38 @@ function FormAtomPreview({ id }) {
     case "textInput":
       return (
         <div className="w-full px-2">
-          <TextInput placeholder="Jane Doe" className="w-full pointer-events-none" />
+          <TextInput
+            placeholder="Jane Doe"
+            className="w-full pointer-events-none"
+          />
         </div>
       );
     case "passwordInput":
       return (
         <div className="w-full px-2">
-          <PasswordInput placeholder="••••••••" className="w-full pointer-events-none" />
+          <PasswordInput
+            placeholder="••••••••"
+            className="w-full pointer-events-none"
+          />
         </div>
       );
     case "textarea":
       return (
         <div className="w-full px-2">
-          <Textarea placeholder="Write a short summary..." rows={2} className="w-full pointer-events-none" />
+          <Textarea
+            placeholder="Write a short summary..."
+            rows={2}
+            className="w-full pointer-events-none"
+          />
         </div>
       );
     case "searchInput":
       return (
         <div className="w-full px-2">
-          <SearchInput placeholder="Search records..." className="w-full pointer-events-none" />
+          <SearchInput
+            placeholder="Search records..."
+            className="w-full pointer-events-none"
+          />
         </div>
       );
     case "selectDropdown":
@@ -59,14 +72,28 @@ function FormAtomPreview({ id }) {
     case "checkbox":
       return (
         <div className="flex items-center justify-center">
-          <Checkbox label="Agree to Terms & Conditions" checked={true} onChange={() => {}} />
+          <Checkbox
+            label="Agree to Terms & Conditions"
+            checked={true}
+            onChange={() => {}}
+          />
         </div>
       );
     case "radioButton":
       return (
         <div className="flex gap-4 items-center justify-center">
-          <RadioButton label="Monthly" value="m" selected="m" onChange={() => {}} />
-          <RadioButton label="Annual" value="a" selected="m" onChange={() => {}} />
+          <RadioButton
+            label="Monthly"
+            value="m"
+            selected="m"
+            onChange={() => {}}
+          />
+          <RadioButton
+            label="Annual"
+            value="a"
+            selected="m"
+            onChange={() => {}}
+          />
         </div>
       );
     case "switchToggle":
@@ -79,7 +106,13 @@ function FormAtomPreview({ id }) {
     case "rangeSlider":
       return (
         <div className="w-full px-3">
-          <RangeSlider min={0} max={100} value={65} onChange={() => {}} className="w-full" />
+          <RangeSlider
+            min={0}
+            max={100}
+            value={65}
+            onChange={() => {}}
+            className="w-full"
+          />
         </div>
       );
     case "dateInput":
@@ -127,7 +160,8 @@ const formComponents = [
   {
     id: "textInput",
     name: "Text Input",
-    description: "Standard text input with icon prefix and error state support.",
+    description:
+      "Standard text input with icon prefix and error state support.",
     tag: "Input",
     theme: "blue",
   },
@@ -141,7 +175,8 @@ const formComponents = [
   {
     id: "textarea",
     name: "Textarea",
-    description: "Multi-line text input for longer content with resizable height.",
+    description:
+      "Multi-line text input for longer content with resizable height.",
     tag: "Input",
     theme: "blue",
   },
@@ -281,27 +316,28 @@ export default function FormsPage() {
 
             <div className="relative flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex min-w-0 items-center gap-4">
-              <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 text-white shadow-xl shadow-emerald-500/25 sm:flex">
-                <FormInput className="h-5 w-5" />
-              </div>
-
-              <div className="min-w-0">
-                <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-300">
-                  <FormInput className="h-3.5 w-3.5" />
-                  15 Form Atoms
+                <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 text-white shadow-xl shadow-emerald-500/25 sm:flex">
+                  <FormInput className="h-5 w-5" />
                 </div>
 
-                <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                  Form{" "}
-                  <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent">
-                    Components Collection
-                  </span>
-                </h1>
+                <div className="min-w-0">
+                  <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-300">
+                    <FormInput className="h-3.5 w-3.5" />
+                    15 Form Atoms
+                  </div>
 
-                <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-slate-400">
-                  Complete set of accessible, theme-aware form inputs, toggles, pickers, and helper primitives.
-                </p>
-              </div>
+                  <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                    Form{" "}
+                    <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent">
+                      Components Collection
+                    </span>
+                  </h1>
+
+                  <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-slate-400">
+                    Complete set of accessible, theme-aware form inputs,
+                    toggles, pickers, and helper primitives.
+                  </p>
+                </div>
               </div>
               <button
                 type="button"
