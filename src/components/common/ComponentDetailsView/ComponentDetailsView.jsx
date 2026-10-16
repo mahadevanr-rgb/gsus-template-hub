@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { copyToClipboard } from "@/utils/installContract";
 import AddToProjectModal from "@/components/common/AddToProjectModal/AddToProjectModal";
 
@@ -26,14 +26,15 @@ function CopyAction({ text, label = "Copy Code", icon = "📋", className = "" }
 export default function ComponentDetailsView({
   component,
   categoryName = "Components",
-  categoryPath = "/",
   subCategories = [],
   activeSlug,
   onSelectSibling,
   onBack,
   onNavigateHome,
   renderCustomPreview,
+  widePreview = false,
   renderSidebar,
+  onCustomizeCode,
 }) {
   const [activeTab, setActiveTab] = useState("description");
   const [showModal, setShowModal] = useState(false);
@@ -57,6 +58,29 @@ export default function ComponentDetailsView({
   const Component = component.component;
   const filePath = component.files?.[0]?.path || `components/ui/${component.slug || "Component"}.jsx`;
   const codeContent = component.sourceCode || component.code || `// Code for ${component.name}\nexport default function ${component.name.replace(/ /g, "")}() {\n  return <div>${component.name}</div>;\n}`;
+  const usageName = component.exportName || component.installName || component.name.replace(/[^a-zA-Z0-9]/g, "");
+  const usagePath = filePath.replace(/\\/g, "/").replace(/^components\//, "");
+  const usageImportPath = `@/components/${usagePath.replace(/\.jsx?$/i, "")}`;
+  const usageImport = component.namedExport
+    ? `import { ${usageName} } from "${usageImportPath}";`
+    : `import ${usageName} from "${usageImportPath}";`;
+  const usageAttributes = Object.entries(component.installProps || {})
+    .map(([key, value]) => `${key}={${JSON.stringify(value)}}`)
+    .join(" ");
+  const controlledUsage = {
+    "date-picker": { stateName: "date", initialValue: "null" },
+    "date-range-picker": { stateName: "range", initialValue: '{ start: "", end: "" }' },
+    "month-picker": { stateName: "month", initialValue: '""' },
+    "year-picker": { stateName: "year", initialValue: '""' },
+    "week-picker": { stateName: "week", initialValue: '""' },
+    "time-picker": { stateName: "time", initialValue: '""' },
+    "datetime-picker": { stateName: "dateTime", initialValue: '""' },
+    "datetime-range-picker": { stateName: "range", initialValue: '{ start: "", end: "" }' },
+  }[component.slug];
+  const usageCode = controlledUsage
+    ? `import { useState } from "react";\n${usageImport}\n\nfunction MyPage() {\n  const [${controlledUsage.stateName}, set${controlledUsage.stateName[0].toUpperCase()}${controlledUsage.stateName.slice(1)}] = useState(${controlledUsage.initialValue});\n  return <${usageName} value={${controlledUsage.stateName}} onChange={set${controlledUsage.stateName[0].toUpperCase()}${controlledUsage.stateName.slice(1)}${usageAttributes ? ` ${usageAttributes}` : ""} />;\n}`
+    : `${usageImport}\n\nfunction MyPage() {\n  return (\n    <${usageName}${usageAttributes ? ` ${usageAttributes}` : ""} />\n  );\n}`;
+  const propDetails = Array.isArray(component.props) ? component.props : [];
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-6 space-y-6">
@@ -84,9 +108,9 @@ export default function ComponentDetailsView({
       </div>
 
       {/* Main Grid Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className={`grid grid-cols-1 ${widePreview ? "lg:grid-cols-4" : "lg:grid-cols-3"} gap-8`}>
         {/* Left Column (2 cols) */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className={`${widePreview ? "lg:col-span-3" : "lg:col-span-2"} min-w-0 space-y-6`}>
           {/* Header Section */}
           <div>
             <div className="flex items-center gap-2.5 mb-2 flex-wrap">
@@ -103,15 +127,32 @@ export default function ComponentDetailsView({
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
               {component.description}
             </p>
+            {subCategories.length > 1 && onSelectSibling && (
+              <label className="mt-4 inline-flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+                <span>Browse {categoryName}</span>
+                <select
+                  aria-label={`Browse ${categoryName} components`}
+                  value={activeSlug || component.slug || ""}
+                  onChange={(event) => onSelectSibling(event.target.value)}
+                  className="max-w-xs rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-800 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200"
+                >
+                  {subCategories.map((item) => (
+                    <option key={item.slug} value={item.slug}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
           </div>
 
 
           {/* Interactive Preview Canvas */}
-          <section className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 rounded-3xl p-6 sm:p-10 border border-slate-200/80 dark:border-slate-800 flex items-center justify-center min-h-[340px] relative overflow-hidden">
+          <section className={`bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 rounded-3xl ${widePreview ? "p-3 sm:p-4 items-stretch" : "p-6 sm:p-10 items-center justify-center"} ${categoryName === "Date & Time" ? (widePreview ? "min-h-[620px]" : "min-h-[520px]") : "min-h-[340px]"} border border-slate-200/80 dark:border-slate-800 flex relative overflow-visible`}>
             {/* Subtle dot grid */}
             <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none opacity-60" />
 
-            <div className={`relative z-10 flex w-full items-center justify-center ${renderCustomPreview ? "max-w-full" : "max-w-md"}`}>
+            <div className={`relative z-10 flex w-full min-w-0 ${widePreview ? "items-stretch" : "items-center justify-center"} ${renderCustomPreview ? "max-w-full" : "max-w-md"}`}>
               {renderCustomPreview ? (
                 renderCustomPreview()
               ) : Component ? (
@@ -181,7 +222,7 @@ export default function ComponentDetailsView({
               {activeTab === "description" && (
                 <div className="space-y-4">
                   <p>
-                    The <strong className="text-slate-900 dark:text-white">{component.name}</strong> component is designed for production React applications with seamless dark mode and responsive layout.
+                    {component.description || `The ${component.name} component is ready to use in React applications.`}
                   </p>
                   <div>
                     <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Key Highlights</h4>
@@ -217,24 +258,18 @@ export default function ComponentDetailsView({
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                        <tr>
-                          <td className="p-3 font-mono font-semibold text-indigo-500">children / label</td>
-                          <td className="p-3 text-slate-500">ReactNode | string</td>
-                          <td className="p-3 text-slate-500">-</td>
-                          <td className="p-3">Content to render inside component</td>
-                        </tr>
-                        <tr>
-                          <td className="p-3 font-mono font-semibold text-indigo-500">className</td>
-                          <td className="p-3 text-slate-500">string</td>
-                          <td className="p-3 text-slate-500">""</td>
-                          <td className="p-3">Custom Tailwind or CSS class overrides</td>
-                        </tr>
-                        <tr>
-                          <td className="p-3 font-mono font-semibold text-indigo-500">onClick / onChange</td>
-                          <td className="p-3 text-slate-500">function</td>
-                          <td className="p-3 text-slate-500">-</td>
-                          <td className="p-3">Interactive event callbacks</td>
-                        </tr>
+                        {(propDetails.length ? propDetails : [
+                          { name: "label", type: "string", defaultValue: "Component", description: "Visible form control label." },
+                          { name: "disabled", type: "boolean", defaultValue: "false", description: "Disables user interaction." },
+                          { name: "onChange", type: "function", defaultValue: "-", description: "Called when the value changes." },
+                        ]).map((prop) => (
+                          <tr key={prop.name}>
+                            <td className="p-3 font-mono font-semibold text-indigo-500">{prop.name}</td>
+                            <td className="p-3 text-slate-500">{prop.type}</td>
+                            <td className="p-3 text-slate-500">{prop.defaultValue}</td>
+                            <td className="p-3">{prop.description}</td>
+                          </tr>
+                        ))}
                       </tbody>
                     </table>
                   </div>
@@ -246,7 +281,7 @@ export default function ComponentDetailsView({
                   <p className="text-xs text-slate-400">Simple import and usage in your JSX tree:</p>
                   <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800">
                     <pre className="font-mono text-xs text-indigo-300">
-                      <code>{`import ${component.name.replace(/ /g, "")} from "@/components/ui/${component.name.replace(/ /g, "")}";\n\nfunction MyPage() {\n  return (\n    <${component.name.replace(/ /g, "")} />\n  );\n}`}</code>
+                      <code>{usageCode}</code>
                     </pre>
                   </div>
                 </div>
@@ -256,6 +291,11 @@ export default function ComponentDetailsView({
                 <div className="space-y-3">
                   <p className="text-xs text-slate-400">Packages and utilities required for this component:</p>
                   <div className="flex flex-wrap gap-2">
+                    {component.componentDependencies?.map((dep) => (
+                      <span key={`component-${dep}`} className="px-3 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-xs font-mono font-semibold text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-500/20">
+                        {dep}
+                      </span>
+                    ))}
                     {component.dependencies && component.dependencies.length > 0 && component.dependencies[0] !== "None" ? (
                       component.dependencies.map((dep) => (
                         <span key={dep} className="px-3 py-1 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-mono font-semibold text-indigo-400 border border-slate-200 dark:border-slate-700">
@@ -304,7 +344,15 @@ export default function ComponentDetailsView({
               <div className="flex items-start justify-between gap-4 py-2.5">
                 <span className="shrink-0 text-slate-500">Dependencies</span>
                 <span className="min-w-0 max-w-[65%] break-words text-right font-semibold text-slate-800 dark:text-slate-200">
-                  {component.dependencies?.length ? component.dependencies.join(", ") : "None"}
+                  {[
+                    ...(component.dependencies || []),
+                    ...(component.componentDependencies || []),
+                  ].length
+                    ? [
+                        ...(component.dependencies || []),
+                        ...(component.componentDependencies || []),
+                      ].join(", ")
+                    : "None"}
                 </span>
               </div>
               <div className="flex items-start justify-between gap-4 py-2.5">
@@ -341,6 +389,12 @@ export default function ComponentDetailsView({
                 <span>⚡</span>
                 <span>Add to Project</span>
               </button>
+
+              {onCustomizeCode && (
+                <button type="button" onClick={onCustomizeCode} className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-semibold border border-indigo-200 bg-indigo-50 hover:bg-indigo-100 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:hover:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 transition-colors">
+                  <span aria-hidden="true">Code</span><span>Customize Code</span>
+                </button>
+              )}
 
               <CopyAction text={codeContent} label="Copy JSX Code" icon="📄" />
 

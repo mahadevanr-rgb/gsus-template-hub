@@ -97,9 +97,29 @@ export async function saveFormComposition(payload) {
   return { data };
 }
 
+export async function deleteFormComposition(slug) {
+  if (!slug) throw new Error("A composition slug is required.");
+
+  if (supabase) {
+    const { error } = await supabase
+      .from("form_compositions")
+      .delete()
+      .eq("slug", slug);
+    if (error) throw error;
+  }
+
+  const remaining = getLocalCompositions().filter((item) => item.slug !== slug);
+  if (typeof window !== "undefined") {
+    window.localStorage.setItem(LOCAL_COMPOSITIONS_KEY, JSON.stringify(remaining));
+  }
+
+  return { slug };
+}
+
 export default {
   fetchFormCompositions,
   fetchFormComposition,
   generateUniqueSlug,
   saveFormComposition,
+  deleteFormComposition,
 };

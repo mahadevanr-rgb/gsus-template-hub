@@ -19,6 +19,7 @@ export async function syncRegistryToSupabase() {
     styling: c.styling,
     version: c.version,
     dependencies: c.dependencies,
+    component_dependencies: c.componentDependencies || [],
     tags: c.tags,
     author: c.author,
     files: c.files,

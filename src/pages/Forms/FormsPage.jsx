@@ -14,6 +14,7 @@ import { RadioButton } from "@/pages/Forms/components/RadioButton/RadioButton";
 import { SwitchToggle } from "@/pages/Forms/components/SwitchToggle/SwitchToggle";
 import { RangeSlider } from "@/pages/Forms/components/RangeSlider/RangeSlider";
 import { DateInput } from "@/pages/Forms/components/DateInput/DateInput";
+import { DatePicker } from "@/pages/Forms/components/DatePicker/DatePicker";
 import { FileUpload } from "@/pages/Forms/components/FileUpload/FileUpload";
 import { OTPInput } from "@/pages/Forms/components/OTPInput/OTPInput";
 import { InputLabel } from "@/pages/Forms/components/InputLabel/InputLabel";
@@ -88,6 +89,8 @@ function FormAtomPreview({ id }) {
           <DateInput className="w-full pointer-events-none" />
         </div>
       );
+    case "datePicker":
+      return <div className="w-full px-2"><DatePicker placeholder="Select date" /></div>;
     case "fileUpload":
       return (
         <div className="w-full p-3 rounded-xl border border-dashed border-slate-700 bg-slate-950/60 text-center text-xs text-slate-400">
@@ -191,6 +194,13 @@ const formComponents = [
     id: "dateInput",
     name: "Date Input",
     description: "Native date picker formatted with calendar indicators.",
+    tag: "Picker",
+    theme: "orange",
+  },
+  {
+    id: "datePicker",
+    name: "Date Picker",
+    description: "Accessible calendar picker with manual entry and date constraints.",
     tag: "Picker",
     theme: "orange",
   },

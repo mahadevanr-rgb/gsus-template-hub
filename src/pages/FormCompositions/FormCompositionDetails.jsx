@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchFormComposition } from "@/services/db";
 import { formCompositions } from "@/codeRegistry/formCompositionsRegistry";
@@ -10,6 +10,17 @@ import { Textarea } from "@/pages/Forms/components/Textarea/Textarea";
 import { Checkbox } from "@/pages/Forms/components/Checkbox/Checkbox";
 import { OTPInput } from "@/pages/Forms/components/OTPInput/OTPInput";
 import PrimaryButton from "@/pages/Buttons/components/PrimaryButton/PrimaryButton";
+import { DateTimeComponentMap, getCompositionFieldValidationRules, getCompositionPickerProps } from "./dateTimeFieldUtils";
+import dateTimePickersSource from "@/pages/Forms/components/DateTime/DateTimePickers.jsx?raw";
+import dateTimePickerModelSource from "@/pages/Forms/components/DateTime/dateTimePickerModel.js?raw";
+import formFieldSource from "@/pages/Forms/components/FormField/FormField.jsx?raw";
+import inputErrorSource from "@/pages/Forms/components/InputError/InputError.jsx?raw";
+import helperTextSource from "@/pages/Forms/components/HelperText/HelperText.jsx?raw";
+import inputLabelSource from "@/pages/Forms/components/InputLabel/InputLabel.jsx?raw";
+import validationIndexSource from "@/utils/validation/index.js?raw";
+import validationHookSource from "@/utils/validation/useValidation.js?raw";
+import validationEngineSource from "@/utils/validation/engine.js?raw";
+import validationRulesSource from "@/utils/validation/rules.js?raw";
 
 const themePresets = {
   default: {
@@ -51,9 +62,14 @@ function getExportConfig(themeName) {
 
 function generateBootstrapCode(composition, componentName, fields, selectedTheme) {
   return `import { useState } from "react";
+import { useValidation } from "../../utils/validation/index.js";
+import { FormField as FieldLayout } from "../../pages/Forms/components/FormField/FormField.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { DatePicker, DateRangePicker, MonthPicker, YearPicker, WeekPicker, TimePicker, DateTimePicker, DateTimeRangePicker } from "../../pages/Forms/components/DateTime/DateTimePickers.jsx";
 
 const fields = ${fields};
+const schema = Object.fromEntries(fields.map((field) => [field.id, { ...(field.validationRules || {}), ...(field.props?.required ? { required: true } : {}) }]));
+const initialValues = Object.fromEntries(fields.map((field) => [field.id, field.component?.includes("range") ? {} : ""]));
 const primaryColor = ${JSON.stringify(selectedTheme.primaryColor)};
 
 function darken(hex, amount = 18) {
@@ -63,10 +79,10 @@ function darken(hex, amount = 18) {
 }
 
 export default function ${componentName}({ onSubmit }) {
-  const [formData, setFormData] = useState({});
+  const { values, errors, setValue, handleBlur, validateForm } = useValidation(initialValues, schema, { validateOnChange: true, validateOnBlur: true });
   const [submitHovered, setSubmitHovered] = useState(false);
-  const updateField = (id, value) => setFormData((current) => ({ ...current, [id]: value }));
-  const handleSubmit = (event) => { event.preventDefault(); onSubmit?.(formData); };
+  const updateField = (id, value) => setValue(id, value);
+  const handleSubmit = async (event) => { event.preventDefault(); const result = await validateForm(); if (result.valid) onSubmit?.(values); };
 
   return (
     <form onSubmit={handleSubmit} className="templatehub-bootstrap-form card mx-auto shadow-sm" style={{ maxWidth: 520 }}>
@@ -75,9 +91,16 @@ export default function ${componentName}({ onSubmit }) {
         <h2 className="h4 card-title">${composition.name}</h2>
         <p className="text-body-secondary mb-4">${composition.description}</p>
         {fields.map((field) => {
-          if (field.component === "checkbox") return <div className="form-check mb-3" key={field.id}><input {...field.props} id={field.id} type="checkbox" checked={Boolean(formData[field.id])} onChange={(event) => updateField(field.id, event.target.checked)} style={{ accentColor: primaryColor }} className="form-check-input" /><label className="form-check-label" htmlFor={field.id}>{field.label}</label></div>;
-          if (field.component === "textarea") return <div className="mb-3" key={field.id}><label className="form-label" htmlFor={field.id}>{field.label}</label><textarea {...field.props} id={field.id} value={formData[field.id] || ""} onChange={(event) => updateField(field.id, event.target.value)} className="form-control" rows={field.props?.rows || 4} /></div>;
-          return <div className="mb-3" key={field.id}><label className="form-label" htmlFor={field.id}>{field.label}</label><input {...field.props} id={field.id} type={field.component === "password-input" ? "password" : field.props?.type || "text"} value={formData[field.id] || ""} onChange={(event) => updateField(field.id, event.target.value)} className="form-control" /></div>;
+          const DateTimeComponent = {
+            date: DatePicker, "date-picker": DatePicker, dateRange: DateRangePicker, "date-range-picker": DateRangePicker,
+            month: MonthPicker, "month-picker": MonthPicker, year: YearPicker, "year-picker": YearPicker,
+            week: WeekPicker, "week-picker": WeekPicker, time: TimePicker, "time-picker": TimePicker,
+            datetime: DateTimePicker, "datetime-picker": DateTimePicker, datetimeRange: DateTimeRangePicker, "datetime-range-picker": DateTimeRangePicker,
+          }[field.component];
+          if (DateTimeComponent) return <div className="mb-3" key={field.id} onBlurCapture={() => handleBlur(field.id)}><FieldLayout label={field.label} required={Boolean(schema[field.id]?.required)} error={errors[field.id]}><DateTimeComponent {...field.props} name={field.id} label="" value={values[field.id] ?? (field.component.includes("range") ? {} : "")} onChange={(value) => updateField(field.id, value)} /></FieldLayout></div>;
+          if (field.component === "checkbox") return <div className="mb-3" key={field.id} onBlurCapture={() => handleBlur(field.id)}><FieldLayout error={errors[field.id]}><label className="form-check"><input {...field.props} id={field.id} type="checkbox" checked={Boolean(values[field.id])} onChange={(event) => updateField(field.id, event.target.checked)} style={{ accentColor: primaryColor }} className="form-check-input" /><span className="form-check-label">{field.label}</span></label></FieldLayout></div>;
+          if (field.component === "textarea") return <div className="mb-3" key={field.id} onBlurCapture={() => handleBlur(field.id)}><FieldLayout label={field.label} required={Boolean(schema[field.id]?.required)} error={errors[field.id]}><textarea {...field.props} id={field.id} value={values[field.id] || ""} onChange={(event) => updateField(field.id, event.target.value)} className="form-control" rows={field.props?.rows || 4} /></FieldLayout></div>;
+          return <div className="mb-3" key={field.id} onBlurCapture={() => handleBlur(field.id)}><FieldLayout label={field.label} required={Boolean(schema[field.id]?.required)} error={errors[field.id]}><input {...field.props} id={field.id} type={field.component === "password-input" ? "password" : field.props?.type || "text"} value={values[field.id] || ""} onChange={(event) => updateField(field.id, event.target.value)} className="form-control" /></FieldLayout></div>;
         })}
         <button type="submit" onMouseEnter={() => setSubmitHovered(true)} onMouseLeave={() => setSubmitHovered(false)} style={{ backgroundColor: submitHovered ? darken(primaryColor) : primaryColor, borderColor: submitHovered ? darken(primaryColor) : primaryColor }} className="btn w-100 mt-2 text-white">${composition.action?.label || "Submit"}</button>
       </div>
@@ -87,26 +110,40 @@ export default function ${componentName}({ onSubmit }) {
 }
 
 function generateMuiCode(composition, componentName, fields, selectedTheme) {
-  return `import { useState } from "react";
+  return `
+import { useValidation } from "../../utils/validation/index.js";
+import { FormField as FieldLayout } from "../../pages/Forms/components/FormField/FormField.jsx";
 import { Box, Button, Checkbox, FormControlLabel, Paper, Stack, TextField, ThemeProvider, Typography, createTheme } from "@mui/material";
+import { DatePicker, DateRangePicker, MonthPicker, YearPicker, WeekPicker, TimePicker, DateTimePicker, DateTimeRangePicker } from "../../pages/Forms/components/DateTime/DateTimePickers.jsx";
 
 const fields = ${fields};
+const schema = Object.fromEntries(fields.map((field) => [field.id, { ...(field.validationRules || {}), ...(field.props?.required ? { required: true } : {}) }]));
+const initialValues = Object.fromEntries(fields.map((field) => [field.id, field.component?.includes("range") ? {} : ""]));
 const appTheme = createTheme({ palette: { primary: { main: ${JSON.stringify(selectedTheme.primaryColor)} } }, shape: { borderRadius: ${selectedTheme.borderRadius} } });
 
 export default function ${componentName}({ onSubmit }) {
-  const [formData, setFormData] = useState({});
-  const updateField = (id, value) => setFormData((current) => ({ ...current, [id]: value }));
-  const handleSubmit = (event) => { event.preventDefault(); onSubmit?.(formData); };
+  const { values, errors, setValue, handleBlur, validateForm } = useValidation(initialValues, schema, { validateOnChange: true, validateOnBlur: true });
+  const updateField = (id, value) => setValue(id, value);
+  const handleSubmit = async (event) => { event.preventDefault(); const result = await validateForm(); if (result.valid) onSubmit?.(values); };
 
   return (
     <ThemeProvider theme={appTheme}><Paper component="form" onSubmit={handleSubmit} elevation={3} sx={{ mx: "auto", maxWidth: 520, p: { xs: 3, sm: 4 }, borderRadius: 3 }}>
       <Stack spacing={2.5}>
         <Box><Typography variant="h5" fontWeight={700}>${composition.name}</Typography><Typography variant="body2" color="text.secondary" mt={0.5}>${composition.description}</Typography></Box>
-        {fields.map((field) => field.component === "checkbox" ? (
-          <FormControlLabel key={field.id} control={<Checkbox {...field.props} checked={Boolean(formData[field.id])} onChange={(event) => updateField(field.id, event.target.checked)} />} label={field.label} />
+        {fields.map((field) => {
+          const DateTimeComponent = {
+            date: DatePicker, "date-picker": DatePicker, dateRange: DateRangePicker, "date-range-picker": DateRangePicker,
+            month: MonthPicker, "month-picker": MonthPicker, year: YearPicker, "year-picker": YearPicker,
+            week: WeekPicker, "week-picker": WeekPicker, time: TimePicker, "time-picker": TimePicker,
+            datetime: DateTimePicker, "datetime-picker": DateTimePicker, datetimeRange: DateTimeRangePicker, "datetime-range-picker": DateTimeRangePicker,
+          }[field.component];
+          if (DateTimeComponent) return <div key={field.id} onBlurCapture={() => handleBlur(field.id)}><FieldLayout label={field.label} required={Boolean(schema[field.id]?.required)} error={errors[field.id]}><DateTimeComponent {...field.props} name={field.id} label="" value={values[field.id] ?? (field.component.includes("range") ? {} : "")} onChange={(value) => updateField(field.id, value)} /></FieldLayout></div>;
+          return field.component === "checkbox" ? (
+          <div key={field.id} onBlurCapture={() => handleBlur(field.id)}><FieldLayout error={errors[field.id]}><FormControlLabel control={<Checkbox {...field.props} checked={Boolean(values[field.id])} onChange={(event) => updateField(field.id, event.target.checked)} />} label={field.label} /></FieldLayout></div>
         ) : (
-          <TextField key={field.id} {...field.props} fullWidth label={field.label} type={field.component === "password-input" ? "password" : field.props?.type || "text"} multiline={field.component === "textarea"} minRows={field.component === "textarea" ? field.props?.rows || 4 : undefined} value={formData[field.id] || ""} onChange={(event) => updateField(field.id, event.target.value)} />
-        ))}
+          <div key={field.id} onBlurCapture={() => handleBlur(field.id)}><FieldLayout label={field.label} required={Boolean(schema[field.id]?.required)} error={errors[field.id]}><TextField {...field.props} fullWidth type={field.component === "password-input" ? "password" : field.props?.type || "text"} multiline={field.component === "textarea"} minRows={field.component === "textarea" ? field.props?.rows || 4 : undefined} value={values[field.id] || ""} onChange={(event) => updateField(field.id, event.target.value)} /></FieldLayout></div>
+          );
+        })}
         <Button type="submit" variant="contained" size="large">${composition.action?.label || "Submit"}</Button>
       </Stack>
     </Paper></ThemeProvider>
@@ -114,10 +151,18 @@ export default function ${componentName}({ onSubmit }) {
 }`;
 }
 
-function generateCompositionCode(composition, selectedTheme) {
+// This is exported so the Add to Project source output can be verified directly.
+// eslint-disable-next-line react-refresh/only-export-components
+export function generateCompositionCode(composition, selectedTheme) {
   if (!composition) return "";
   const componentName = composition.name.replace(/[^a-zA-Z0-9]/g, "");
-  const fields = JSON.stringify(composition.fields || [], null, 2);
+  const fields = JSON.stringify((composition.fields || []).map((field) => ({
+    ...field,
+    props: DateTimeComponentMap[field.component]
+      ? getCompositionPickerProps(field.component, field.props, selectedTheme.theme)
+      : field.props || {},
+    validationRules: getCompositionFieldValidationRules(field),
+  })), null, 2);
   const theme = JSON.stringify(selectedTheme, null, 2);
 
   if (selectedTheme.theme === "bootstrap") return generateBootstrapCode(composition, componentName, fields, selectedTheme);
@@ -126,9 +171,14 @@ function generateCompositionCode(composition, selectedTheme) {
   // Keep exported compositions self-contained. A single downloaded .jsx file
   // must not rely on this app's private aliases or individual form atoms.
   return `import { useState } from "react";
+import { useValidation } from "../../utils/validation/index.js";
+import { FormField as FieldLayout } from "../../pages/Forms/components/FormField/FormField.jsx";
+import { DatePicker, DateRangePicker, MonthPicker, YearPicker, WeekPicker, TimePicker, DateTimePicker, DateTimeRangePicker } from "../../pages/Forms/components/DateTime/DateTimePickers.jsx";
 
 const fields = ${fields};
 const defaultTheme = ${theme};
+const schema = Object.fromEntries(fields.map((field) => [field.id, { ...(field.validationRules || {}), ...(field.props?.required ? { required: true } : {}) }]));
+const initialValues = Object.fromEntries(fields.map((field) => [field.id, field.component?.includes("range") ? {} : ""]));
 
 function PasswordField({ value, onChange, inputProps, theme }) {
   const [visible, setVisible] = useState(false);
@@ -142,28 +192,38 @@ function PasswordField({ value, onChange, inputProps, theme }) {
 
 function FormField({ field, value, onChange, theme }) {
   const inputProps = field.props || {};
+  const pickerProps = { ...inputProps, label: "", value: value ?? (field.component.includes("range") ? {} : ""), onChange };
+  const fieldLayout = (picker) => <FieldLayout label={field.label} required={Boolean(schema[field.id]?.required)} error={field.error}>{picker}</FieldLayout>;
+  if (["date", "date-picker"].includes(field.component)) return fieldLayout(<DatePicker {...pickerProps} />);
+  if (["dateRange", "date-range-picker"].includes(field.component)) return fieldLayout(<DateRangePicker {...pickerProps} />);
+  if (["month", "month-picker"].includes(field.component)) return fieldLayout(<MonthPicker {...pickerProps} />);
+  if (["year", "year-picker"].includes(field.component)) return fieldLayout(<YearPicker {...pickerProps} />);
+  if (["week", "week-picker"].includes(field.component)) return fieldLayout(<WeekPicker {...pickerProps} />);
+  if (["time", "time-picker"].includes(field.component)) return fieldLayout(<TimePicker {...pickerProps} />);
+  if (["datetime", "datetime-picker"].includes(field.component)) return fieldLayout(<DateTimePicker {...pickerProps} />);
+  if (["datetimeRange", "datetime-range-picker"].includes(field.component)) return fieldLayout(<DateTimeRangePicker {...pickerProps} />);
   if (field.component === "checkbox") {
-    return <label className="flex cursor-pointer items-center gap-3 text-sm" style={{ color: theme.labelColor }}><input {...inputProps} type="checkbox" checked={Boolean(value)} onChange={(event) => onChange(event.target.checked)} className="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />{field.label}</label>;
+    return <FieldLayout error={field.error}><label className="flex cursor-pointer items-center gap-3 text-sm" style={{ color: theme.labelColor }}><input {...inputProps} type="checkbox" checked={Boolean(value)} onChange={(event) => onChange(event.target.checked)} className="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />{field.label}</label></FieldLayout>;
   }
   if (field.component === "textarea") {
-    return <label className="block space-y-1.5 text-sm font-medium" style={{ color: theme.labelColor }}>{field.label}<textarea {...inputProps} value={value} onChange={onChange} rows={inputProps.rows || 4} style={{ backgroundColor: theme.inputBackground, color: theme.inputText, borderRadius: theme.borderRadius }} className="block w-full resize-y border border-slate-300 px-4 py-2.5 text-sm font-normal outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10" /></label>;
+    return <FieldLayout label={field.label} required={Boolean(schema[field.id]?.required)} error={field.error}><textarea {...inputProps} value={value} onChange={onChange} rows={inputProps.rows || 4} style={{ backgroundColor: theme.inputBackground, color: theme.inputText, borderRadius: theme.borderRadius }} className="block w-full resize-y border border-slate-300 px-4 py-2.5 text-sm font-normal outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10" /></FieldLayout>;
   }
   if (field.component === "password-input") {
-    return <label className="block space-y-1.5 text-sm font-medium" style={{ color: theme.labelColor }}>{field.label}<PasswordField inputProps={inputProps} theme={theme} value={value} onChange={onChange} /></label>;
+    return <FieldLayout label={field.label} required={Boolean(schema[field.id]?.required)} error={field.error}><PasswordField inputProps={inputProps} theme={theme} value={value} onChange={onChange} /></FieldLayout>;
   }
-  return <label className="block space-y-1.5 text-sm font-medium" style={{ color: theme.labelColor }}>{field.label}<input {...inputProps} value={value} onChange={onChange} style={{ backgroundColor: theme.inputBackground, color: theme.inputText, borderRadius: theme.borderRadius }} className="block w-full border border-slate-300 px-4 py-2.5 text-sm font-normal outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10" /></label>;
+  return <FieldLayout label={field.label} required={Boolean(schema[field.id]?.required)} error={field.error}><input {...inputProps} value={value} onChange={onChange} style={{ backgroundColor: theme.inputBackground, color: theme.inputText, borderRadius: theme.borderRadius }} className="block w-full border border-slate-300 px-4 py-2.5 text-sm font-normal outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10" /></FieldLayout>;
 }
 
 export default function ${componentName}({ onSubmit, theme: themeOverrides = {} }) {
-  const [formData, setFormData] = useState({});
+  const { values, errors, setValue, handleBlur, validateForm } = useValidation(initialValues, schema, { mode: "first", validateOnChange: true, validateOnBlur: true });
   const theme = { ...defaultTheme, ...themeOverrides };
-  const updateField = (id, value) => setFormData((current) => ({ ...current, [id]: value }));
-  const handleSubmit = (event) => { event.preventDefault(); onSubmit?.(formData); };
+  const updateField = (id, value) => setValue(id, value);
+  const handleSubmit = async (event) => { event.preventDefault(); const result = await validateForm(); if (result.valid) onSubmit?.(values); };
 
   return (
     <form onSubmit={handleSubmit} style={{ backgroundColor: theme.background, borderRadius: theme.borderRadius }} className="mx-auto w-full max-w-md space-y-5 border border-slate-200 p-6 shadow-sm">
       <div><h2 style={{ color: theme.inputText }} className="text-lg font-bold">${composition.name}</h2><p className="mt-1 text-sm text-slate-500">${composition.description}</p></div>
-      <div className="space-y-4">{fields.map((field) => <FormField key={field.id} field={field} theme={theme} value={formData[field.id] ?? ""} onChange={(value) => updateField(field.id, value?.target ? value.target.value : value)} />)}</div>
+      <div className="space-y-4">{fields.map((field) => <div key={field.id} onBlurCapture={() => handleBlur(field.id)}><FormField field={{ ...field, error: errors[field.id] }} theme={theme} value={values[field.id] ?? ""} onChange={(value) => updateField(field.id, value?.target ? value.target.value : value)} /></div>)}</div>
       <button type="submit" style={{ backgroundColor: theme.primaryColor, borderRadius: theme.borderRadius }} className="w-full px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-95 focus:outline-none focus:ring-4 focus:ring-indigo-500/30">${composition.action?.label || "Submit"}</button>
     </form>
   );
@@ -214,6 +274,9 @@ export default function FormCompositionDetails() {
   const activeComp = composition || formCompositions[0];
   const sourceCode = generateCompositionCode(activeComp, formTheme);
   const exportConfig = getExportConfig(formTheme.theme);
+  const installableFormFieldSource = formFieldSource
+    .replace("@/pages/Forms/components/InputError/InputError", "../InputError/InputError.jsx")
+    .replace("@/pages/Forms/components/HelperText/HelperText", "../HelperText/HelperText.jsx");
 
   const componentData = {
     name: activeComp.name,
@@ -222,11 +285,26 @@ export default function FormCompositionDetails() {
     subCategory: activeComp.category,
     description: activeComp.description,
     sourceCode,
-    files: [{ path: `components/forms/${activeComp.slug}.jsx` }],
+    files: [
+      { path: "src/pages/Forms/components/DateTime/DateTimePickers.jsx", content: dateTimePickersSource },
+      { path: "src/pages/Forms/components/DateTime/dateTimePickerModel.js", content: dateTimePickerModelSource },
+      { path: "src/pages/Forms/components/FormField/FormField.jsx", content: installableFormFieldSource },
+      { path: "src/pages/Forms/components/InputError/InputError.jsx", content: inputErrorSource },
+      { path: "src/pages/Forms/components/HelperText/HelperText.jsx", content: helperTextSource },
+      { path: "src/pages/Forms/components/InputLabel/InputLabel.jsx", content: inputLabelSource },
+      { path: "src/utils/validation/index.js", content: validationIndexSource },
+      { path: "src/utils/validation/useValidation.js", content: validationHookSource },
+      { path: "src/utils/validation/engine.js", content: validationEngineSource },
+      { path: "src/utils/validation/rules.js", content: validationRulesSource },
+      { path: `src/components/forms/${activeComp.slug}.jsx`, content: sourceCode },
+    ],
     framework: "react",
     styling: exportConfig.styling,
     version: activeComp.version || "1.0.0",
-    dependencies: exportConfig.dependencies,
+    dependencies: [
+      "lucide-react",
+      ...exportConfig.dependencies.filter((dependency) => dependency !== "None"),
+    ],
     size: "~3.5 KB",
     lastUpdated: "May 12, 2025",
     author: "TemplateHub UI Team",
@@ -323,6 +401,24 @@ export default function FormCompositionDetails() {
                     {field.label}
                   </label>
                   <OTPInput length={6} />
+                </div>
+              );
+            }
+
+            const DateTimeComponent = DateTimeComponentMap[field.component];
+            if (DateTimeComponent) {
+              return (
+                <div key={fieldKey} className="space-y-1">
+                  <label className="block text-[11px] font-medium text-slate-300">
+                    {field.label}
+                    {field.validationRules?.required && <span className="ml-1 text-rose-400">*</span>}
+                  </label>
+                  <DateTimeComponent
+                    {...getCompositionPickerProps(field.component, field.props, formTheme.theme)}
+                    label=""
+                    value={val || (field.component.includes("range") ? {} : "")}
+                    onChange={(value) => setFormData((current) => ({ ...current, [fieldKey]: value }))}
+                  />
                 </div>
               );
             }

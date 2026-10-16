@@ -10,6 +10,7 @@ import { RadioButton } from "@/pages/Forms/components/RadioButton/RadioButton";
 import { SwitchToggle } from "@/pages/Forms/components/SwitchToggle/SwitchToggle";
 import { RangeSlider } from "@/pages/Forms/components/RangeSlider/RangeSlider";
 import { DateInput } from "@/pages/Forms/components/DateInput/DateInput";
+import { DatePicker } from "@/pages/Forms/components/DatePicker/DatePicker";
 import { FileUpload } from "@/pages/Forms/components/FileUpload/FileUpload";
 import { OTPInput } from "@/pages/Forms/components/OTPInput/OTPInput";
 import { InputLabel } from "@/pages/Forms/components/InputLabel/InputLabel";
@@ -28,6 +29,7 @@ const formSiblings = [
   { slug: "switchToggle", name: "Switch Toggle" },
   { slug: "rangeSlider", name: "Range Slider" },
   { slug: "dateInput", name: "Date Input" },
+  { slug: "datePicker", name: "Date Picker" },
   { slug: "fileUpload", name: "File Upload" },
   { slug: "otpInput", name: "OTP Input" },
   { slug: "inputLabel", name: "Input Label" },
@@ -106,6 +108,14 @@ const formMeta = {
     code: `import DateInput from "@/components/ui/DateInput";\n\n<DateInput />`,
     files: [{ path: "components/ui/forms/DateInput.jsx" }],
   },
+  datePicker: {
+    name: "Date Picker",
+    tag: "Picker",
+    description: "Accessible calendar date picker with manual entry, date constraints, and clear support.",
+    code: `import DatePicker from "@/components/ui/DatePicker";\n\n<DatePicker\n  value={date}\n  onChange={setDate}\n  minDate={new Date()}\n  clearable\n/>`,
+    files: [{ path: "components/ui/forms/DatePicker.jsx" }],
+    dependencies: ["lucide-react"],
+  },
   fileUpload: {
     name: "File Upload",
     tag: "Upload",
@@ -174,7 +184,7 @@ export default function FormDetails({ selectedForm, onBack, onNavigateHome }) {
     framework: "react",
     styling: "Tailwind CSS",
     version: "1.0.0",
-    dependencies: ["None"],
+    dependencies: meta.dependencies || ["None"],
     size: "~2.0 KB",
     lastUpdated: "May 12, 2025",
     author: "TemplateHub UI Team",
@@ -238,6 +248,8 @@ export default function FormDetails({ selectedForm, onBack, onNavigateHome }) {
         return <RangeSlider min={0} max={100} value={demoRange} onChange={setDemoRange} className="w-full" />;
       case "dateInput":
         return <DateInput className="w-full" />;
+      case "datePicker":
+        return <DatePicker label="Choose a date" placeholder="Select date" clearable />;
       case "fileUpload":
         return <FileUpload className="w-full" />;
       case "otpInput":

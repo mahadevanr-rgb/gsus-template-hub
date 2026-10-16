@@ -46,3 +46,34 @@
   background-color: var(--composition-primary) !important;
   border-color: var(--composition-primary) !important;
 }
+
+.date-time-picker-field:hover {
+  border-color: var(--picker-accent) !important;
+}
+
+.date-time-picker-field:focus {
+  border-color: var(--picker-accent) !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--picker-accent) 16%, transparent) !important;
+  outline: none;
+}
+
+.picker-accent-field:hover,
+.picker-accent-field:focus {
+  border-color: var(--picker-accent) !important;
+}
+
+.picker-accent-field:focus {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--picker-accent) 16%, transparent) !important;
+  outline: none;
+}
+
+.picker-accent-hover:not(:disabled):not([aria-pressed="true"]):hover {
+  background-color: color-mix(in srgb, var(--picker-accent) 12%, transparent) !important;
+  color: var(--picker-accent) !important;
+}
+
+.picker-accent-focus:focus {
+  outline: 2px solid var(--picker-accent) !important;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--picker-accent) 18%, transparent) !important;
+}

@@ -12,6 +12,7 @@ import {
   Combine,
   CreditCard,
   PanelsTopLeft,
+  CalendarDays,
 } from "lucide-react";
 
 const menuItems = [
@@ -19,6 +20,7 @@ const menuItems = [
   { icon: MousePointerClick, label: "Buttons", path: "/buttons" },
   { icon: CreditCard, label: "Cards", path: "/cards" },
   { icon: FormInput, label: "Forms", path: "/forms" },
+  { icon: CalendarDays, label: "Date & Time", path: "/date-time" },
   { icon: Combine, label: "Form Compositions", path: "/form-compositions" },
   { icon: PanelsTopLeft, label: "Layout Module", path: "/layouts" },
   { icon: Bell, label: "Notifications", path: "/notifications" },
