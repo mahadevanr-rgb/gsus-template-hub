@@ -55,3 +55,27 @@ create policy "Public read access"
 create policy "Public insert access"
   on form_compositions for insert
   with check (true);
+
+-- Customized Cards Table (Card Customizer)
+create table if not exists customized_cards (
+  id                  text primary key,
+  name                text not null,
+  source_card_id      text not null,
+  customization       jsonb not null default '{}',
+  content             jsonb default '{}',
+  responsive_settings jsonb default '{}',
+  schema_version      text default '1.0.0',
+  created_at          text,
+  updated_at          text
+);
+
+alter table customized_cards enable row level security;
+
+create policy "Public read access for customized_cards"
+  on customized_cards for select
+  using (true);
+
+create policy "Public insert/update access for customized_cards"
+  on customized_cards for all
+  using (true);
+

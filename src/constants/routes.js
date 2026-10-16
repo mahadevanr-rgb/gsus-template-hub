@@ -3,6 +3,7 @@ export const ROUTES = {
   HOME: '/',
   BUTTONS: '/buttons',
   CARDS: '/cards',
+  CARDS_CUSTOMIZE: '/cards/customize',
   FORMS: '/forms',
   FORM_COMPOSITIONS: '/form-compositions',
   NOTIFICATIONS: '/notifications',
@@ -13,3 +14,4 @@ export const ROUTES = {
   NAVIGATION: '/navigation',
   SYNC: '/sync',
 };
+

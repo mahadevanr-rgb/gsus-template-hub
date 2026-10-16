@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MainLayout from '@/components/layout/MainLayout/MainLayout';
 import CardDetails from "./CardDetails";
-import { getCardsBySubCategory } from '@/codeRegistry/cardsRegistry';
+import { cardComponents, getCardsBySubCategory } from '@/codeRegistry/cardsRegistry';
+import MyCustomizedCards from "./components/MyCustomizedCards";
 
 // Atom Card Components
 import ProfileCard from '@/pages/Cards/components/ProfileCard/ProfileCard';
@@ -34,6 +35,7 @@ import PaymentCard from '@/pages/Cards/components/PaymentCard/PaymentCard';
 
 export default function CardsPage() {
   const [selectedCard, setSelectedCard] = useState(null);
+  const [activeTab, setActiveTab] = useState("collection");
   const navigate = useNavigate();
 
   const handleSelectCard = (slug) => {
@@ -65,7 +67,7 @@ export default function CardsPage() {
             onNavigateHome={() => navigate("/")}
           />
         ) : (
-          <section className="space-y-16">
+          <section className="space-y-10">
             {/* Top Breadcrumb & Header */}
             <div>
               <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-3">
@@ -96,7 +98,49 @@ export default function CardsPage() {
                   Reusable, theme-aware card UI system for testimonials, features, financial workflows, task management, and dashboards.
                 </p>
               </div>
+
+              {/* Top View Switcher & Hero Customize Action */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-6 pt-4 border-t border-slate-200 dark:border-slate-800">
+                <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-800 w-fit">
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab("collection")}
+                    className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                      activeTab === "collection"
+                        ? "bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm"
+                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                    }`}
+                  >
+                    Browse Cards ({cardComponents.length})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab("my-designs")}
+                    className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+                      activeTab === "my-designs"
+                        ? "bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm"
+                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                    }`}
+                  >
+                    <span>✨ My Saved Designs</span>
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => navigate("/cards/customize")}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-md shadow-indigo-500/25 active:scale-[0.98] transition-all cursor-pointer self-start sm:self-auto"
+                >
+                  <span>🎨 Customize Your Own Card</span>
+                </button>
+              </div>
             </div>
+
+            {activeTab === "my-designs" ? (
+              <MyCustomizedCards onNewCard={() => navigate("/cards/customize")} />
+            ) : (
+              <div className="space-y-16">
+
 
             {/* =========================================================================
                 FAMILY 1: Testimonial, Feature & Recommendation Cards
@@ -179,10 +223,20 @@ export default function CardsPage() {
                           <span className="text-xs font-semibold text-orange-600 dark:text-orange-400 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
                             View Details →
                           </span>
-                          <span className="text-[11px] text-slate-400 font-mono">
-                            React + Tailwind
-                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/cards/customize/${card.slug}`);
+                            }}
+                            className="text-[11px] font-semibold px-2 py-0.5 rounded-lg bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 hover:bg-orange-100 dark:hover:bg-orange-500/20 transition-colors flex items-center gap-1 cursor-pointer"
+                            title="Customize this card in the workspace"
+                          >
+                            <span>🎨</span>
+                            <span>Customize</span>
+                          </button>
                         </div>
+
                       </div>
                     </div>
                   );
@@ -271,10 +325,20 @@ export default function CardsPage() {
                           <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
                             View Details →
                           </span>
-                          <span className="text-[11px] text-slate-400 font-mono">
-                            React + Tailwind
-                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/cards/customize/${card.slug}`);
+                            }}
+                            className="text-[11px] font-semibold px-2 py-0.5 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-500/20 transition-colors flex items-center gap-1 cursor-pointer"
+                            title="Customize this card in the workspace"
+                          >
+                            <span>🎨</span>
+                            <span>Customize</span>
+                          </button>
                         </div>
+
                       </div>
                     </div>
                   );
@@ -358,10 +422,20 @@ export default function CardsPage() {
                           <span className="text-xs font-semibold text-amber-600 dark:text-amber-400 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
                             View Details →
                           </span>
-                          <span className="text-[11px] text-slate-400 font-mono">
-                            React + Tailwind
-                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/cards/customize/${card.slug}`);
+                            }}
+                            className="text-[11px] font-semibold px-2 py-0.5 rounded-lg bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-500/20 transition-colors flex items-center gap-1 cursor-pointer"
+                            title="Customize this card in the workspace"
+                          >
+                            <span>🎨</span>
+                            <span>Customize</span>
+                          </button>
                         </div>
+
                       </div>
                     </div>
                   );
@@ -445,10 +519,20 @@ export default function CardsPage() {
                           <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
                             View Details →
                           </span>
-                          <span className="text-[11px] text-slate-400 font-mono">
-                            React + Tailwind
-                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/cards/customize/${card.slug}`);
+                            }}
+                            className="text-[11px] font-semibold px-2 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 transition-colors flex items-center gap-1 cursor-pointer"
+                            title="Customize this card in the workspace"
+                          >
+                            <span>🎨</span>
+                            <span>Customize</span>
+                          </button>
                         </div>
+
                       </div>
                     </div>
                   );
@@ -540,10 +624,20 @@ export default function CardsPage() {
                           <span className="text-xs font-semibold text-rose-600 dark:text-rose-400 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
                             View Details →
                           </span>
-                          <span className="text-[11px] text-slate-400 font-mono">
-                            React + Tailwind
-                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/cards/customize/${card.slug}`);
+                            }}
+                            className="text-[11px] font-semibold px-2 py-0.5 rounded-lg bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-500/20 transition-colors flex items-center gap-1 cursor-pointer"
+                            title="Customize this card in the workspace"
+                          >
+                            <span>🎨</span>
+                            <span>Customize</span>
+                          </button>
                         </div>
+
                       </div>
                     </div>
                   );
@@ -604,10 +698,20 @@ export default function CardsPage() {
                           <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
                             View Details →
                           </span>
-                          <span className="text-[11px] text-slate-400 font-mono">
-                            React + Tailwind
-                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/cards/customize/${card.slug}`);
+                            }}
+                            className="text-[11px] font-semibold px-2 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 transition-colors flex items-center gap-1 cursor-pointer"
+                            title="Customize this card in the workspace"
+                          >
+                            <span>🎨</span>
+                            <span>Customize</span>
+                          </button>
                         </div>
+
                       </div>
                     </div>
                   );
@@ -668,10 +772,20 @@ export default function CardsPage() {
                           <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
                             View Details →
                           </span>
-                          <span className="text-[10px] text-slate-400 font-mono">
-                            React
-                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/cards/customize/${card.slug}`);
+                            }}
+                            className="text-[11px] font-semibold px-2 py-0.5 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-500/20 transition-colors flex items-center gap-1 cursor-pointer"
+                            title="Customize this card in the workspace"
+                          >
+                            <span>🎨</span>
+                            <span>Customize</span>
+                          </button>
                         </div>
+
                       </div>
                     </div>
                   );
@@ -732,10 +846,20 @@ export default function CardsPage() {
                           <span className="text-xs font-semibold text-teal-600 dark:text-teal-400 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
                             View Details →
                           </span>
-                          <span className="text-[11px] text-slate-400 font-mono">
-                            React + Tailwind
-                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/cards/customize/${card.slug}`);
+                            }}
+                            className="text-[11px] font-semibold px-2 py-0.5 rounded-lg bg-teal-50 dark:bg-teal-500/10 text-teal-600 dark:text-teal-400 hover:bg-teal-100 dark:hover:bg-teal-500/20 transition-colors flex items-center gap-1 cursor-pointer"
+                            title="Customize this card in the workspace"
+                          >
+                            <span>🎨</span>
+                            <span>Customize</span>
+                          </button>
                         </div>
+
                       </div>
                     </div>
                   );
@@ -796,18 +920,31 @@ export default function CardsPage() {
                           <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
                             View Details →
                           </span>
-                          <span className="text-[11px] text-slate-400 font-mono">
-                            React + Tailwind
-                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/cards/customize/${card.slug}`);
+                            }}
+                            className="text-[11px] font-semibold px-2 py-0.5 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-500/20 transition-colors flex items-center gap-1 cursor-pointer"
+                            title="Customize this card in the workspace"
+                          >
+                            <span>🎨</span>
+                            <span>Customize</span>
+                          </button>
                         </div>
+
                       </div>
                     </div>
                   );
                 })}
               </div>
             </div>
-          </section>
+          </div>
         )}
-      </div>
-  );
+      </section>
+    )}
+  </div>
+);
 }
+

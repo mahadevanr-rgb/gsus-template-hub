@@ -6,6 +6,7 @@ const ButtonsPage = lazy(() => import('@/pages/Buttons/ButtonsPage'));
 const ButtonDetails = lazy(() => import('@/pages/Buttons/ButtonDetails'));
 const CardsPage = lazy(() => import('@/pages/Cards/CardsPage'));
 const CardDetails = lazy(() => import('@/pages/Cards/CardDetails'));
+const CardCustomizerPage = lazy(() => import('@/pages/Cards/customizer/CardCustomizerPage'));
 const FormsPage = lazy(() => import('@/pages/Forms/FormsPage'));
 const FormDetails = lazy(() => import('@/pages/Forms/FormDetails'));
 const FormCompositionsPage = lazy(() => import('@/pages/FormCompositions/FormCompositionsPage'));
@@ -31,7 +32,10 @@ export const routes = [
   { path: '/buttons', element: <ButtonsPage /> },
   { path: '/buttons/:id', element: <ButtonDetails /> },
   { path: '/cards', element: <CardsPage /> },
+  { path: '/cards/customize', element: <CardCustomizerPage /> },
+  { path: '/cards/customize/:id', element: <CardCustomizerPage /> },
   { path: '/cards/:id', element: <CardDetails /> },
+
   { path: '/forms', element: <FormsPage /> },
   { path: '/forms/:id', element: <FormDetails /> },
   { path: '/form-compositions', element: <FormCompositionsPage /> },

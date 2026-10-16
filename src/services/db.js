@@ -97,9 +97,19 @@ export async function saveFormComposition(payload) {
   return { data };
 }
 
+export {
+  fetchCustomizedCards,
+  fetchCustomizedCard,
+  saveCustomizedCard,
+  deleteCustomizedCard,
+  duplicateCustomizedCard,
+  renameCustomizedCard,
+} from "./cardCustomizerDb";
+
 export default {
   fetchFormCompositions,
   fetchFormComposition,
   generateUniqueSlug,
   saveFormComposition,
 };
+

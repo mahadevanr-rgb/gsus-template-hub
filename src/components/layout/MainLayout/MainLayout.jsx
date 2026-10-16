@@ -10,6 +10,25 @@ export default function MainLayout({ children }) {
 
   // derive currentPage from URL
   const currentPage = pathname === "/" ? "dashboard" : pathname.split("/")[1];
+  const isCustomizer = pathname.startsWith("/cards/customize");
+
+  if (isCustomizer) {
+    return (
+      <div className="h-screen bg-[#07090e] transition-colors duration-200 flex overflow-hidden">
+        <Sidebar
+          currentPage={currentPage}
+          isCollapsed={isCollapsed}
+          setIsCollapsed={setIsCollapsed}
+        />
+
+        <div className={`flex flex-col flex-1 h-screen overflow-hidden transition-all duration-300 ${isCollapsed ? "lg:pl-20" : "lg:pl-60"}`}>
+          <main className="flex-1 overflow-hidden h-full">
+            {children}
+          </main>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#07090e] transition-colors duration-200">
@@ -31,3 +50,4 @@ export default function MainLayout({ children }) {
     </div>
   );
 }
+
