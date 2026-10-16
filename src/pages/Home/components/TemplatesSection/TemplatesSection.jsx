@@ -17,7 +17,13 @@ import {
   Compass,
 } from "lucide-react";
 
+import { allComponents } from "@/codeRegistry/codeRegistry";
+import { formComponents } from "@/codeRegistry/formsRegistry";
+import { notificationComponents } from "@/pages/Notifications/notification.config";
+import { dataDisplayComponents } from "@/pages/DataDisplay/dataDisplay.config";
+
 const categories = [
+<<<<<<< Updated upstream
   { id: "buttons", name: "Buttons", count: 10, icon: MousePointerClick, color: "bg-blue-500/10 text-blue-400 border-blue-500/20" },
   { id: "cards", name: "Cards", count: 26, icon: CreditCard, color: "bg-purple-500/10 text-purple-400 border-purple-500/20" },
   { id: "forms", name: "Forms", count: 20, icon: FormInput, color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" },
@@ -35,6 +41,29 @@ const kpis = [
   { label: "Design System", value: "100%", sub: "Tailwind & SCSS tokens", trend: "Standardized", icon: Atom, color: "text-blue-400", bg: "bg-blue-500/10 border-blue-500/20" },
   { label: "Production Ready", value: "Vite", sub: "React 19 optimized", trend: "High perf", icon: Sparkles, color: "text-amber-400", bg: "bg-amber-500/10 border-amber-500/20" },
 ];
+=======
+  { id: "buttons", name: "Buttons", icon: MousePointerClick, color: "bg-blue-500/10 text-blue-400 border-blue-500/20" },
+  { id: "cards", name: "Cards", icon: CreditCard, color: "bg-purple-500/10 text-purple-400 border-purple-500/20" },
+  { id: "forms", name: "Forms", icon: FormInput, color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" },
+  { id: "notifications", name: "Notifications", icon: Bell, color: "bg-amber-500/10 text-amber-400 border-amber-500/20" },
+  { id: "data-display", name: "Data Display", icon: BarChart3, color: "bg-pink-500/10 text-pink-400 border-pink-500/20" },
+  { id: "accordion", name: "Accordion", icon: ListCollapse, color: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20" },
+];
+
+const componentCounts = {
+  buttons: allComponents.filter((component) => component.category === "buttons"),
+  cards: allComponents.filter((component) => component.category === "cards"),
+  forms: formComponents,
+  notifications: notificationComponents,
+  "data-display": dataDisplayComponents,
+  accordion: allComponents.filter((component) => component.category === "accordion"),
+};
+
+const categoriesWithCounts = categories.map((category) => ({
+  ...category,
+  count: componentCounts[category.id].length,
+}));
+>>>>>>> Stashed changes
 
 const popularComponents = [
   { id: "file-system", title: "File System & Upload", description: "Dropzones, batch queues, MIME validation, image crop & compression.", badge: "File System", previewType: "button", version: "v1.0" },
@@ -44,7 +73,20 @@ const popularComponents = [
 ];
 
 export default function TemplatesSection({ onNavigate }) {
+<<<<<<< Updated upstream
   const totalComponents = 107;
+=======
+  const totalComponents = Object.values(componentCounts).reduce(
+    (total, components) => total + components.length,
+    0
+  );
+  const kpis = [
+    { label: "Total Components", value: totalComponents, sub: "Ready-to-use UI elements", trend: "Live catalog", icon: Layers, color: "text-indigo-400", bg: "bg-indigo-500/10 border-indigo-500/20" },
+    { label: "Active Categories", value: categoriesWithCounts.length, sub: "Modular domains", trend: "Full coverage", icon: FolderKanban, color: "text-purple-400", bg: "bg-purple-500/10 border-purple-500/20" },
+    { label: "Design System", value: "100%", sub: "Tailwind & SCSS tokens", trend: "Standardized", icon: Atom, color: "text-blue-400", bg: "bg-blue-500/10 border-blue-500/20" },
+    { label: "Production Ready", value: "Vite", sub: "React 19 optimized", trend: "High perf", icon: Sparkles, color: "text-amber-400", bg: "bg-amber-500/10 border-amber-500/20" },
+  ];
+>>>>>>> Stashed changes
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -84,7 +126,7 @@ export default function TemplatesSection({ onNavigate }) {
               <Layers className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-lg font-bold text-white leading-none">{totalComponents}+</p>
+              <p className="text-lg font-bold text-white leading-none">{totalComponents}</p>
               <p className="text-xs text-slate-400 mt-1">Components</p>
             </div>
           </div>
@@ -93,7 +135,7 @@ export default function TemplatesSection({ onNavigate }) {
               <FolderKanban className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-lg font-bold text-white leading-none">{categories.length}</p>
+              <p className="text-lg font-bold text-white leading-none">{categoriesWithCounts.length}</p>
               <p className="text-xs text-slate-400 mt-1">Categories</p>
             </div>
           </div>
@@ -132,7 +174,7 @@ export default function TemplatesSection({ onNavigate }) {
           <h2 className="text-lg font-bold text-white">Browse by Categories</h2>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-          {categories.map((cat) => {
+          {categoriesWithCounts.map((cat) => {
             const Icon = cat.icon;
             return (
               <div

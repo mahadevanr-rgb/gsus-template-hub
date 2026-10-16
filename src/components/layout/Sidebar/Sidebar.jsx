@@ -11,6 +11,7 @@ import {
   GitFork,
   Combine,
   CreditCard,
+  Search,
   ListCollapse,
   PanelsTopLeft,
   Layers,
@@ -28,9 +29,14 @@ const menuItems = [
   { icon: Bell, label: "Notifications", path: "/notifications" },
   { icon: Monitor, label: "Data Display", path: "/data-display" },
   { icon: ListCollapse, label: "Accordion", path: "/accordion" },
+<<<<<<< Updated upstream
   { icon: Layers, label: "Modal & Overlay", path: "/modal-overlay" },
   { icon: FolderUp, label: "File System", path: "/file-system" },
   { icon: Compass, label: "Navigation", path: "/navigation" },
+=======
+  { icon: Search, label: "Selection & Search", path: "/selection-search" },
+  { icon: Search, label: "Design System", path: "/design-system" },
+>>>>>>> Stashed changes
 ];
 
 export default function Sidebar({ currentPage, isCollapsed, setIsCollapsed }) {
