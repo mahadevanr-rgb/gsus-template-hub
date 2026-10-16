@@ -12,7 +12,7 @@ import { SwitchToggle } from "@/pages/Forms/components/SwitchToggle/SwitchToggle
 import { RangeSlider } from "@/pages/Forms/components/RangeSlider/RangeSlider";
 import { DateInput } from "@/pages/Forms/components/DateInput/DateInput";
 import { FileUpload } from "@/pages/Forms/components/FileUpload/FileUpload";
-import { OTPInput } from "@/pages/Forms/components/OtpInput/OtpInput";
+import { OtpInput } from "@/pages/Forms/components/OtpInput/OtpInput";
 import { InputLabel } from "@/pages/Forms/components/InputLabel/InputLabel";
 import { InputError } from "@/pages/Forms/components/InputError/InputError";
 import { HelperText } from "@/pages/Forms/components/HelperText/HelperText";
@@ -306,7 +306,7 @@ export default function FormDetails({ selectedForm, onBack, onNavigateHome }) {
       case "fileUpload":
         return <FileUpload className="w-full" />;
       case "otpInput":
-        return <OTPInput length={6} />;
+        return <OtpInput length={6} />;
       case "inputLabel":
         return (
           <div className="flex flex-col gap-2">
