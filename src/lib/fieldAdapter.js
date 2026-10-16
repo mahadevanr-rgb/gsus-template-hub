@@ -7,7 +7,7 @@ import { FileUpload } from '@/pages/Forms/components/FileUpload/FileUpload';
 import { HelperText } from '@/pages/Forms/components/HelperText/HelperText';
 import { InputError } from '@/pages/Forms/components/InputError/InputError';
 import { InputLabel } from '@/pages/Forms/components/InputLabel/InputLabel';
-import { OTPInput } from '@/pages/Forms/components/OTPInput/OTPInput';
+import { OtpInput } from '@/pages/Forms/components/OtpInput/OtpInput';
 import { RadioButton } from '@/pages/Forms/components/RadioButton/RadioButton';
 import { RangeSlider } from '@/pages/Forms/components/RangeSlider/RangeSlider';
 import { SearchInput } from '@/pages/Forms/components/SearchInput/SearchInput';
@@ -36,7 +36,7 @@ export default function FieldAdapter({ field, value, onChange }) {
   if (field.component === "textarea") return withLabel(Textarea, { value, onChange: (event) => onChange(event.target.value), ...props });
   if (field.component === "search-input") return withLabel(SearchInput, { onSearch: onChange, ...props });
   if (field.component === "file-upload") return createElement(FileUpload, { label: field.label, onChange, ...props });
-  if (field.component === "otp-input") return createElement(OTPInput, { onChange, ...props });
+  if (field.component === "otp-input") return createElement(OtpInput, { onChange, ...props });
   if (field.component === "input-label") return createElement(InputLabel, { required: props.required }, field.label);
   if (field.component === "input-error") return createElement(InputError, { message: field.label });
   if (field.component === "helper-text") return createElement(HelperText, { text: field.label });

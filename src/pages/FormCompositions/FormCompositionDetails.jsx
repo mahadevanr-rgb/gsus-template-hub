@@ -8,7 +8,7 @@ import { TextInput } from "@/pages/Forms/components/TextInput/TextInput";
 import { PasswordInput } from "@/pages/Forms/components/PasswordInput/PasswordInput";
 import { Textarea } from "@/pages/Forms/components/Textarea/Textarea";
 import { Checkbox } from "@/pages/Forms/components/Checkbox/Checkbox";
-import { OTPInput } from "@/pages/Forms/components/OtpInput/OtpInput";
+import { OtpInput } from "@/pages/Forms/components/OtpInput/OtpInput";
 import PrimaryButton from "@/pages/Buttons/components/PrimaryButton/PrimaryButton";
 
 const themePresets = {
@@ -322,7 +322,7 @@ export default function FormCompositionDetails() {
                   <label className="text-[11px] font-medium text-slate-300 block">
                     {field.label}
                   </label>
-                  <OTPInput length={6} />
+                  <OtpInput length={6} />
                 </div>
               );
             }

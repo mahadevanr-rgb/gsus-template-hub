@@ -15,7 +15,7 @@ import { SwitchToggle } from "@/pages/Forms/components/SwitchToggle/SwitchToggle
 import { RangeSlider } from "@/pages/Forms/components/RangeSlider/RangeSlider";
 import { DateInput } from "@/pages/Forms/components/DateInput/DateInput";
 import { FileUpload } from "@/pages/Forms/components/FileUpload/FileUpload";
-import { OTPInput } from "@/pages/Forms/components/OtpInput/OtpInput";
+import { OtpInput } from "@/pages/Forms/components/OtpInput/OtpInput";
 import { InputLabel } from "@/pages/Forms/components/InputLabel/InputLabel";
 import { InputError } from "@/pages/Forms/components/InputError/InputError";
 import { HelperText } from "@/pages/Forms/components/HelperText/HelperText";
@@ -130,7 +130,7 @@ function FormAtomPreview({ id }) {
     case "otpInput":
       return (
         <div className="flex justify-center scale-90">
-          <OTPInput length={6} className="pointer-events-none" />
+          <OtpInput length={6} className="pointer-events-none" />
         </div>
       );
     case "inputLabel":
