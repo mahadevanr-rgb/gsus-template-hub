@@ -12,7 +12,7 @@ import { SwitchToggle } from "@/pages/Forms/components/SwitchToggle/SwitchToggle
 import { RangeSlider } from "@/pages/Forms/components/RangeSlider/RangeSlider";
 import { DateInput } from "@/pages/Forms/components/DateInput/DateInput";
 import { FileUpload } from "@/pages/Forms/components/FileUpload/FileUpload";
-import { OTPInput } from "@/pages/Forms/components/OTPInput/OTPInput";
+import { OTPInput } from "@/pages/Forms/components/OtpInput/OtpInput";
 import { InputLabel } from "@/pages/Forms/components/InputLabel/InputLabel";
 import { InputError } from "@/pages/Forms/components/InputError/InputError";
 import { HelperText } from "@/pages/Forms/components/HelperText/HelperText";
@@ -40,7 +40,8 @@ const formMeta = {
   textInput: {
     name: "Text Input",
     tag: "Input",
-    description: "Standard text input with icon prefix and error state support.",
+    description:
+      "Standard text input with icon prefix and error state support.",
     code: `import TextInput from "@/components/ui/TextInput";\n\n<TextInput placeholder="Enter text..." />\n<TextInput placeholder="Search..." icon="🔍" />\n<TextInput placeholder="Invalid..." error />`,
     files: [{ path: "components/ui/forms/TextInput.jsx" }],
   },
@@ -54,14 +55,16 @@ const formMeta = {
   textarea: {
     name: "Textarea",
     tag: "Input",
-    description: "Multi-line text input for longer content with resizable height.",
+    description:
+      "Multi-line text input for longer content with resizable height.",
     code: `import Textarea from "@/components/ui/Textarea";\n\n<Textarea placeholder="Enter description..." rows={4} />`,
     files: [{ path: "components/ui/forms/Textarea.jsx" }],
   },
   searchInput: {
     name: "Search Input",
     tag: "Input",
-    description: "Search field with built-in search icon and onSearch callback.",
+    description:
+      "Search field with built-in search icon and onSearch callback.",
     code: `import SearchInput from "@/components/ui/SearchInput";\n\n<SearchInput placeholder="Search..." onSearch={(val) => console.log(val)} />`,
     files: [{ path: "components/ui/forms/SearchInput.jsx" }],
   },
@@ -208,7 +211,8 @@ export default function FormDetails({ selectedForm, onBack, onNavigateHome }) {
         <div>
           <h4 className="font-bold text-sm text-white">Customize This Form</h4>
           <p className="text-[11px] text-slate-400 mt-0.5">
-            Adjust the label, colors, spacing, and style in the visual workspace.
+            Adjust the label, colors, spacing, and style in the visual
+            workspace.
           </p>
         </div>
       </div>
@@ -228,9 +232,17 @@ export default function FormDetails({ selectedForm, onBack, onNavigateHome }) {
       case "textInput":
         return <TextInput placeholder="Enter text..." className="w-full" />;
       case "passwordInput":
-        return <PasswordInput placeholder="Enter password..." className="w-full" />;
+        return (
+          <PasswordInput placeholder="Enter password..." className="w-full" />
+        );
       case "textarea":
-        return <Textarea placeholder="Enter description..." rows={3} className="w-full" />;
+        return (
+          <Textarea
+            placeholder="Enter description..."
+            rows={3}
+            className="w-full"
+          />
+        );
       case "searchInput":
         return <SearchInput placeholder="Search..." className="w-full" />;
       case "selectDropdown":
@@ -248,21 +260,47 @@ export default function FormDetails({ selectedForm, onBack, onNavigateHome }) {
       case "checkbox":
         return (
           <div className="flex flex-col gap-2">
-            <Checkbox label="Remember preferences" checked={demoChecked} onChange={setDemoChecked} />
-            <Checkbox label="Enable notifications (active)" checked={true} onChange={() => {}} />
+            <Checkbox
+              label="Remember preferences"
+              checked={demoChecked}
+              onChange={setDemoChecked}
+            />
+            <Checkbox
+              label="Enable notifications (active)"
+              checked={true}
+              onChange={() => {}}
+            />
           </div>
         );
       case "radioButton":
         return (
           <div className="flex flex-col gap-2">
-            <RadioButton label="Standard Delivery (Free)" value="a" selected={demoRadio} onChange={setDemoRadio} />
-            <RadioButton label="Express Delivery ($9.99)" value="b" selected={demoRadio} onChange={setDemoRadio} />
+            <RadioButton
+              label="Standard Delivery (Free)"
+              value="a"
+              selected={demoRadio}
+              onChange={setDemoRadio}
+            />
+            <RadioButton
+              label="Express Delivery ($9.99)"
+              value="b"
+              selected={demoRadio}
+              onChange={setDemoRadio}
+            />
           </div>
         );
       case "switchToggle":
         return <SwitchToggle checked={demoToggle} onChange={setDemoToggle} />;
       case "rangeSlider":
-        return <RangeSlider min={0} max={100} value={demoRange} onChange={setDemoRange} className="w-full" />;
+        return (
+          <RangeSlider
+            min={0}
+            max={100}
+            value={demoRange}
+            onChange={setDemoRange}
+            className="w-full"
+          />
+        );
       case "dateInput":
         return <DateInput className="w-full" />;
       case "fileUpload":
