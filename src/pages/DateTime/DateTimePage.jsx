@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, CalendarDays, Layers, Search } from "lucide-react";
-import { formComponents } from "@/codeRegistry/formsRegistry";
 import { DatePicker } from "@/pages/Forms/components/DatePicker/DatePicker";
+import { dateTimeItems } from "./dateTimeComponents";
 import {
   DateRangePicker,
   DateTimePicker,
@@ -23,15 +23,6 @@ const previewBySlug = {
   "datetime-picker": <DateTimePicker theme="dark" />,
   "datetime-range-picker": <DateTimeRangePicker />,
 };
-
-const dateTimeItems = formComponents
-  .filter((component) => Object.hasOwn(previewBySlug, component.slug))
-  .map((component) => ({
-    ...component,
-    group: component.slug.includes("time") || component.slug.includes("datetime")
-      ? "Time"
-      : "Date",
-  }));
 
 export default function DateTimePage() {
   const navigate = useNavigate();

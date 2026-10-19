@@ -48,3 +48,34 @@ test("preview document includes the same tested local module resolver", () => {
   assert.match(document, /resolvePreviewModulePath/);
   assert.match(document, /new Set\(Object\.keys\(globalThis\.__factories\)\)/);
 });
+
+test("preview document avoids a body overflow clip and controls scrolling on html", () => {
+  const document = createPreviewDocument({ exportName: "DateTimePicker" });
+  assert.doesNotMatch(document, /html,body\{overflow/);
+  assert.doesNotMatch(document, /document\.body\.style\.overflow/);
+  assert.match(document, /html\{overflow:hidden\}/);
+  assert.match(document, /document\.documentElement\.style\.overflow=event\.data\.enabled\?'auto':'hidden'/);
+});
+
+test("preview document reveals date time popups in-frame and reports their viewport bounds", () => {
+  const document = createPreviewDocument({ exportName: "DateTimePicker" });
+  assert.match(document, /function revealPopup\(popup\)/);
+  assert.match(document, /window\.scrollBy\(\{top:delta,behavior:'instant'\}\)/);
+  assert.match(document, /popupViewportTop,popupViewportBottom/);
+  assert.match(document, /revealPopupEnabled=Boolean\(event\.data\.enabled&&event\.data\.revealPopup\)/);
+  assert.match(document, /function resetPopupScroll\(\)/);
+  assert.match(document, /window\.scrollTo\(\{top:0,behavior:'instant'\}\)/);
+  assert.match(document, /controlled\?\{\.\.\.previewProps,value,onChange:setValue\}:previewProps/);
+  assert.match(document, /exportName==='DatePicker'\?\{defaultOpen:true,keepOpenOnSelect:true\}:\{\}/);
+});
+
+test("date picker preview behavior uses the component identity, not remote export metadata", () => {
+  const document = createPreviewDocument({
+    slug: "date-picker",
+    exportName: "default",
+  });
+
+  assert.match(document, /const exportName="DatePicker"/);
+  assert.match(document, /defaultOpen:true,keepOpenOnSelect:true/);
+  assert.match(document, /cachedExportName=exportName/);
+});

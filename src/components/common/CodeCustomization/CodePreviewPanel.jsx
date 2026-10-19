@@ -15,6 +15,37 @@ const DATE_TIME_PICKER_IDS = new Set([
   "datetime-range-picker",
 ]);
 
+function revealPopupInHost(iframe, popupTop, popupBottom) {
+  const popupHeight = popupBottom - popupTop;
+  if (!Number.isFinite(popupHeight) || popupHeight <= 0) return;
+
+  const headerInset = 80;
+  const margin = 16;
+  const viewportTop = headerInset + margin;
+  const viewportBottom = window.innerHeight - margin;
+  const frameTop = iframe.getBoundingClientRect().top;
+  const top = frameTop + popupTop;
+  const bottom = frameTop + popupBottom;
+  let delta = 0;
+
+  if (popupHeight > viewportBottom - viewportTop) delta = top - viewportTop;
+  else if (top < viewportTop) delta = top - viewportTop;
+  else if (bottom > viewportBottom) delta = bottom - viewportBottom;
+  if (!delta) return;
+
+  let scrollTarget = null;
+  for (let ancestor = iframe.parentElement; ancestor; ancestor = ancestor.parentElement) {
+    const { overflowY } = window.getComputedStyle(ancestor);
+    if (["auto", "scroll", "overlay"].includes(overflowY) && ancestor.scrollHeight > ancestor.clientHeight) {
+      scrollTarget = ancestor;
+      break;
+    }
+  }
+
+  if (scrollTarget) scrollTarget.scrollBy({ top: delta, behavior: "smooth" });
+  else document.scrollingElement?.scrollBy({ top: delta, behavior: "smooth" });
+}
+
 export default function CodePreviewPanel({
   component,
   preview,
@@ -54,7 +85,7 @@ export default function CodePreviewPanel({
       if (event.data?.type === "templatehub-preview-ready") {
         ready.current = true;
         setRuntimeError("");
-        iframe.contentWindow.postMessage({ type: "templatehub-preview-scroll-mode", enabled: previewScrollableRef.current }, "*");
+        iframe.contentWindow.postMessage({ type: "templatehub-preview-scroll-mode", enabled: previewScrollableRef.current, revealPopup: isDateTimePreview }, "*");
         if (latest.current) iframe.contentWindow.postMessage(latest.current, "*");
       } else if (event.data?.type === "templatehub-preview-runtime-error") {
         ready.current = false;
@@ -62,22 +93,20 @@ export default function CodePreviewPanel({
         compileResultRef.current?.({ ok: false, message: event.data.message || "Preview runtime failed to load." });
       } else if (event.data?.type === "templatehub-preview-resize") {
         const height = Number(event.data.height);
+        const popupBottom = Number(event.data.popupBottom);
+        const popupViewportTop = Number(event.data.popupViewportTop);
+        const popupViewportBottom = Number(event.data.popupViewportBottom);
+        const popupIsOpen = popupBottom > 0;
+        if (!popupIsOpen) lastAutoScrolledPopup.current = false;
+        else if (isDateTimePreview && !lastAutoScrolledPopup.current) {
+          revealPopupInHost(iframe, popupViewportTop, popupViewportBottom);
+          lastAutoScrolledPopup.current = true;
+        }
         if (Number.isFinite(height)) {
           measuredFrameHeight.current = Math.max(minPreviewHeight, Math.min(6000, height));
         }
         if (!previewScrollableRef.current && Number.isFinite(height)) {
           iframe.style.height = `${measuredFrameHeight.current}px`;
-          const popupIsOpen = Number(event.data.popupBottom) > 0;
-          if (!popupIsOpen) lastAutoScrolledPopup.current = false;
-          if (isDateTimePreview && popupIsOpen && !lastAutoScrolledPopup.current) {
-            requestAnimationFrame(() => {
-              const popupBottom = iframe.getBoundingClientRect().top + Number(event.data.popupBottom);
-              if (popupBottom > window.innerHeight - 24) {
-                iframe.scrollIntoView({ block: "end", behavior: "smooth" });
-              }
-              lastAutoScrolledPopup.current = true;
-            });
-          }
         }
       } else if (event.data?.type === "templatehub-preview-result") {
         compileResultRef.current?.({ ok: event.data.ok, message: event.data.message });
@@ -87,7 +116,7 @@ export default function CodePreviewPanel({
     iframe.onload = () => iframe.contentWindow.postMessage({ type: "templatehub-preview-ping" }, "*");
     iframe.srcdoc = createPreviewDocument(component, previewStyles);
     return () => { ready.current = false; window.removeEventListener("message", onMessage); };
-  }, [component, minPreviewHeight]);
+  }, [component, isDateTimePreview, minPreviewHeight]);
 
   useEffect(() => {
     const iframe = frame.current;
@@ -95,12 +124,12 @@ export default function CodePreviewPanel({
     const resizeFrame = () => {
       if (previewScrollable) iframe.style.height = `${Math.max(420, Math.min(760, Math.floor(window.innerHeight * 0.72)))}px`;
       else iframe.style.height = `${Math.max(minPreviewHeight, measuredFrameHeight.current)}px`;
-      if (ready.current) iframe.contentWindow.postMessage({ type: "templatehub-preview-scroll-mode", enabled: previewScrollable }, "*");
+      if (ready.current) iframe.contentWindow.postMessage({ type: "templatehub-preview-scroll-mode", enabled: previewScrollable, revealPopup: isDateTimePreview }, "*");
     };
     resizeFrame();
     window.addEventListener("resize", resizeFrame);
     return () => window.removeEventListener("resize", resizeFrame);
-  }, [previewScrollable, minPreviewHeight]);
+  }, [previewScrollable, minPreviewHeight, isDateTimePreview]);
 
   useEffect(() => {
     if (!preview) return;

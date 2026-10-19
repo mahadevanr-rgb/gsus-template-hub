@@ -71,6 +71,7 @@ export function DatePicker({
   const rootRef = useRef(null);
   const inputRef = useRef(null);
   const dayButtons = useRef(new Map());
+  const suppressOpenOnFocus = useRef(false);
   const controlled = value !== undefined;
   const [uncontrolledValue, setUncontrolledValue] = useState(() =>
     parseDate(defaultValue),
@@ -88,6 +89,12 @@ export function DatePicker({
   const [focusedDate, setFocusedDate] = useState(
     () => parseDate(controlled ? value : defaultValue) || new Date(),
   );
+  const focusInputWithoutOpening = () => {
+    const input = inputRef.current;
+    if (!input || document.activeElement === input) return;
+    suppressOpenOnFocus.current = true;
+    input.focus();
+  };
 
   useEffect(() => {
     if (!open) return undefined;
@@ -97,7 +104,7 @@ export function DatePicker({
     const onKeyDown = (event) => {
       if (event.key === "Escape") {
         setOpen(false);
-        inputRef.current?.focus();
+        focusInputWithoutOpening();
       }
     };
     document.addEventListener("mousedown", onPointerDown);
@@ -235,6 +242,10 @@ export function DatePicker({
           onChange={handleTextChange}
           onFocus={() => {
             setFieldFocused(true);
+            if (suppressOpenOnFocus.current) {
+              suppressOpenOnFocus.current = false;
+              return;
+            }
             if (!readOnly && !disabled) {
               setFocusedDate(selected || new Date());
               setOpen(true);
@@ -404,7 +415,7 @@ export function DatePicker({
                         commit(date);
                         if (!keepOpenOnSelect) {
                           setOpen(false);
-                          inputRef.current?.focus();
+                          focusInputWithoutOpening();
                         }
                       }
                     }
@@ -420,7 +431,7 @@ export function DatePicker({
                     commit(date);
                     if (!keepOpenOnSelect) {
                       setOpen(false);
-                      inputRef.current?.focus();
+                      focusInputWithoutOpening();
                     }
                   }}
                   style={{
@@ -445,7 +456,7 @@ export function DatePicker({
                     today.getDate(),
                   ),
                 );
-                setOpen(false);
+                if (!keepOpenOnSelect) setOpen(false);
               },
               clear: () => {
                 commit(null);
@@ -472,7 +483,7 @@ export function DatePicker({
                     ),
                   );
                 if (!keepOpenOnSelect) setOpen(false);
-                  inputRef.current?.focus();
+                if (!keepOpenOnSelect) focusInputWithoutOpening();
                 }}
                 className="picker-accent-hover picker-accent-focus rounded-lg px-2 py-1 text-xs font-medium disabled:opacity-40"
                 style={{ "--picker-accent": accentColor, color: accentColor }}
@@ -485,7 +496,7 @@ export function DatePicker({
                   onClick={() => {
                     commit(null);
                     setOpen(false);
-                    inputRef.current?.focus();
+                    focusInputWithoutOpening();
                   }}
                   className="picker-accent-hover picker-accent-focus rounded-lg px-2 py-1 text-xs text-slate-500"
                   style={{ "--picker-accent": accentColor }}

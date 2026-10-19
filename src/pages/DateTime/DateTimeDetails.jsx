@@ -616,6 +616,7 @@ export default function DateTimeDetails() {
             locale={locale}
             clearable={clearable}
             disableWeekends={disableWeekends}
+            keepOpenOnSelect
           />
         );
       case "date-range-picker":

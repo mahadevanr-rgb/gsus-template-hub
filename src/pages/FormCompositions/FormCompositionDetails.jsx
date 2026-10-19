@@ -8,7 +8,7 @@ import { TextInput } from "@/pages/Forms/components/TextInput/TextInput";
 import { PasswordInput } from "@/pages/Forms/components/PasswordInput/PasswordInput";
 import { Textarea } from "@/pages/Forms/components/Textarea/Textarea";
 import { Checkbox } from "@/pages/Forms/components/Checkbox/Checkbox";
-import { OTPInput } from "@/pages/Forms/components/OTPInput/OTPInput";
+import { OTPInput } from "@/pages/Forms/components/OtpInput/OtpInput";
 import PrimaryButton from "@/pages/Buttons/components/PrimaryButton/PrimaryButton";
 import { DateTimeComponentMap, getCompositionFieldValidationRules, getCompositionPickerProps } from "./dateTimeFieldUtils";
 import dateTimePickersSource from "@/pages/Forms/components/DateTime/DateTimePickers.jsx?raw";

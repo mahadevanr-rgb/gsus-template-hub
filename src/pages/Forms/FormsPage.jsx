@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FormInput } from "lucide-react";
 import ShowcaseCard from "@/components/common/ShowcaseCard/ShowcaseCard";
 import FormDetails from "./FormDetails";
+import { formComponents } from "./formComponents";
 
 import { TextInput } from "@/pages/Forms/components/TextInput/TextInput";
 import { PasswordInput } from "@/pages/Forms/components/PasswordInput/PasswordInput";
@@ -15,7 +16,6 @@ import { SwitchToggle } from "@/pages/Forms/components/SwitchToggle/SwitchToggle
 import { RangeSlider } from "@/pages/Forms/components/RangeSlider/RangeSlider";
 import { DateInput } from "@/pages/Forms/components/DateInput/DateInput";
 import { DatePicker } from "@/pages/Forms/components/DatePicker/DatePicker";
-import { FileUpload } from "@/pages/Forms/components/FileUpload/FileUpload";
 import { OTPInput } from "@/pages/Forms/components/OTPInput/OTPInput";
 import { InputLabel } from "@/pages/Forms/components/InputLabel/InputLabel";
 import { InputError } from "@/pages/Forms/components/InputError/InputError";
@@ -126,121 +126,6 @@ function FormAtomPreview({ id }) {
   }
 }
 
-const formComponents = [
-  {
-    id: "textInput",
-    name: "Text Input",
-    description: "Standard text input with icon prefix and error state support.",
-    tag: "Input",
-    theme: "blue",
-  },
-  {
-    id: "passwordInput",
-    name: "Password Input",
-    description: "Password field with show/hide toggle for enhanced UX.",
-    tag: "Input",
-    theme: "indigo",
-  },
-  {
-    id: "textarea",
-    name: "Textarea",
-    description: "Multi-line text input for longer content with resizable height.",
-    tag: "Input",
-    theme: "blue",
-  },
-  {
-    id: "searchInput",
-    name: "Search Input",
-    description: "Search field with built-in search icon and callback.",
-    tag: "Input",
-    theme: "cyan",
-  },
-  {
-    id: "selectDropdown",
-    name: "Select Dropdown",
-    description: "Custom styled dropdown with options list and clear state.",
-    tag: "Select",
-    theme: "purple",
-  },
-  {
-    id: "checkbox",
-    name: "Checkbox",
-    description: "Accessible custom checkbox with checkmark animation.",
-    tag: "Choice",
-    theme: "emerald",
-  },
-  {
-    id: "radioButton",
-    name: "Radio Button",
-    description: "Radio button group for mutually exclusive options.",
-    tag: "Choice",
-    theme: "emerald",
-  },
-  {
-    id: "switchToggle",
-    name: "Switch Toggle",
-    description: "Smooth animated switch toggle for boolean flags.",
-    tag: "Toggle",
-    theme: "teal",
-  },
-  {
-    id: "rangeSlider",
-    name: "Range Slider",
-    description: "Interactive slider for selecting numeric range values.",
-    tag: "Slider",
-    theme: "amber",
-  },
-  {
-    id: "dateInput",
-    name: "Date Input",
-    description: "Native date picker formatted with calendar indicators.",
-    tag: "Picker",
-    theme: "orange",
-  },
-  {
-    id: "datePicker",
-    name: "Date Picker",
-    description: "Accessible calendar picker with manual entry and date constraints.",
-    tag: "Picker",
-    theme: "orange",
-  },
-  {
-    id: "fileUpload",
-    name: "File Upload",
-    description: "Drag-and-drop file upload zone with file preview.",
-    tag: "Upload",
-    theme: "rose",
-  },
-  {
-    id: "otpInput",
-    name: "OTP Input",
-    description: "Split 6-digit verification code input with auto-advance.",
-    tag: "Input",
-    theme: "fuchsia",
-  },
-  {
-    id: "inputLabel",
-    name: "Input Label",
-    description: "Accessible form field label with required star indicator.",
-    tag: "Helper",
-    theme: "slate",
-  },
-  {
-    id: "inputError",
-    name: "Input Error",
-    description: "Validation error message banner with alert styling.",
-    tag: "Feedback",
-    theme: "red",
-  },
-  {
-    id: "helperText",
-    name: "Helper Text",
-    description: "Subtle hint text with info icon for field guidance.",
-    tag: "Helper",
-    theme: "slate",
-  },
-];
-
 export default function FormsPage() {
   const [selectedForm, setSelectedForm] = useState(null);
   const navigate = useNavigate();
@@ -297,7 +182,7 @@ export default function FormsPage() {
               <div className="min-w-0">
                 <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-300">
                   <FormInput className="h-3.5 w-3.5" />
-                  15 Form Atoms
+                  {formComponents.length} Form Atoms
                 </div>
 
                 <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">

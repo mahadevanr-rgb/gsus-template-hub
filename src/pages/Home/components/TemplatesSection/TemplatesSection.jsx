@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Sparkles,
   Layers,
@@ -7,27 +6,39 @@ import {
   CreditCard,
   FormInput,
   Bell,
-  BarChart3,
+  Monitor,
+  CalendarDays,
+  Combine,
+  PanelsTopLeft,
   Atom,
   TrendingUp,
   Eye,
   ChevronRight,
 } from "lucide-react";
+import { allComponents } from "@/codeRegistry/codeRegistry";
+import { cardComponents } from "@/codeRegistry/cardsRegistry";
+import { formCompositions } from "@/codeRegistry/formCompositionsRegistry";
+import layouts from "@/codeRegistry/layoutsRegistry";
+import { notificationComponents } from "@/pages/Notifications/notification.config";
+import { formComponents } from "@/pages/Forms/formComponents";
+import { dataDisplayComponents } from "@/pages/DataDisplay/dataDisplayComponents";
+import { dateTimeItems } from "@/pages/DateTime/dateTimeComponents";
+import { menuItems } from "@/components/layout/sidebarMenu";
+import { createHomeStats } from "@/pages/Home/homeStats";
 
-const categories = [
-  { id: "buttons", name: "Buttons", count: 10, icon: MousePointerClick, color: "bg-blue-500/10 text-blue-400 border-blue-500/20" },
-  { id: "cards", name: "Cards", count: 26, icon: CreditCard, color: "bg-purple-500/10 text-purple-400 border-purple-500/20" },
-  { id: "forms", name: "Forms", count: 20, icon: FormInput, color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" },
-  { id: "notifications", name: "Notifications", count: 9, icon: Bell, color: "bg-amber-500/10 text-amber-400 border-amber-500/20" },
-  { id: "data-display", name: "Data Display", count: 11, icon: BarChart3, color: "bg-pink-500/10 text-pink-400 border-pink-500/20" },
+const categoryPresentation = [
+  { id: "buttons", icon: MousePointerClick, color: "bg-blue-500/10 text-blue-400 border-blue-500/20" },
+  { id: "cards", icon: CreditCard, color: "bg-purple-500/10 text-purple-400 border-purple-500/20" },
+  { id: "forms", icon: FormInput, color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" },
+  { id: "date-time", icon: CalendarDays, color: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20" },
+  { id: "form-compositions", icon: Combine, color: "bg-teal-500/10 text-teal-400 border-teal-500/20" },
+  { id: "layouts", icon: PanelsTopLeft, color: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20" },
+  { id: "notifications", icon: Bell, color: "bg-amber-500/10 text-amber-400 border-amber-500/20" },
+  { id: "data-display", icon: Monitor, color: "bg-pink-500/10 text-pink-400 border-pink-500/20" },
 ];
 
-const kpis = [
-  { label: "Total Components", value: "76+", sub: "Ready-to-use UI elements", trend: "+12 this week", icon: Layers, color: "text-indigo-400", bg: "bg-indigo-500/10 border-indigo-500/20" },
-  { label: "Active Categories", value: "7", sub: "Modular domains", trend: "Full coverage", icon: FolderKanban, color: "text-purple-400", bg: "bg-purple-500/10 border-purple-500/20" },
-  { label: "Design System", value: "100%", sub: "Tailwind & SCSS tokens", trend: "Standardized", icon: Atom, color: "text-blue-400", bg: "bg-blue-500/10 border-blue-500/20" },
-  { label: "Production Ready", value: "Vite", sub: "React 19 optimized", trend: "High perf", icon: Sparkles, color: "text-amber-400", bg: "bg-amber-500/10 border-amber-500/20" },
-];
+const routeLabels = Object.fromEntries(menuItems.filter((item) => item.path !== "/").map((item) => [item.path.slice(1), item.label]));
+const categories = categoryPresentation.map((category) => ({ ...category, name: routeLabels[category.id] }));
 
 const popularComponents = [
   { id: "buttons", title: "Button Showcase", description: "Interactive button collection with various states, variants, and glowing styles.", badge: "Buttons", previewType: "button", version: "v1.0" },
@@ -37,7 +48,27 @@ const popularComponents = [
 ];
 
 export default function TemplatesSection({ onNavigate }) {
-  const totalComponents = 76;
+  const stats = createHomeStats({
+    categories: menuItems.filter((item) => item.path !== "/"),
+    buttons: allComponents.filter((component) => component.category === "buttons"),
+    cards: cardComponents,
+    forms: formComponents,
+    dateTime: dateTimeItems,
+    formCompositions,
+    layouts,
+    notifications: notificationComponents,
+    dataDisplay: dataDisplayComponents,
+  });
+  const computedCategories = categories.map((category) => ({
+    ...category,
+    count: stats.categoryCounts[category.id],
+  }));
+  const kpis = [
+    { label: "Total Components", value: stats.totalComponents, sub: "Distinct components", trend: `Across ${stats.categoryCount} categories`, icon: Layers, color: "text-indigo-400", bg: "bg-indigo-500/10 border-indigo-500/20" },
+    { label: "Active Categories", value: stats.categoryCount, sub: "Modular domains", trend: "Full coverage", icon: FolderKanban, color: "text-purple-400", bg: "bg-purple-500/10 border-purple-500/20" },
+    { label: "Design System", value: "100%", sub: "Tailwind & SCSS tokens", trend: "Standardized", icon: Atom, color: "text-blue-400", bg: "bg-blue-500/10 border-blue-500/20" },
+    { label: "Production Ready", value: "Vite", sub: "React 19 optimized", trend: "High perf", icon: Sparkles, color: "text-amber-400", bg: "bg-amber-500/10 border-amber-500/20" },
+  ];
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -77,7 +108,7 @@ export default function TemplatesSection({ onNavigate }) {
               <Layers className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-lg font-bold text-white leading-none">{totalComponents}+</p>
+              <p className="text-lg font-bold text-white leading-none">{stats.totalComponents}</p>
               <p className="text-xs text-slate-400 mt-1">Components</p>
             </div>
           </div>
@@ -86,7 +117,7 @@ export default function TemplatesSection({ onNavigate }) {
               <FolderKanban className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-lg font-bold text-white leading-none">{categories.length}</p>
+              <p className="text-lg font-bold text-white leading-none">{stats.categoryCount}</p>
               <p className="text-xs text-slate-400 mt-1">Categories</p>
             </div>
           </div>
@@ -125,7 +156,7 @@ export default function TemplatesSection({ onNavigate }) {
           <h2 className="text-lg font-bold text-white">Browse by Categories</h2>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-          {categories.map((cat) => {
+          {computedCategories.map((cat) => {
             const Icon = cat.icon;
             return (
               <div
@@ -137,7 +168,7 @@ export default function TemplatesSection({ onNavigate }) {
                   <Icon className="w-5 h-5" />
                 </div>
                 <p className="text-xs font-semibold text-white truncate w-full">{cat.name}</p>
-                <p className="text-[10px] text-slate-500 mt-0.5">{cat.count} components</p>
+                <p className="text-[10px] text-slate-500 mt-0.5">{cat.count} {cat.count === 1 ? "component" : "components"}</p>
               </div>
             );
           })}
