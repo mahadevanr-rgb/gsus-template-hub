@@ -15,7 +15,11 @@ export default function MainLayout({ children }) {
     pathname.startsWith("/buttons/customize") ||
     pathname.startsWith("/forms/customize") ||
     pathname.startsWith("/notifications/customize") ||
-    pathname.startsWith("/tables-dashboard/customize");
+    pathname.startsWith("/tables-dashboard/customize") ||
+    pathname.startsWith("/accordion/customize") ||
+    pathname.startsWith("/modal-overlay/customize") ||
+    pathname.startsWith("/file-system/customize") ||
+    pathname.startsWith("/navigation/customize");
 
   if (isCustomizer) {
     return (

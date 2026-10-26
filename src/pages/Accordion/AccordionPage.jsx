@@ -28,6 +28,7 @@ import FilterAccordion from "./components/FilterAccordion/FilterAccordion";
 import SimpleAccordion from "./components/SimpleAccordion/SimpleAccordion";
 import IconAccordion from "./components/IconAccordion/IconAccordion";
 import FormAccordion from "./components/FormAccordion/FormAccordion";
+import MyCustomizedAccordions from "./components/MyCustomizedAccordions";
 import {
   numberedFaqItems,
   filterSections,
@@ -127,34 +128,45 @@ function Breadcrumbs({ onHome }) {
   );
 }
 
-function PageHeader() {
+function PageHeader({ onCustomize }) {
   return (
     <header className="relative overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-950/50 px-5 py-6 shadow-xl shadow-black/10 sm:px-8">
       <div className="pointer-events-none absolute -left-16 -top-16 h-40 w-40 rounded-full bg-indigo-600/15 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-purple-600/15 blur-3xl" />
 
-      <div className="relative flex items-center gap-5">
-        <div className="hidden h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white shadow-xl shadow-indigo-500/25 sm:flex">
-          <ListCollapse className="h-7 w-7" />
-        </div>
-
-        <div className="min-w-0">
-          <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-indigo-500/25 bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-300">
-            <Sparkles className="h-3.5 w-3.5" />
-            5 Production Patterns · Compound Architecture
+      <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+        <div className="flex items-center gap-5">
+          <div className="hidden h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white shadow-xl shadow-indigo-500/25 sm:flex">
+            <ListCollapse className="h-7 w-7" />
           </div>
 
-          <h1 className="text-2xl font-black tracking-tight text-white sm:text-3xl">
-            Accordion{" "}
-            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              & Disclosure Systems
-            </span>
-          </h1>
+          <div className="min-w-0">
+            <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-indigo-500/25 bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-300">
+              <Sparkles className="h-3.5 w-3.5" />
+              5 Production Patterns · Compound Architecture
+            </div>
 
-          <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-slate-400">
-            Modular, accessible accordion components with shared compound primitives. Includes Numbered FAQ, Filter Selection, Simple FAQ, Icon Navigation, and Dynamic Form patterns.
-          </p>
+            <h1 className="text-2xl font-black tracking-tight text-white sm:text-3xl">
+              Accordion{" "}
+              <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                & Disclosure Systems
+              </span>
+            </h1>
+
+            <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-slate-400">
+              Modular, accessible accordion components with shared compound primitives. Includes Numbered FAQ, Filter Selection, Simple FAQ, Icon Navigation, and Dynamic Form patterns.
+            </p>
+          </div>
         </div>
+
+        <button
+          type="button"
+          onClick={onCustomize}
+          className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-xs font-semibold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:to-pink-500 text-white shadow-lg shadow-indigo-500/25 active:scale-[0.98] transition-all cursor-pointer shrink-0 self-start sm:self-auto"
+        >
+          <Sparkles className="w-4 h-4" />
+          <span>Launch Customizer</span>
+        </button>
       </div>
     </header>
   );
@@ -253,6 +265,7 @@ function AccordionCardPreview({ id }) {
 
 export default function AccordionPage() {
   const [selectedAccordion, setSelectedAccordion] = useState(null);
+  const [activeTab, setActiveTab] = useState("collection");
   const navigate = useNavigate();
 
   // State for Filter Accordion live demo
@@ -305,32 +318,74 @@ export default function AccordionPage() {
       <Breadcrumbs onHome={() => navigate("/")} />
 
       {/* 2. Hero Header */}
-      <PageHeader />
+      <PageHeader onCustomize={() => navigate("/accordion/customize")} />
 
-      {/* 3. Component Collection Cards (Showcase Grid) */}
-      <section className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-white flex items-center gap-2">
-            <Layers className="w-5 h-5 text-indigo-400" />
-            <span>Component Registry Overview</span>
-          </h2>
-          <span className="text-xs text-slate-400">Click any card to inspect JSX code & documentation</span>
+      {/* 3. Tab Switcher & Quick Customize Action */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-1.5 p-1 bg-slate-100 dark:bg-slate-950/80 rounded-2xl border border-slate-200 dark:border-slate-800 self-start">
+          <button
+            type="button"
+            onClick={() => setActiveTab("collection")}
+            className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              activeTab === "collection"
+                ? "bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm"
+                : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+            }`}
+          >
+            Browse Patterns ({accordionComponents.length})
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("my-designs")}
+            className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeTab === "my-designs"
+                ? "bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm"
+                : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+            <span>My Saved Accordions</span>
+          </button>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {accordionComponents.map((item) => (
-            <ShowcaseCard
-              key={item.id}
-              title={item.name}
-              description={item.description}
-              tag={item.tag}
-              theme={item.theme}
-              preview={<AccordionCardPreview id={item.id} />}
-              onClick={() => handleSelect(item.id)}
-            />
-          ))}
-        </div>
-      </section>
+        <button
+          type="button"
+          onClick={() => navigate("/accordion/customize")}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:to-pink-500 text-white shadow-md shadow-indigo-500/25 active:scale-[0.98] transition-all cursor-pointer self-start sm:self-auto"
+        >
+          <Sparkles className="w-4 h-4" />
+          <span>🎨 Open Accordion Customizer</span>
+        </button>
+      </div>
+
+      {activeTab === "my-designs" ? (
+        <MyCustomizedAccordions onNewAccordion={() => navigate("/accordion/customize")} />
+      ) : (
+        <>
+          {/* 4. Component Collection Cards (Showcase Grid) */}
+          <section className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                <Layers className="w-5 h-5 text-indigo-400" />
+                <span>Component Registry Overview</span>
+              </h2>
+              <span className="text-xs text-slate-400">Click any card to inspect JSX code &amp; documentation</span>
+            </div>
+
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+              {accordionComponents.map((item) => (
+                <ShowcaseCard
+                  key={item.id}
+                  title={item.name}
+                  description={item.description}
+                  tag={item.tag}
+                  theme={item.theme}
+                  preview={<AccordionCardPreview id={item.id} />}
+                  onClick={() => handleSelect(item.id)}
+                />
+              ))}
+            </div>
+          </section>
 
       {/* 4. LIVE INTERACTIVE DEMONSTRATION SECTION */}
       <section className="space-y-12 pt-6 border-t border-slate-800/80">
@@ -668,6 +723,8 @@ export default function AccordionPage() {
           </div>
         </div>
       </section>
+        </>
+      )}
     </div>
   );
 }

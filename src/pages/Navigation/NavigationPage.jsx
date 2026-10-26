@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import ShowcaseCard from "@/components/common/ShowcaseCard/ShowcaseCard";
 import NavigationDetails from "./NavigationDetails";
+import MyCustomizedNavigation from "./components/MyCustomizedNavigation";
 import { navigationComponents } from "./navigation.config";
 import {
   NavbarDemo,
@@ -59,34 +60,45 @@ function Breadcrumbs({ onHome }) {
 }
 
 /* Page Hero Banner */
-function PageHeader() {
+function PageHeader({ onCustomize }) {
   return (
     <header className="relative overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-950/50 px-5 py-6 shadow-xl shadow-black/10 sm:px-8">
       <div className="pointer-events-none absolute -left-16 -top-16 h-40 w-40 rounded-full bg-indigo-600/15 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-purple-600/15 blur-3xl" />
 
-      <div className="relative flex items-center gap-5">
-        <div className="hidden h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white shadow-xl shadow-indigo-500/25 sm:flex">
-          <Compass className="h-7 w-7" />
-        </div>
-
-        <div className="min-w-0">
-          <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-indigo-500/25 bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-300">
-            <Sparkles className="h-3.5 w-3.5" />
-            14 Production Navigation & Component State Patterns
+      <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+        <div className="flex items-center gap-5">
+          <div className="hidden h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white shadow-xl shadow-indigo-500/25 sm:flex">
+            <Compass className="h-7 w-7" />
           </div>
 
-          <h1 className="text-2xl font-black tracking-tight text-white sm:text-3xl">
-            Navigation{" "}
-            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              & Component States
-            </span>
-          </h1>
+          <div className="min-w-0">
+            <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-indigo-500/25 bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-300">
+              <Sparkles className="h-3.5 w-3.5" />
+              14 Production Navigation & Component State Patterns
+            </div>
 
-          <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-slate-400">
-            Enterprise navigation architectures supporting active route states, responsive mobile menus, keyboard navigation, collapsible panels, and robust browser history integration.
-          </p>
+            <h1 className="text-2xl font-black tracking-tight text-white sm:text-3xl">
+              Navigation{" "}
+              <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                & Component States
+              </span>
+            </h1>
+
+            <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-slate-400">
+              Enterprise navigation architectures supporting active route states, responsive mobile menus, keyboard navigation, collapsible panels, and robust browser history integration.
+            </p>
+          </div>
         </div>
+
+        <button
+          type="button"
+          onClick={onCustomize}
+          className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-xs font-semibold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:to-pink-500 text-white shadow-lg shadow-indigo-500/25 active:scale-[0.98] transition-all cursor-pointer shrink-0 self-start sm:self-auto"
+        >
+          <Sparkles className="w-4 h-4" />
+          <span>Launch Customizer</span>
+        </button>
       </div>
     </header>
   );
@@ -212,6 +224,7 @@ function NavigationCardPreview({ id }) {
 export default function NavigationPage() {
   const [selectedComponent, setSelectedComponent] = useState(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState("all");
+  const [activeTab, setActiveTab] = useState("collection");
   const navigate = useNavigate();
 
   const handleSelect = (slug) => {
@@ -241,25 +254,67 @@ export default function NavigationPage() {
       <Breadcrumbs onHome={() => navigate("/")} />
 
       {/* 2. Hero Header */}
-      <PageHeader />
+      <PageHeader onCustomize={() => navigate("/navigation/customize")} />
 
-      {/* 3. SubCategory Filter Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1">
-        {subCategories.map((sub) => (
+      {/* 3. Tab Switcher & Quick Customize Action */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-1.5 p-1 bg-slate-100 dark:bg-slate-950/80 rounded-2xl border border-slate-200 dark:border-slate-800 self-start">
           <button
-            key={sub}
             type="button"
-            onClick={() => setSelectedSubCategory(sub)}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
-              selectedSubCategory === sub
-                ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-                : "bg-slate-900/80 border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800"
+            onClick={() => setActiveTab("collection")}
+            className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              activeTab === "collection"
+                ? "bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm"
+                : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
-            {sub === "all" ? "All Components (14)" : sub}
+            Browse Components ({navigationComponents.length})
           </button>
-        ))}
+          <button
+            type="button"
+            onClick={() => setActiveTab("my-designs")}
+            className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeTab === "my-designs"
+                ? "bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm"
+                : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+            <span>My Saved Navigation</span>
+          </button>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => navigate("/navigation/customize")}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:to-pink-500 text-white shadow-md shadow-indigo-500/25 active:scale-[0.98] transition-all cursor-pointer self-start sm:self-auto"
+        >
+          <Sparkles className="w-4 h-4" />
+          <span>🎨 Open Navigation Customizer</span>
+        </button>
       </div>
+
+      {activeTab === "my-designs" ? (
+        <MyCustomizedNavigation onNewNavigation={() => navigate("/navigation/customize")} />
+      ) : (
+        <>
+          {/* SubCategory Filter Pills */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-1">
+            {subCategories.map((sub) => (
+              <button
+                key={sub}
+                type="button"
+                onClick={() => setSelectedSubCategory(sub)}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
+                  selectedSubCategory === sub
+                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                    : "bg-slate-900/80 border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800"
+                }`}
+              >
+                {sub === "all" ? "All Components (14)" : sub}
+              </button>
+            ))}
+          </div>
 
       {/* 4. Showcase Cards Catalog Grid */}
       <section className="space-y-4">
@@ -541,6 +596,8 @@ export default function NavigationPage() {
           <NavigationDrawerDemo />
         </div>
       </section>
+      </>
+      )}
     </div>
   );
 }

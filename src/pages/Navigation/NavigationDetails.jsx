@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { Sparkles } from "lucide-react";
 import { getComponent } from "@/codeRegistry/codeRegistry";
 import ComponentDetailsView from "@/components/common/ComponentDetailsView/ComponentDetailsView";
 import { navigateBackOrFallback } from "@/components/common/Navigation/navigationUtils";
@@ -105,6 +106,29 @@ export default function NavigationDetails({ selected, onBack, onNavigateHome }) 
     }
   };
 
+  const handleCustomize = () => {
+    navigate(`/navigation/customize?template=${currentSlug}`);
+  };
+
+  const renderSidebar = () => (
+    <div className="p-4 rounded-2xl bg-gradient-to-br from-indigo-950/40 via-purple-950/20 to-slate-900/60 border border-indigo-500/20 space-y-3">
+      <div className="flex items-center gap-2 text-indigo-400">
+        <Sparkles className="w-4 h-4" />
+        <span className="text-xs font-bold uppercase tracking-wider">Interactive Customizer</span>
+      </div>
+      <p className="text-xs text-slate-400 leading-relaxed">
+        Live-tune dimensions, positions, color schemes, active route indicators, menus, and responsive behavior in the customizer studio.
+      </p>
+      <button
+        type="button"
+        onClick={handleCustomize}
+        className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 shadow-md shadow-indigo-500/30 active:scale-[0.98] transition-all cursor-pointer"
+      >
+        <span>⚡ Customize This Navigation</span>
+      </button>
+    </div>
+  );
+
   return (
     <ComponentDetailsView
       component={component}
@@ -119,6 +143,7 @@ export default function NavigationDetails({ selected, onBack, onNavigateHome }) 
       onBack={handleBack}
       onNavigateHome={handleHome}
       renderCustomPreview={renderCustomPreview}
+      renderSidebar={renderSidebar}
     />
   );
 }

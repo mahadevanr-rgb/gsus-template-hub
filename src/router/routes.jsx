@@ -77,6 +77,18 @@ const NavigationPage = lazy(() => import("@/pages/Navigation/NavigationPage"));
 const NavigationDetails = lazy(
   () => import("@/pages/Navigation/NavigationDetails"),
 );
+const AccordionCustomizerPage = lazy(
+  () => import("@/pages/Accordion/customizer/AccordionCustomizerPage"),
+);
+const ModalOverlayCustomizerPage = lazy(
+  () => import("@/pages/ModalOverlay/customizer/ModalOverlayCustomizerPage"),
+);
+const FileSystemCustomizerPage = lazy(
+  () => import("@/pages/FileSystem/customizer/FileSystemCustomizerPage"),
+);
+const NavigationCustomizerPage = lazy(
+  () => import("@/pages/Navigation/customizer/NavigationCustomizerPage"),
+);
 
 const SelectionSearchPage = lazy(() => import("@/pages/SelectionSearch/page"));
 const ThemeFormDesign = lazy(() =>
@@ -129,15 +141,35 @@ export const routes = [
   { path: "/tables-dashboard/:id", element: <TablesDashboardPage /> },
 
   { path: "/accordion", element: <AccordionPage /> },
+  { path: "/accordion/customize", element: <AccordionCustomizerPage /> },
+  { path: "/accordion/customize/:id", element: <AccordionCustomizerPage /> },
   { path: "/accordion/:id", element: <AccordionDetails /> },
 
   { path: "/modal-overlay", element: <ModalOverlayPage /> },
+  {
+    path: "/modal-overlay/customize",
+    element: <ModalOverlayCustomizerPage />,
+  },
+  {
+    path: "/modal-overlay/customize/:id",
+    element: <ModalOverlayCustomizerPage />,
+  },
   { path: "/modal-overlay/:id", element: <ModalOverlayDetails /> },
 
   { path: "/file-system", element: <FileSystemPage /> },
+  { path: "/file-system/customize", element: <FileSystemCustomizerPage /> },
+  {
+    path: "/file-system/customize/:id",
+    element: <FileSystemCustomizerPage />,
+  },
   { path: "/file-system/:id", element: <FileSystemDetails /> },
 
   { path: "/navigation", element: <NavigationPage /> },
+  { path: "/navigation/customize", element: <NavigationCustomizerPage /> },
+  {
+    path: "/navigation/customize/:id",
+    element: <NavigationCustomizerPage />,
+  },
   { path: "/navigation/:id", element: <NavigationDetails /> },
 
   { path: "/selection-search", element: <SelectionSearchPage /> },
