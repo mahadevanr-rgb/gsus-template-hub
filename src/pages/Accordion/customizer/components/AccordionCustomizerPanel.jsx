@@ -29,132 +29,15 @@ import {
 } from "../accordionCustomizerConfig";
 import { generateItemId } from "../accordionCustomizationUtils";
 
-/* ─────────────────────────────────────────────────────────────────────────── */
-/* Reusable Control Primitives                                                  */
-/* ─────────────────────────────────────────────────────────────────────────── */
+import {
+  CollapsibleSection,
+  ControlRow,
+  ColorInput,
+  RangeInput,
+  SelectInput,
+  Toggle,
+} from "@/components/common/Customizer/CustomizerPrimitives";
 
-function CollapsibleSection({ title, icon: Icon, isOpen, onToggle, children }) {
-  return (
-    <div className="rounded-xl border border-slate-800 overflow-hidden">
-      <button
-        type="button"
-        onClick={onToggle}
-        className="w-full flex items-center justify-between px-3 py-2.5 bg-slate-900/60 hover:bg-slate-800/60 transition-colors cursor-pointer"
-      >
-        <div className="flex items-center gap-2">
-          {Icon && <Icon className="w-3.5 h-3.5 text-indigo-400 shrink-0" />}
-          <span className="text-xs font-semibold text-slate-200">{title}</span>
-        </div>
-        {isOpen ? (
-          <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
-        ) : (
-          <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
-        )}
-      </button>
-      {isOpen && <div className="p-3 space-y-3 bg-[#0b0f19]">{children}</div>}
-    </div>
-  );
-}
-
-function ControlRow({ label, children }) {
-  return (
-    <div className="flex items-center justify-between gap-2">
-      <span className="text-[11px] text-slate-400 shrink-0 min-w-0 leading-tight">
-        {label}
-      </span>
-      <div className="flex items-center gap-1 shrink-0">{children}</div>
-    </div>
-  );
-}
-
-function toHex7(c) {
-  if (!c || typeof c !== "string") return "#000000";
-  const trimmed = c.trim();
-  if (/^#[0-9a-fA-F]{6}$/.test(trimmed)) return trimmed;
-  if (/^#[0-9a-fA-F]{3}$/.test(trimmed)) {
-    return `#${trimmed[1]}${trimmed[1]}${trimmed[2]}${trimmed[2]}${trimmed[3]}${trimmed[3]}`;
-  }
-  return "#6366f1";
-}
-
-function ColorInput({ value, onChange, label }) {
-  return (
-    <div className="flex items-center gap-1.5">
-      <input
-        type="color"
-        value={toHex7(value)}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-7 h-7 rounded-lg cursor-pointer border border-slate-700 bg-transparent"
-        title={label}
-      />
-      <input
-        type="text"
-        value={value || ""}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-20 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-[11px] font-mono text-slate-300 focus:outline-none focus:border-indigo-500"
-        placeholder="#000000"
-      />
-    </div>
-  );
-}
-
-function RangeInput({ value, onChange, min = 0, max = 100, step = 1, unit = "px" }) {
-  const num = parseFloat(value) || 0;
-  return (
-    <div className="flex items-center gap-2">
-      <input
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={num}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-20 accent-indigo-500"
-      />
-      <span className="text-[11px] font-mono text-slate-300 w-10 text-right">
-        {num}{unit}
-      </span>
-    </div>
-  );
-}
-
-function SelectInput({ value, onChange, options }) {
-  return (
-    <select
-      value={value || ""}
-      onChange={(e) => onChange(e.target.value)}
-      className="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-[11px] text-slate-300 focus:outline-none focus:border-indigo-500 cursor-pointer max-w-[140px]"
-    >
-      {options.map((opt) => (
-        <option key={opt.value} value={opt.value}>
-          {opt.label}
-        </option>
-      ))}
-    </select>
-  );
-}
-
-function Toggle({ checked, onChange, label }) {
-  return (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={checked}
-      onClick={() => onChange(!checked)}
-      className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors cursor-pointer ${
-        checked ? "bg-indigo-600" : "bg-slate-700"
-      }`}
-      title={label}
-    >
-      <span
-        className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${
-          checked ? "translate-x-4.5" : "translate-x-0.5"
-        }`}
-        style={{ transform: checked ? "translateX(18px)" : "translateX(2px)" }}
-      />
-    </button>
-  );
-}
 
 /* ─────────────────────────────────────────────────────────────────────────── */
 /* Item Editor                                                                  */
@@ -592,7 +475,7 @@ export default function AccordionCustomizerPanel({
   };
 
   return (
-    <div className="w-full h-full overflow-y-auto min-h-0 bg-[#0d1322] border-r border-slate-800 p-3 space-y-2.5 [scrollbar-width:thin] [scrollbar-color:#334155_transparent] select-none text-xs text-slate-300">
+    <div className="w-full h-full overflow-y-auto min-h-0 bg-white dark:bg-[#0d1322] border-r border-slate-200 dark:border-slate-800 p-3.5 sm:p-4 space-y-3 [scrollbar-width:thin] [scrollbar-color:#94a3b8_transparent] dark:[scrollbar-color:#334155_transparent] select-none text-xs text-slate-700 dark:text-slate-300">
       {/* ═══════════════════════════════════════════════════════════════════ */}
       {/* 1. GENERAL                                                          */}
       {/* ═══════════════════════════════════════════════════════════════════ */}

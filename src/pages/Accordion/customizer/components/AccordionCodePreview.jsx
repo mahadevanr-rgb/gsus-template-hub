@@ -128,21 +128,31 @@ export default function AccordionCodePreview({ config, onLoadConfig }) {
           {onLoadConfig && (
             <button
               onClick={() => setShowImportModal(true)}
-              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl font-medium text-xs bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 transition-colors cursor-pointer"
               title="Import Config JSON"
             >
-              <Upload className="w-3.5 h-3.5" />
+              <Upload className="w-3.5 h-3.5 text-indigo-400" />
               <span className="hidden sm:inline">Import</span>
             </button>
           )}
 
+          {/* Download */}
+          <button
+            onClick={handleDownload}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl font-medium text-xs bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 transition-colors cursor-pointer"
+            title="Download File"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Download</span>
+          </button>
+
           {/* Copy */}
           <button
             onClick={handleCopy}
-            className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl font-semibold transition-colors cursor-pointer ${
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl font-semibold text-xs text-white shadow-sm transition-all cursor-pointer ${
               copied
-                ? "bg-emerald-600 text-white"
-                : "text-slate-400 hover:text-white hover:bg-slate-800"
+                ? "bg-emerald-600"
+                : "bg-indigo-600 hover:bg-indigo-500"
             }`}
             title="Copy to Clipboard"
           >
@@ -151,17 +161,7 @@ export default function AccordionCodePreview({ config, onLoadConfig }) {
             ) : (
               <Copy className="w-3.5 h-3.5" />
             )}
-            <span className="hidden sm:inline">{copied ? "Copied!" : "Copy"}</span>
-          </button>
-
-          {/* Download */}
-          <button
-            onClick={handleDownload}
-            className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
-            title="Download File"
-          >
-            <Download className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Download</span>
+            <span>{copied ? "Copied!" : "Copy"}</span>
           </button>
         </div>
       </div>

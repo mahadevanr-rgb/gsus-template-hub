@@ -91,7 +91,7 @@ export default function CardCustomizerPanel({ config, updateConfig }) {
   };
 
   return (
-    <div className="w-full h-full overflow-y-auto min-h-0 bg-[#0d1322] border-r border-slate-800 p-4 space-y-3 [scrollbar-width:thin] [scrollbar-color:#334155_transparent] select-none text-xs text-slate-300">
+    <div className="w-full h-full overflow-y-auto min-h-0 bg-white dark:bg-[#0d1322] border-r border-slate-200 dark:border-slate-800 p-4 space-y-3 [scrollbar-width:thin] [scrollbar-color:#94a3b8_transparent] dark:[scrollbar-color:#334155_transparent] select-none text-xs text-slate-700 dark:text-slate-300">
       {/* =========================================================================
           SECTION 1: Content & Fields (Card-Type-Aware)
          ========================================================================= */}
@@ -879,29 +879,35 @@ function renderContentEditor({ sourceCardId, content, updateConfig }) {
 // Collapsible Section Container
 function CollapsibleSection({ title, icon: Icon, isOpen, onToggle, badge, children }) {
   return (
-    <div className="border border-slate-800 rounded-2xl bg-slate-900/40 overflow-hidden transition-colors">
+    <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40 overflow-hidden transition-all duration-200">
       <button
         type="button"
         onClick={onToggle}
-        className="w-full flex items-center justify-between p-3.5 text-left font-bold text-slate-200 hover:text-white hover:bg-slate-800/40 transition-colors"
+        className="w-full flex items-center justify-between px-3.5 py-2.5 bg-slate-100/70 hover:bg-slate-200/60 dark:bg-slate-900/60 dark:hover:bg-slate-800/60 transition-colors cursor-pointer text-left select-none"
       >
-        <div className="flex items-center gap-2">
-          <Icon className="w-4 h-4 text-indigo-400 shrink-0" />
-          <span className="text-xs">{title}</span>
+        <div className="flex items-center gap-2 min-w-0">
+          {Icon && <Icon className="w-4 h-4 text-indigo-500 dark:text-indigo-400 shrink-0" />}
+          <span className="font-bold text-xs text-slate-800 dark:text-slate-200 tracking-tight truncate">
+            {title}
+          </span>
           {badge && (
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 uppercase">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 uppercase">
               {badge}
             </span>
           )}
         </div>
         {isOpen ? (
-          <ChevronDown className="w-4 h-4 text-slate-500" />
+          <ChevronDown className="w-4 h-4 text-slate-400 dark:text-slate-500" />
         ) : (
-          <ChevronRight className="w-4 h-4 text-slate-500" />
+          <ChevronRight className="w-4 h-4 text-slate-400 dark:text-slate-500" />
         )}
       </button>
 
-      {isOpen && <div className="p-3.5 pt-0 space-y-3 border-t border-slate-800/60 mt-1">{children}</div>}
+      {isOpen && (
+        <div className="p-3.5 space-y-3 border-t border-slate-200/80 dark:border-slate-800/80 bg-white/50 dark:bg-[#0b0f19]/60">
+          {children}
+        </div>
+      )}
     </div>
   );
 }
@@ -910,12 +916,12 @@ function CollapsibleSection({ title, icon: Icon, isOpen, onToggle, badge, childr
 function TextInput({ label, value, onChange }) {
   return (
     <div className="space-y-1">
-      <label className="text-[11px] text-slate-400 block">{label}</label>
+      <label className="text-[11px] font-medium text-slate-500 dark:text-slate-400 block">{label}</label>
       <input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-slate-200 text-xs focus:outline-none focus:border-indigo-500"
+        className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-1.5 text-slate-800 dark:text-slate-200 text-xs focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30"
       />
     </div>
   );
@@ -924,19 +930,19 @@ function TextInput({ label, value, onChange }) {
 function ColorPickerRow({ label, value, onChange }) {
   return (
     <div className="flex items-center justify-between gap-2">
-      <span className="text-slate-400 text-xs truncate">{label}</span>
+      <span className="text-slate-500 dark:text-slate-400 text-xs truncate">{label}</span>
       <div className="flex items-center gap-2 shrink-0">
         <input
           type="color"
           value={value?.startsWith("#") ? value : "#6366f1"}
           onChange={(e) => onChange(e.target.value)}
-          className="w-7 h-7 rounded-lg border border-slate-700 bg-transparent cursor-pointer p-0.5"
+          className="w-7 h-7 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent cursor-pointer p-0.5"
         />
         <input
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-20 bg-slate-900 border border-slate-800 rounded-md px-2 py-1 text-[11px] font-mono text-slate-200"
+          className="w-20 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-2 py-1 text-[11px] font-mono text-slate-800 dark:text-slate-200 focus:outline-none focus:border-indigo-500"
         />
       </div>
     </div>
@@ -947,8 +953,8 @@ function SliderRow({ label, value, min, max, unit = "", onChange }) {
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-xs">
-        <span className="text-slate-400">{label}</span>
-        <span className="font-mono text-indigo-400 font-semibold">
+        <span className="text-slate-500 dark:text-slate-400">{label}</span>
+        <span className="font-mono text-indigo-600 dark:text-indigo-400 font-semibold">
           {value}
           {unit}
         </span>
@@ -959,7 +965,7 @@ function SliderRow({ label, value, min, max, unit = "", onChange }) {
         max={max}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+        className="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
       />
     </div>
   );

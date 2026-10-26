@@ -28,94 +28,16 @@ import {
   FONT_OPTIONS,
 } from "../modalOverlayCustomizerConfig";
 
-/* ─────────────────────────────────────────────────────────────────────────── */
-/* Helpers & Control Primitives                                               */
-/* ─────────────────────────────────────────────────────────────────────────── */
+import {
+  CollapsibleSection,
+  ControlRow,
+  ColorInput,
+  RangeInput,
+  SelectInput,
+  Toggle,
+  TextInput,
+} from "@/components/common/Customizer/CustomizerPrimitives";
 
-function CollapsibleSection({ title, icon: Icon, isOpen, onToggle, children }) {
-  return (
-    <div className="rounded-xl border border-slate-800 overflow-hidden">
-      <button
-        type="button"
-        onClick={onToggle}
-        className="w-full flex items-center justify-between px-3 py-2.5 bg-slate-900/60 hover:bg-slate-800/60 transition-colors cursor-pointer"
-      >
-        <div className="flex items-center gap-2">
-          {Icon && <Icon className="w-3.5 h-3.5 text-indigo-400 shrink-0" />}
-          <span className="text-xs font-semibold text-slate-200">{title}</span>
-        </div>
-        {isOpen ? (
-          <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
-        ) : (
-          <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
-        )}
-      </button>
-      {isOpen && <div className="p-3 space-y-3 bg-[#0b0f19]">{children}</div>}
-    </div>
-  );
-}
-
-function ControlRow({ label, children, tooltip }) {
-  return (
-    <div className="flex items-center justify-between gap-2">
-      <span className="text-[11px] text-slate-400 shrink-0 min-w-0 leading-tight" title={tooltip}>
-        {label}
-      </span>
-      <div className="flex items-center gap-1 shrink-0">{children}</div>
-    </div>
-  );
-}
-
-function toHex7(c) {
-  if (!c || typeof c !== "string") return "#000000";
-  const trimmed = c.trim();
-  if (/^#[0-9a-fA-F]{6}$/.test(trimmed)) return trimmed;
-  if (/^#[0-9a-fA-F]{3}$/.test(trimmed)) {
-    return `#${trimmed[1]}${trimmed[1]}${trimmed[2]}${trimmed[2]}${trimmed[3]}${trimmed[3]}`;
-  }
-  return "#6366f1";
-}
-
-function ColorInput({ value, onChange, label }) {
-  return (
-    <div className="flex items-center gap-1.5">
-      <input
-        type="color"
-        value={toHex7(value)}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-7 h-7 rounded-lg cursor-pointer border border-slate-700 bg-transparent"
-        title={label}
-      />
-      <input
-        type="text"
-        value={value || ""}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-20 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-[11px] font-mono text-slate-300 focus:outline-none focus:border-indigo-500"
-        placeholder="#000000"
-      />
-    </div>
-  );
-}
-
-function RangeInput({ value, onChange, min = 0, max = 100, step = 1, unit = "px" }) {
-  const num = parseFloat(value) || 0;
-  return (
-    <div className="flex items-center gap-2">
-      <input
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={num}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="w-20 accent-indigo-500"
-      />
-      <span className="text-[11px] font-mono text-slate-300 w-10 text-right">
-        {num}{unit}
-      </span>
-    </div>
-  );
-}
 
 /* ─────────────────────────────────────────────────────────────────────────── */
 /* Main Panel Component                                                       */
@@ -262,22 +184,22 @@ export default function OverlayCustomizerPanel({ config, updateConfig }) {
   };
 
   return (
-    <div className="w-80 lg:w-88 shrink-0 h-full border-r border-slate-800 bg-[#090d16] flex flex-col overflow-hidden select-none">
+    <div className="w-full h-full border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0d1322] flex flex-col overflow-hidden select-none">
       {/* Header */}
-      <div className="px-4 py-3 border-b border-slate-800 flex items-center justify-between bg-slate-900/60">
+      <div className="px-4 py-3 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-900/60">
         <div className="flex items-center gap-2">
-          <Sliders className="w-4 h-4 text-indigo-400" />
-          <span className="text-xs font-bold text-slate-100 uppercase tracking-wider">
+          <Sliders className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />
+          <span className="text-xs font-bold text-slate-800 dark:text-slate-100 uppercase tracking-wider">
             Configuration Studio
           </span>
         </div>
-        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
           {pattern}
         </span>
       </div>
 
       {/* Scrollable controls list */}
-      <div className="flex-1 overflow-y-auto p-3 space-y-3 custom-scrollbar">
+      <div className="flex-1 overflow-y-auto p-3.5 sm:p-4 space-y-3 [scrollbar-width:thin] [scrollbar-color:#94a3b8_transparent] dark:[scrollbar-color:#334155_transparent] text-slate-700 dark:text-slate-300">
         {/* 1. GENERAL */}
         <CollapsibleSection
           title="General Settings"

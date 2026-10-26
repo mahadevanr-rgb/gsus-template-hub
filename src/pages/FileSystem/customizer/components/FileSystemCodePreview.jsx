@@ -98,7 +98,7 @@ export default function FileSystemCodePreview({ config, onLoadConfig }) {
               onClick={() => setActiveTab(tab.id)}
               className={`px-3 py-1.5 rounded-xl font-semibold transition-colors shrink-0 cursor-pointer ${
                 activeTab === tab.id
-                  ? "bg-emerald-600 text-white shadow-sm"
+                  ? "bg-indigo-600 text-white shadow-sm"
                   : "text-slate-400 hover:text-white hover:bg-slate-800"
               }`}
             >
@@ -107,25 +107,34 @@ export default function FileSystemCodePreview({ config, onLoadConfig }) {
           ))}
         </div>
 
-        {/* Action Buttons: Import, Copy, Download */}
-        <div className="flex items-center gap-2 shrink-0">
-          {activeTab === "json" && onLoadConfig && (
+        {/* Action Buttons: Import, Download, Copy */}
+        <div className="flex items-center gap-1.5 shrink-0">
+          {onLoadConfig && (
             <button
               onClick={() => setShowImportModal(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl font-medium bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 transition-colors cursor-pointer"
               title="Import JSON configuration"
             >
-              <Upload className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Import JSON</span>
+              <Upload className="w-3.5 h-3.5 text-indigo-400" />
+              <span className="hidden sm:inline">Import</span>
             </button>
           )}
 
           <button
+            onClick={handleDownload}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl font-medium bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 transition-colors cursor-pointer"
+            title="Download active file"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Download</span>
+          </button>
+
+          <button
             onClick={handleCopy}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium transition-colors cursor-pointer ${
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl font-semibold text-white shadow-sm transition-all cursor-pointer ${
               copied
-                ? "bg-emerald-600 text-white shadow-sm"
-                : "bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700"
+                ? "bg-emerald-600"
+                : "bg-indigo-600 hover:bg-indigo-500"
             }`}
           >
             {copied ? (
@@ -139,15 +148,6 @@ export default function FileSystemCodePreview({ config, onLoadConfig }) {
                 <span>Copy</span>
               </>
             )}
-          </button>
-
-          <button
-            onClick={handleDownload}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm transition-colors cursor-pointer"
-            title="Download active file"
-          >
-            <Download className="w-3.5 h-3.5" />
-            <span>Download</span>
           </button>
         </div>
       </div>

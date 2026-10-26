@@ -1,6 +1,10 @@
 import React from "react";
 import FileSystemLiveRenderer from "./FileSystemLiveRenderer";
-import { Monitor, Tablet, Smartphone, ZoomIn, ZoomOut } from "lucide-react";
+import {
+  CanvasZoomControls,
+  CanvasBackdropSelector,
+} from "../../../../components/common/Customizer/CustomizerPrimitives";
+import { Monitor, Tablet, Smartphone } from "lucide-react";
 
 export default function FileSystemPreviewCanvas({
   config,
@@ -63,16 +67,16 @@ export default function FileSystemPreviewCanvas({
       className={`relative w-full h-full overflow-auto p-4 sm:p-6 select-none transition-colors duration-300 flex ${getCanvasBackground()}`}
     >
       {/* Viewport & Resolution Info Pill */}
-      <div className="absolute top-4 left-4 z-20 flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 backdrop-blur-md border border-slate-800 text-[11px] text-slate-400 font-mono shadow-lg">
-        <ViewportIcon className="w-3.5 h-3.5 text-emerald-400" />
+      <div className="absolute top-4 left-4 z-20 flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-400 font-mono shadow-lg">
+        <ViewportIcon className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
         <span className="hidden sm:inline">{viewportInfo.label}</span>
         <span className="sm:hidden">{viewportMode.toUpperCase()}</span>
-        <span className="text-slate-600">|</span>
-        <span className="text-emerald-400">{zoom}%</span>
+        <span className="text-slate-400 dark:text-slate-600">|</span>
+        <span className="text-indigo-600 dark:text-indigo-400 font-semibold">{zoom}%</span>
       </div>
 
-      {/* Scaling Stage Centered */}
-      <div className="m-auto flex items-center justify-center min-w-full py-8 pb-20">
+      {/* Scaling Stage Centered with pb-36 dock clearance */}
+      <div className="m-auto flex items-center justify-center min-w-full py-8 pb-36">
         <div
           className="transition-transform duration-200 ease-out origin-center flex items-center justify-center w-full"
           style={{ transform: `scale(${zoom / 100})` }}
@@ -94,55 +98,21 @@ export default function FileSystemPreviewCanvas({
       </div>
 
       {/* Floating Canvas Controls Dock (Zoom & Canvas Backdrop) */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 p-1.5 rounded-2xl bg-slate-900/90 backdrop-blur-md border border-slate-800 shadow-2xl text-xs select-none">
-        {/* Zoom Out / Percent / Zoom In */}
-        <div className="flex items-center gap-0.5 bg-slate-950/60 rounded-xl p-0.5 border border-slate-800/60">
-          <button
-            onClick={() => onZoomChange && onZoomChange(Math.max(50, zoom - 25))}
-            className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
-            title="Zoom Out"
-          >
-            <ZoomOut className="w-3.5 h-3.5" />
-          </button>
-          <button
-            onClick={() => onZoomChange && onZoomChange(100)}
-            className="px-1.5 font-mono text-[11px] text-slate-300 hover:text-white text-center min-w-[36px] cursor-pointer"
-            title="Reset Zoom to 100%"
-          >
-            {zoom}%
-          </button>
-          <button
-            onClick={() => onZoomChange && onZoomChange(Math.min(125, zoom + 25))}
-            className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
-            title="Zoom In"
-          >
-            <ZoomIn className="w-3.5 h-3.5" />
-          </button>
-        </div>
+      <div className="sticky sm:fixed lg:absolute bottom-5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 p-1.5 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200 dark:border-slate-800 shadow-2xl text-xs select-none pointer-events-auto">
+        <CanvasZoomControls
+          zoom={zoom}
+          onZoomChange={onZoomChange}
+          min={50}
+          max={150}
+          step={10}
+        />
 
-        <div className="w-[1px] h-4 bg-slate-800" />
+        <div className="w-[1px] h-4 bg-slate-200 dark:bg-slate-800 mx-0.5" />
 
-        {/* Canvas Backdrop Selector */}
-        <div className="flex items-center gap-1">
-          {[
-            { id: "dots", label: "Dots" },
-            { id: "dark", label: "Dark" },
-            { id: "light", label: "Light" },
-            { id: "gradient", label: "Mesh" },
-          ].map((bg) => (
-            <button
-              key={bg.id}
-              onClick={() => onCanvasBgChange && onCanvasBgChange(bg.id)}
-              className={`px-2.5 py-1 rounded-lg text-[10px] font-semibold transition-colors cursor-pointer ${
-                canvasBg === bg.id
-                  ? "bg-emerald-600 text-white shadow-sm"
-                  : "text-slate-400 hover:text-white hover:bg-slate-800/60"
-              }`}
-            >
-              {bg.label}
-            </button>
-          ))}
-        </div>
+        <CanvasBackdropSelector
+          canvasBg={canvasBg}
+          onCanvasBgChange={onCanvasBgChange}
+        />
       </div>
     </div>
   );

@@ -91,7 +91,7 @@ export default function FileSystemCustomizerPanel({ config, updateConfig, resetC
   };
 
   return (
-    <div className="w-full h-full overflow-y-auto min-h-0 bg-[#0d1322] border-r border-slate-800 p-4 space-y-3 [scrollbar-width:thin] [scrollbar-color:#334155_transparent] select-none text-xs text-slate-300">
+    <div className="w-full h-full overflow-y-auto min-h-0 bg-white dark:bg-[#0d1322] border-r border-slate-200 dark:border-slate-800 p-4 space-y-3 [scrollbar-width:thin] [scrollbar-color:#94a3b8_transparent] dark:[scrollbar-color:#334155_transparent] select-none text-xs text-slate-700 dark:text-slate-300">
       {/* =========================================================================
           SECTION 1: General & Labels
          ========================================================================= */}
@@ -959,15 +959,15 @@ export default function FileSystemCustomizerPanel({ config, updateConfig, resetC
  */
 function CollapsibleSection({ title, icon: Icon, isOpen, onToggle, onReset, children }) {
   return (
-    <div className="border border-slate-800 rounded-2xl bg-slate-900/40 overflow-hidden transition-colors">
+    <div className="border border-slate-200 dark:border-slate-800 rounded-2xl bg-slate-50/50 dark:bg-slate-900/40 overflow-hidden transition-colors">
       <button
         type="button"
         onClick={onToggle}
-        className="w-full flex items-center justify-between px-3.5 py-2.5 bg-slate-900/70 hover:bg-slate-850 text-left transition-colors cursor-pointer select-none"
+        className="w-full flex items-center justify-between px-3.5 py-2.5 bg-slate-100/70 hover:bg-slate-200/60 dark:bg-slate-900/70 dark:hover:bg-slate-850 text-left transition-colors cursor-pointer select-none"
       >
         <div className="flex items-center gap-2 min-w-0">
-          <Icon className="w-4 h-4 text-emerald-400 shrink-0" />
-          <span className="font-bold text-xs text-white tracking-tight truncate">{title}</span>
+          <Icon className="w-4 h-4 text-emerald-500 dark:text-emerald-400 shrink-0" />
+          <span className="font-bold text-xs text-slate-800 dark:text-white tracking-tight truncate">{title}</span>
         </div>
         <div className="flex items-center gap-1.5 shrink-0">
           {onReset && (
@@ -977,19 +977,19 @@ function CollapsibleSection({ title, icon: Icon, isOpen, onToggle, onReset, chil
                 onReset();
               }}
               title="Reset this section to defaults"
-              className="p-1 rounded text-slate-500 hover:text-rose-400 hover:bg-slate-800 transition-colors cursor-pointer"
+              className="p-1 rounded text-slate-400 hover:text-rose-500 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors cursor-pointer"
             >
               <RotateCcw className="w-3 h-3" />
             </span>
           )}
           {isOpen ? (
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+            <ChevronDown className="w-3.5 h-3.5 text-slate-400 dark:text-slate-400" />
           ) : (
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-400" />
           )}
         </div>
       </button>
-      {isOpen && <div className="p-3.5 border-t border-slate-800/80">{children}</div>}
+      {isOpen && <div className="p-3.5 border-t border-slate-200/80 dark:border-slate-800/80 bg-white/50 dark:bg-[#0b0f19]/60">{children}</div>}
     </div>
   );
 }
@@ -1000,7 +1000,7 @@ function CollapsibleSection({ title, icon: Icon, isOpen, onToggle, onReset, chil
 function ColorRow({ label, value, onChange }) {
   return (
     <div className="flex items-center justify-between gap-2">
-      <span className="text-[11px] text-slate-400 truncate">{label}</span>
+      <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 truncate">{label}</span>
       <div className="flex items-center gap-1.5 shrink-0">
         <input
           type="color"
@@ -1012,7 +1012,7 @@ function ColorRow({ label, value, onChange }) {
           type="text"
           value={value || ""}
           onChange={(e) => onChange(e.target.value)}
-          className="w-20 bg-slate-900 border border-slate-800 rounded-lg px-2 py-1 text-[11px] text-white font-mono focus:outline-none focus:border-emerald-500"
+          className="w-20 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-2 py-1 text-[11px] text-slate-800 dark:text-white font-mono focus:outline-none focus:border-emerald-500"
         />
       </div>
     </div>
