@@ -26,25 +26,38 @@ function FormAtomPreview({ id }) {
     case "textInput":
       return (
         <div className="w-full px-2">
-          <TextInput placeholder="Jane Doe" className="w-full pointer-events-none" />
+          <TextInput
+            placeholder="Jane Doe"
+            className="w-full pointer-events-none"
+          />
         </div>
       );
     case "passwordInput":
       return (
         <div className="w-full px-2">
-          <PasswordInput placeholder="••••••••" className="w-full pointer-events-none" />
+          <PasswordInput
+            placeholder="••••••••"
+            className="w-full pointer-events-none"
+          />
         </div>
       );
     case "textarea":
       return (
         <div className="w-full px-2">
-          <Textarea placeholder="Write a short summary..." rows={2} className="w-full pointer-events-none" />
+          <Textarea
+            placeholder="Write a short summary..."
+            rows={2}
+            className="w-full pointer-events-none"
+          />
         </div>
       );
     case "searchInput":
       return (
         <div className="w-full px-2">
-          <SearchInput placeholder="Search records..." className="w-full pointer-events-none" />
+          <SearchInput
+            placeholder="Search records..."
+            className="w-full pointer-events-none"
+          />
         </div>
       );
     case "selectDropdown":
@@ -60,14 +73,28 @@ function FormAtomPreview({ id }) {
     case "checkbox":
       return (
         <div className="flex items-center justify-center">
-          <Checkbox label="Agree to Terms & Conditions" checked={true} onChange={() => {}} />
+          <Checkbox
+            label="Agree to Terms & Conditions"
+            checked={true}
+            onChange={() => {}}
+          />
         </div>
       );
     case "radioButton":
       return (
         <div className="flex gap-4 items-center justify-center">
-          <RadioButton label="Monthly" value="m" selected="m" onChange={() => {}} />
-          <RadioButton label="Annual" value="a" selected="m" onChange={() => {}} />
+          <RadioButton
+            label="Monthly"
+            value="m"
+            selected="m"
+            onChange={() => {}}
+          />
+          <RadioButton
+            label="Annual"
+            value="a"
+            selected="m"
+            onChange={() => {}}
+          />
         </div>
       );
     case "switchToggle":
@@ -80,7 +107,13 @@ function FormAtomPreview({ id }) {
     case "rangeSlider":
       return (
         <div className="w-full px-3">
-          <RangeSlider min={0} max={100} value={65} onChange={() => {}} className="w-full" />
+          <RangeSlider
+            min={0}
+            max={100}
+            value={65}
+            onChange={() => {}}
+            className="w-full"
+          />
         </div>
       );
     case "dateInput":
@@ -90,7 +123,11 @@ function FormAtomPreview({ id }) {
         </div>
       );
     case "datePicker":
-      return <div className="w-full px-2"><DatePicker placeholder="Select date" /></div>;
+      return (
+        <div className="w-full px-2">
+          <DatePicker placeholder="Select date" />
+        </div>
+      );
     case "fileUpload":
       return (
         <div className="w-full p-3 rounded-xl border border-dashed border-slate-700 bg-slate-950/60 text-center text-xs text-slate-400">
@@ -106,7 +143,9 @@ function FormAtomPreview({ id }) {
     case "inputLabel":
       return (
         <div className="w-full px-3 text-left">
-          <InputLabel required>Email Address</InputLabel>
+          <InputLabel style={{ color: "#e2e8f0" }} required>
+            Email Address
+          </InputLabel>
         </div>
       );
     case "inputError":
@@ -193,7 +232,8 @@ export default function FormsPage() {
                 </h1>
 
                 <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-slate-400">
-                  Complete set of accessible, theme-aware form inputs, toggles, pickers, and helper primitives.
+                  Complete set of accessible, theme-aware form inputs, toggles,
+                  pickers, and helper primitives.
                 </p>
               </div>
             </div>

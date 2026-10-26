@@ -151,18 +151,18 @@ export default function CodePreviewPanel({
   };
 
   return (
-    <div className="custom-preview">
-      <div className="custom-preview-head">
+    <div className="flex min-h-[620px] flex-col max-[900px]:min-h-[420px]">
+      <div className="flex justify-between gap-3.5 border-b border-slate-200 dark:border-slate-700 px-4 py-3.5 text-[13px] text-slate-900 dark:text-slate-100">
         <strong>Live Preview</strong>
-        <div className="custom-preview-head-actions">
-          {enableScrollControl && <button type="button" className="custom-preview-scroll-toggle" aria-pressed={previewScrollable} onClick={() => setPreviewScrollable((current) => !current)}>Scroll preview: {previewScrollable ? "On" : "Off"}</button>}
-          <span>{busy ? "Compiling…" : runtimeError ? "Runtime unavailable" : preview ? "Updated" : "Click Update Preview to render"}</span>
+        <div className="flex min-w-0 items-center justify-end gap-3">
+          {enableScrollControl && <button type="button" aria-pressed={previewScrollable} onClick={() => setPreviewScrollable((current) => !current)} className={`shrink-0 rounded-lg border px-2 py-1.5 text-[11px] font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 ${previewScrollable ? "border-indigo-300 bg-indigo-50 text-indigo-700 dark:border-indigo-600 dark:bg-indigo-950 dark:text-indigo-200" : "border-slate-300 bg-white text-slate-600 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300"}`}>Scroll preview: {previewScrollable ? "On" : "Off"}</button>}
+          <span className="text-[11px] text-slate-500 dark:text-slate-400">{busy ? "Compiling…" : runtimeError ? "Runtime unavailable" : preview ? "Updated" : "Click Update Preview to render"}</span>
         </div>
       </div>
       {controls.length > 0 && <CodeCustomizationControls controls={controls} title={controlsTitle} previewProps={previewProps} onPropChange={onPropChange} />}
-      {(error || runtimeError) && <div className="custom-error" role="alert">{error || runtimeError}{runtimeError && <button type="button" onClick={retryRuntime}>Retry preview runtime</button>}</div>}
-      <iframe ref={frame} title={`${component.name} sandbox preview`} sandbox="allow-scripts" />
-      {!preview && !runtimeError && <div className="custom-preview-empty">Click Update Preview to render your component</div>}
+      {(error || runtimeError) && <div className="m-3 rounded-lg border border-rose-200 bg-rose-50 p-3 font-mono text-xs leading-relaxed whitespace-pre-wrap text-rose-700 dark:border-rose-800 dark:bg-rose-950 dark:text-rose-300" role="alert">{error || runtimeError}{runtimeError && <button type="button" onClick={retryRuntime} className="ml-2 underline">Retry preview runtime</button>}</div>}
+      <iframe ref={frame} title={`${component.name} sandbox preview`} sandbox="allow-scripts" className="block min-h-[540px] w-full flex-none border-0 bg-white max-[900px]:min-h-[360px]" />
+      {!preview && !runtimeError && <div className="pointer-events-none absolute inset-x-0 top-[52px] grid place-items-center text-slate-400">Click Update Preview to render your component</div>}
     </div>
   );
 }

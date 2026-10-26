@@ -7,6 +7,7 @@ import FormsPage from "@/pages/Forms/FormsPage";
 import FormDetails from "@/pages/Forms/FormDetails";
 import FormCompositionsPage from "@/pages/FormCompositions/FormCompositionsPage";
 import FormCompositionDetails from "@/pages/FormCompositions/FormCompositionDetails";
+import FormCompositionCustomizePage from "@/pages/FormCompositions/FormCompositionCustomizePage";
 import LayoutsPage from "@/pages/Layouts/LayoutsPage";
 import LayoutDetails from "@/pages/Layouts/LayoutDetails";
 import NotificationsPage from "@/pages/Notifications/NotificationsPage";
@@ -29,6 +30,7 @@ export const routes = [
   { path: "/forms/:id", element: <FormDetails /> },
   { path: "/form-compositions", element: <FormCompositionsPage /> },
   { path: "/form-compositions/:id", element: <FormCompositionDetails /> },
+  { path: "/form-compositions/:id/customize", element: <FormCompositionCustomizePage /> },
   { path: "/layouts", element: <LayoutsPage /> },
   { path: "/layouts/:slug", element: <LayoutDetails /> },
   { path: "/layouts/:layoutId/customize", element: <LayoutCustomizeCodePage /> },

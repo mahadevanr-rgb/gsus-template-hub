@@ -12,11 +12,12 @@ import { RangeSlider } from "@/pages/Forms/components/RangeSlider/RangeSlider";
 import { DateInput } from "@/pages/Forms/components/DateInput/DateInput";
 import { DatePicker } from "@/pages/Forms/components/DatePicker/DatePicker";
 import { FileUpload } from "@/pages/Forms/components/FileUpload/FileUpload";
-import { OTPInput } from "@/pages/Forms/components/OTPInput/OTPInput";
+import { OTPInput } from "@/pages/Forms/components/OtpInput/OtpInput";
 import { InputLabel } from "@/pages/Forms/components/InputLabel/InputLabel";
 import { InputError } from "@/pages/Forms/components/InputError/InputError";
 import { HelperText } from "@/pages/Forms/components/HelperText/HelperText";
 import ComponentDetailsView from "@/components/common/ComponentDetailsView/ComponentDetailsView";
+import otpInputSource from "@/pages/Forms/components/OtpInput/OtpInput.jsx?raw";
 
 const formSiblings = [
   { slug: "textInput", name: "Text Input" },
@@ -127,8 +128,8 @@ const formMeta = {
     name: "OTP Input",
     tag: "Input",
     description: "Split 6-digit verification code input with auto-advance.",
-    code: `import OTPInput from "@/components/ui/OTPInput";\n\n<OTPInput length={6} onComplete={(code) => console.log(code)} />`,
-    files: [{ path: "components/ui/forms/OTPInput.jsx" }],
+    code: otpInputSource,
+    files: [{ path: "components/OTPInput.jsx", content: otpInputSource }],
   },
   inputLabel: {
     name: "Input Label",

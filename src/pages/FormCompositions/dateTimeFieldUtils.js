@@ -94,6 +94,11 @@ export function getPickerVisualControls(component) {
 export function getCompositionFieldValidationRules(field) {
   const rules = { ...(field?.validationRules || {}) };
   if (field?.props?.required) rules.required = true;
+  if (field?.component === "otp-input") {
+    const length = Math.max(1, Number(field.props?.length) || 6);
+    rules.minLength ??= length;
+    rules.maxLength ??= length;
+  }
   if (["dateRange", "date-range-picker", "datetimeRange", "datetime-range-picker"].includes(field?.component)) {
     rules.dateRange ??= true;
   }

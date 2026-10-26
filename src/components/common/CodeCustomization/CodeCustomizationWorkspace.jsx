@@ -12,7 +12,6 @@ import {
   writeDraft,
 } from "@/services/codeCustomization/codeCustomizationService";
 import { validateSource } from "@/services/codeCustomization/codeValidationService";
-import "./CodeCustomizationWorkspace.scss";
 
 const MIN_PROGRESS_MS = 500;
 
@@ -22,6 +21,7 @@ export default function CodeCustomizationWorkspace({
   previewControls = [],
   previewControlsTitle,
   enableVisualMode = false,
+  renderSectionBuilder,
   onApply,
   backPath,
 }) {
@@ -159,9 +159,13 @@ export default function CodeCustomizationWorkspace({
       }
     />
   );
+  const sectionBuilder = renderSectionBuilder?.({
+    previewProps,
+    onPropChange: (name, value) => setPreviewProps((previous) => ({ ...previous, [name]: value })),
+  }) || controls;
   const previewPanel = (
     <section
-      className={`custom-panel custom-workspace-preview${workspaceMode === "builder" ? " custom-builder-preview" : ""}`}
+      className={`relative min-w-0 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 ${workspaceMode === "builder" ? "w-full min-h-[620px] max-[900px]:min-h-[460px]" : "min-h-0 overflow-visible"}`}
     >
       <CodePreviewPanel
         component={component}
@@ -191,15 +195,16 @@ export default function CodeCustomizationWorkspace({
             ].includes(component.slug || component.id))
         }
       />
+      {workspaceMode === "builder" && <div className="flex justify-end border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-3"><button type="button" onClick={() => setWorkspaceMode("code")} className="rounded-lg border border-indigo-600 bg-indigo-600 px-3.5 py-2 text-xs font-semibold text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400">Continue to Code Editor <span aria-hidden="true">→</span></button></div>}
     </section>
   );
   const sourcePanel = (
     <section
-      className={`custom-panel custom-source-below${workspaceMode === "builder" ? " custom-builder-source" : ""}`}
+      className={`relative min-w-0 overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 ${workspaceMode === "builder" ? "mt-0 w-full" : "mt-4"}`}
     >
-      <div className="custom-preview-head">
+      <div className="flex justify-between gap-3.5 border-b border-slate-200 dark:border-slate-700 px-4 py-3.5 text-[13px]">
         <strong>Generated code</strong>
-        <span>Read only - switch to Code editor to edit</span>
+        <span className="text-[11px] text-slate-500 dark:text-slate-400">Read only - switch to Code editor to edit</span>
       </div>
       <CodeSourceTabs
         files={files}
@@ -215,12 +220,12 @@ export default function CodeCustomizationWorkspace({
 
   if (!originals.length)
     return (
-      <main className="custom-workspace">
+      <main className="mx-auto max-w-[1600px] p-6 text-slate-900 dark:text-slate-200 max-[540px]:p-3.5">
         <p role="alert">This registry entry has no editable source files.</p>
       </main>
     );
   return (
-    <main className="custom-workspace">
+    <main className="mx-auto max-w-[1600px] p-6 text-slate-900 dark:text-slate-200 max-[540px]:p-3.5">
       <CodeCustomizationToolbar
         component={component}
         changed={changed}
@@ -235,24 +240,24 @@ export default function CodeCustomizationWorkspace({
         onApply={apply}
       />
       {showVisualModes && (
-        <nav className="custom-mode-switch" aria-label="Customization mode">
+        <nav className="mt-4 inline-flex flex-wrap gap-1 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 p-1" aria-label="Customization mode">
           <button
             type="button"
-            className={workspaceMode === "code" ? "active" : ""}
+            className={`rounded-lg px-3 py-2 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 ${workspaceMode === "code" ? "bg-white dark:bg-indigo-900 text-indigo-700 dark:text-indigo-100 shadow-sm" : "bg-transparent text-slate-500 dark:text-slate-400 hover:bg-white/70 dark:hover:bg-slate-800"}`}
             onClick={() => setWorkspaceMode("code")}
           >
             Code editor
           </button>
           <button
             type="button"
-            className={workspaceMode === "visual" ? "active" : ""}
+            className={`rounded-lg px-3 py-2 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 ${workspaceMode === "visual" ? "bg-white dark:bg-indigo-900 text-indigo-700 dark:text-indigo-100 shadow-sm" : "bg-transparent text-slate-500 dark:text-slate-400 hover:bg-white/70 dark:hover:bg-slate-800"}`}
             onClick={() => openVisualMode("visual")}
           >
             Visual customize
           </button>
           <button
             type="button"
-            className={workspaceMode === "builder" ? "active" : ""}
+            className={`rounded-lg px-3 py-2 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 ${workspaceMode === "builder" ? "bg-white dark:bg-indigo-900 text-indigo-700 dark:text-indigo-100 shadow-sm" : "bg-transparent text-slate-500 dark:text-slate-400 hover:bg-white/70 dark:hover:bg-slate-800"}`}
             onClick={() => openVisualMode("builder")}
           >
             Section builder
@@ -261,18 +266,18 @@ export default function CodeCustomizationWorkspace({
       )}
 
       <div
-        className={`custom-workspace-grid ${workspaceMode === "visual" ? "visual-mode" : ""} ${workspaceMode === "builder" ? "builder-mode" : ""} ${workspaceMode === "code" ? "code-mode" : ""}`}
+        className={`mt-[18px] grid min-h-[620px] grid-cols-1 items-start gap-4 min-[901px]:grid-cols-2 ${workspaceMode === "visual" ? "min-[901px]:grid-cols-[minmax(380px,1fr)_minmax(480px,1.15fr)]" : ""} ${workspaceMode === "code" ? "min-[901px]:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]" : ""} ${workspaceMode === "builder" ? "min-h-0 grid-cols-1 min-[901px]:grid-cols-1" : ""} max-[900px]:min-h-0 max-[900px]:gap-3`}
       >
         {workspaceMode === "builder" && showVisualModes ? (
-          <section className="custom-panel custom-builder-controls">
-            {controls}
+          <section className="min-h-0 min-w-0 overflow-visible rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
+            {sectionBuilder}
           </section>
         ) : workspaceMode === "visual" && showVisualModes ? (
-          <section className="custom-panel custom-visual-controls">
+          <section className="min-h-0 min-w-0 overflow-auto rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 [scrollbar-gutter:stable] max-[900px]:max-h-[70vh]">
             {controls}
           </section>
         ) : (
-          <section className="custom-panel custom-editor">
+          <section className="relative flex min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
             <CodeSourceTabs
               files={files}
               originals={originals}
@@ -307,11 +312,11 @@ export default function CodeCustomizationWorkspace({
       {feedback && (
         <div
           key={`${feedback.type}-${feedback.text}`}
-          className={`custom-feedback ${feedback.type}`}
+          className={`mt-3.5 flex items-center gap-2.5 rounded-xl border px-3.5 py-3 text-xs ${feedback.type === "success" ? "border-green-200 bg-green-50 text-green-800 dark:border-green-800 dark:bg-green-950 dark:text-green-300" : feedback.type === "error" ? "border-rose-200 bg-rose-50 text-rose-800 dark:border-rose-800 dark:bg-rose-950 dark:text-rose-300" : "border-indigo-200 bg-indigo-50 text-indigo-800 dark:border-indigo-800 dark:bg-indigo-950 dark:text-indigo-200"}`}
           role={feedback.type === "error" ? "alert" : "status"}
           aria-live="polite"
         >
-          <span className="custom-feedback-mark">
+          <span className={`grid h-[22px] w-[22px] shrink-0 place-items-center rounded-full bg-indigo-600 font-extrabold text-white ${feedback.type === "success" ? "bg-green-600" : feedback.type === "error" ? "bg-rose-600" : "animate-spin"}`}>
             {feedback.type === "success"
               ? "OK"
               : feedback.type === "progress"
@@ -321,7 +326,7 @@ export default function CodeCustomizationWorkspace({
           <span>{feedback.text}</span>
         </div>
       )}
-      <p className="custom-note">
+      <p className="mt-3 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
         Preview runs component JavaScript and registered dependencies inside a
         restricted sandbox. External packages are limited to React and the
         registered icon set; TypeScript and asset imports are not supported.

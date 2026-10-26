@@ -1,4 +1,11 @@
-export const Checkbox = ({ label, checked, onChange, error, ...props }) => (
+export const Checkbox = ({
+  label,
+  checked,
+  onChange,
+  error,
+  labelColor,
+  ...props
+}) => (
   <label className="flex items-center gap-3 cursor-pointer group">
     <div className="relative">
       <input
@@ -8,6 +15,7 @@ export const Checkbox = ({ label, checked, onChange, error, ...props }) => (
         className="sr-only"
         {...props}
       />
+
       <div
         className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
           checked
@@ -17,11 +25,19 @@ export const Checkbox = ({ label, checked, onChange, error, ...props }) => (
             : "border-slate-300 dark:border-slate-600 group-hover:border-indigo-400"
         }`}
       >
-        {checked && <span className="text-white text-xs font-bold">✓</span>}
+        {checked && (
+          <span className="text-white text-xs font-bold">✓</span>
+        )}
       </div>
     </div>
+
     {label && (
-      <span className="text-sm text-slate-700 dark:text-slate-200">{label}</span>
+      <span
+        className="text-sm text-slate-700 dark:text-slate-200"
+        style={labelColor ? { color: labelColor } : undefined}
+      >
+        {label}
+      </span>
     )}
   </label>
 );

@@ -112,6 +112,7 @@ export function DatePicker({
   value = null,
   onChange,
   label = "Date picker",
+  placeholder = "Select date",
   minDate,
   maxDate,
   disabledDates = [],
@@ -287,7 +288,7 @@ export function DatePicker({
     ? new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(
         validInitial,
       )
-    : "Select date";
+    : placeholder;
 
   const isSystem = theme === "system";
   const isDark =
@@ -588,6 +589,10 @@ export function DateRangePicker({
   onChange,
   name,
   label = "Date range",
+  startLabel = "Start date",
+  endLabel = "End date",
+  startPlaceholder = "Select date",
+  endPlaceholder = "Select date",
   minDate,
   maxDate,
   disabledDates = [],
@@ -684,7 +689,8 @@ export function DateRangePicker({
         }}
       >
         <DatePicker
-          label="Start date"
+          label={startLabel}
+          placeholder={startPlaceholder}
           value={rangeValue.start || null}
           minDate={minDate}
           maxDate={rangeValue.end || maxDate}
@@ -705,7 +711,8 @@ export function DateRangePicker({
           onChange={(next) => update("start", next || "")}
         />
         <DatePicker
-          label="End date"
+          label={endLabel}
+          placeholder={endPlaceholder}
           value={rangeValue.end || null}
           minDate={rangeValue.start || minDate}
           maxDate={maxDate}

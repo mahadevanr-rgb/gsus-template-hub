@@ -2,7 +2,12 @@ import { useState } from "react";
 import { copyToClipboard } from "@/utils/installContract";
 import AddToProjectModal from "@/components/common/AddToProjectModal/AddToProjectModal";
 
-function CopyAction({ text, label = "Copy Code", icon = "📋", className = "" }) {
+function CopyAction({
+  text,
+  label = "Copy Code",
+  icon = "📋",
+  className = "",
+}) {
   const [copied, setCopied] = useState(false);
 
   const handle = async () => {
@@ -56,9 +61,17 @@ export default function ComponentDetailsView({
   }
 
   const Component = component.component;
-  const filePath = component.files?.[0]?.path || `components/ui/${component.slug || "Component"}.jsx`;
-  const codeContent = component.sourceCode || component.code || `// Code for ${component.name}\nexport default function ${component.name.replace(/ /g, "")}() {\n  return <div>${component.name}</div>;\n}`;
-  const usageName = component.exportName || component.installName || component.name.replace(/[^a-zA-Z0-9]/g, "");
+  const filePath =
+    component.files?.[0]?.path ||
+    `components/ui/${component.slug || "Component"}.jsx`;
+  const codeContent =
+    component.sourceCode ||
+    component.code ||
+    `// Code for ${component.name}\nexport default function ${component.name.replace(/ /g, "")}() {\n  return <div>${component.name}</div>;\n}`;
+  const usageName =
+    component.exportName ||
+    component.installName ||
+    component.name.replace(/[^a-zA-Z0-9]/g, "");
   const usagePath = filePath.replace(/\\/g, "/").replace(/^components\//, "");
   const usageImportPath = `@/components/${usagePath.replace(/\.jsx?$/i, "")}`;
   const usageImport = component.namedExport
@@ -69,13 +82,19 @@ export default function ComponentDetailsView({
     .join(" ");
   const controlledUsage = {
     "date-picker": { stateName: "date", initialValue: "null" },
-    "date-range-picker": { stateName: "range", initialValue: '{ start: "", end: "" }' },
+    "date-range-picker": {
+      stateName: "range",
+      initialValue: '{ start: "", end: "" }',
+    },
     "month-picker": { stateName: "month", initialValue: '""' },
     "year-picker": { stateName: "year", initialValue: '""' },
     "week-picker": { stateName: "week", initialValue: '""' },
     "time-picker": { stateName: "time", initialValue: '""' },
     "datetime-picker": { stateName: "dateTime", initialValue: '""' },
-    "datetime-range-picker": { stateName: "range", initialValue: '{ start: "", end: "" }' },
+    "datetime-range-picker": {
+      stateName: "range",
+      initialValue: '{ start: "", end: "" }',
+    },
   }[component.slug];
   const usageCode = controlledUsage
     ? `import { useState } from "react";\n${usageImport}\n\nfunction MyPage() {\n  const [${controlledUsage.stateName}, set${controlledUsage.stateName[0].toUpperCase()}${controlledUsage.stateName.slice(1)}] = useState(${controlledUsage.initialValue});\n  return <${usageName} value={${controlledUsage.stateName}} onChange={set${controlledUsage.stateName[0].toUpperCase()}${controlledUsage.stateName.slice(1)}${usageAttributes ? ` ${usageAttributes}` : ""} />;\n}`
@@ -108,9 +127,13 @@ export default function ComponentDetailsView({
       </div>
 
       {/* Main Grid Layout */}
-      <div className={`grid grid-cols-1 ${widePreview ? "lg:grid-cols-4" : "lg:grid-cols-3"} gap-8`}>
+      <div
+        className={`grid grid-cols-1 ${widePreview ? "lg:grid-cols-4" : "lg:grid-cols-3"} gap-8`}
+      >
         {/* Left Column (2 cols) */}
-        <div className={`${widePreview ? "lg:col-span-3" : "lg:col-span-2"} min-w-0 space-y-6`}>
+        <div
+          className={`${widePreview ? "lg:col-span-3" : "lg:col-span-2"} min-w-0 space-y-6`}
+        >
           {/* Header Section */}
           <div>
             <div className="flex items-center gap-2.5 mb-2 flex-wrap">
@@ -118,7 +141,10 @@ export default function ComponentDetailsView({
                 {component.name}
               </h1>
               <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-50 dark:bg-purple-500/15 text-purple-600 dark:text-purple-400 border border-purple-200/60 dark:border-purple-500/30 capitalize">
-                {component.subCategory || component.tag || component.category || "Component"}
+                {component.subCategory ||
+                  component.tag ||
+                  component.category ||
+                  "Component"}
               </span>
               <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
                 v{component.version || "1.0.0"}
@@ -146,13 +172,16 @@ export default function ComponentDetailsView({
             )}
           </div>
 
-
           {/* Interactive Preview Canvas */}
-          <section className={`bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 rounded-3xl ${widePreview ? "p-3 sm:p-4 items-stretch" : "p-6 sm:p-10 items-center justify-center"} ${categoryName === "Date & Time" ? (widePreview ? "min-h-[620px]" : "min-h-[520px]") : "min-h-[340px]"} border border-slate-200/80 dark:border-slate-800 flex relative overflow-visible`}>
+          <section
+            className={`bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 rounded-3xl ${widePreview ? "p-3 sm:p-4 items-stretch" : "p-6 sm:p-10 items-center justify-center"} ${categoryName === "Date & Time" ? (widePreview ? "min-h-[620px]" : "min-h-[520px]") : "min-h-[340px]"} border border-slate-200/80 dark:border-slate-800 flex relative overflow-visible`}
+          >
             {/* Subtle dot grid */}
             <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none opacity-60" />
 
-            <div className={`relative z-10 flex w-full min-w-0 ${widePreview ? "items-stretch" : "items-center justify-center"} ${renderCustomPreview ? "max-w-full" : "max-w-md"}`}>
+            <div
+              className={`relative z-10 flex w-full min-w-0 ${widePreview ? "items-stretch" : "items-center justify-center"} ${renderCustomPreview ? "max-w-full" : "max-w-md"}`}
+            >
               {renderCustomPreview ? (
                 renderCustomPreview()
               ) : Component ? (
@@ -161,7 +190,9 @@ export default function ComponentDetailsView({
                 </Component>
               ) : (
                 <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
-                  <p className="text-xs text-slate-400">Live Component Preview</p>
+                  <p className="text-xs text-slate-400">
+                    Live Component Preview
+                  </p>
                 </div>
               )}
             </div>
@@ -222,22 +253,29 @@ export default function ComponentDetailsView({
               {activeTab === "description" && (
                 <div className="space-y-4">
                   <p>
-                    {component.description || `The ${component.name} component is ready to use in React applications.`}
+                    {component.description ||
+                      `The ${component.name} component is ready to use in React applications.`}
                   </p>
                   <div>
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Key Highlights</h4>
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+                      Key Highlights
+                    </h4>
                     <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                       <li className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
-                        <span className="text-emerald-500 font-bold">✓</span> Pure Tailwind CSS (Zero external CSS runtime)
+                        <span className="text-emerald-500 font-bold">✓</span>{" "}
+                        Pure Tailwind CSS (Zero external CSS runtime)
                       </li>
                       <li className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
-                        <span className="text-emerald-500 font-bold">✓</span> Fully responsive & accessible
+                        <span className="text-emerald-500 font-bold">✓</span>{" "}
+                        Fully responsive & accessible
                       </li>
                       <li className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
-                        <span className="text-emerald-500 font-bold">✓</span> Dark & Light theme compliant
+                        <span className="text-emerald-500 font-bold">✓</span>{" "}
+                        Dark & Light theme compliant
                       </li>
                       <li className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
-                        <span className="text-emerald-500 font-bold">✓</span> Copy & paste ready
+                        <span className="text-emerald-500 font-bold">✓</span>{" "}
+                        Copy & paste ready
                       </li>
                     </ul>
                   </div>
@@ -246,7 +284,9 @@ export default function ComponentDetailsView({
 
               {activeTab === "props" && (
                 <div className="space-y-3">
-                  <p className="text-xs text-slate-400">Available props and configuration options:</p>
+                  <p className="text-xs text-slate-400">
+                    Available props and configuration options:
+                  </p>
                   <div className="border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden">
                     <table className="w-full text-left text-xs">
                       <thead className="bg-slate-50 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400">
@@ -258,15 +298,37 @@ export default function ComponentDetailsView({
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                        {(propDetails.length ? propDetails : [
-                          { name: "label", type: "string", defaultValue: "Component", description: "Visible form control label." },
-                          { name: "disabled", type: "boolean", defaultValue: "false", description: "Disables user interaction." },
-                          { name: "onChange", type: "function", defaultValue: "-", description: "Called when the value changes." },
-                        ]).map((prop) => (
+                        {(propDetails.length
+                          ? propDetails
+                          : [
+                              {
+                                name: "label",
+                                type: "string",
+                                defaultValue: "Component",
+                                description: "Visible form control label.",
+                              },
+                              {
+                                name: "disabled",
+                                type: "boolean",
+                                defaultValue: "false",
+                                description: "Disables user interaction.",
+                              },
+                              {
+                                name: "onChange",
+                                type: "function",
+                                defaultValue: "-",
+                                description: "Called when the value changes.",
+                              },
+                            ]
+                        ).map((prop) => (
                           <tr key={prop.name}>
-                            <td className="p-3 font-mono font-semibold text-indigo-500">{prop.name}</td>
+                            <td className="p-3 font-mono font-semibold text-indigo-500">
+                              {prop.name}
+                            </td>
                             <td className="p-3 text-slate-500">{prop.type}</td>
-                            <td className="p-3 text-slate-500">{prop.defaultValue}</td>
+                            <td className="p-3 text-slate-500">
+                              {prop.defaultValue}
+                            </td>
                             <td className="p-3">{prop.description}</td>
                           </tr>
                         ))}
@@ -278,7 +340,9 @@ export default function ComponentDetailsView({
 
               {activeTab === "usage" && (
                 <div className="space-y-3">
-                  <p className="text-xs text-slate-400">Simple import and usage in your JSX tree:</p>
+                  <p className="text-xs text-slate-400">
+                    Simple import and usage in your JSX tree:
+                  </p>
                   <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800">
                     <pre className="font-mono text-xs text-indigo-300">
                       <code>{usageCode}</code>
@@ -289,16 +353,26 @@ export default function ComponentDetailsView({
 
               {activeTab === "dependencies" && (
                 <div className="space-y-3">
-                  <p className="text-xs text-slate-400">Packages and utilities required for this component:</p>
+                  <p className="text-xs text-slate-400">
+                    Packages and utilities required for this component:
+                  </p>
                   <div className="flex flex-wrap gap-2">
                     {component.componentDependencies?.map((dep) => (
-                      <span key={`component-${dep}`} className="px-3 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-xs font-mono font-semibold text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-500/20">
+                      <span
+                        key={`component-${dep}`}
+                        className="px-3 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-xs font-mono font-semibold text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-500/20"
+                      >
                         {dep}
                       </span>
                     ))}
-                    {component.dependencies && component.dependencies.length > 0 && component.dependencies[0] !== "None" ? (
+                    {component.dependencies &&
+                    component.dependencies.length > 0 &&
+                    component.dependencies[0] !== "None" ? (
                       component.dependencies.map((dep) => (
-                        <span key={dep} className="px-3 py-1 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-mono font-semibold text-indigo-400 border border-slate-200 dark:border-slate-700">
+                        <span
+                          key={dep}
+                          className="px-3 py-1 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-mono font-semibold text-indigo-400 border border-slate-200 dark:border-slate-700"
+                        >
                           {dep}
                         </span>
                       ))
@@ -326,7 +400,8 @@ export default function ComponentDetailsView({
               <div className="flex items-start justify-between gap-4 py-2.5">
                 <span className="shrink-0 text-slate-500">Category</span>
                 <span className="min-w-0 max-w-[65%] break-words text-right font-semibold text-slate-800 dark:text-slate-200">
-                  {categoryName} {component.subCategory ? `(${component.subCategory})` : ""}
+                  {categoryName}{" "}
+                  {component.subCategory ? `(${component.subCategory})` : ""}
                 </span>
               </div>
               <div className="flex items-start justify-between gap-4 py-2.5">
@@ -391,8 +466,12 @@ export default function ComponentDetailsView({
               </button>
 
               {onCustomizeCode && (
-                <button type="button" onClick={onCustomizeCode} className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-semibold border border-indigo-200 bg-indigo-50 hover:bg-indigo-100 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:hover:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 transition-colors">
-                  <span aria-hidden="true">Code</span><span>Customize Code</span>
+                <button
+                  type="button"
+                  onClick={onCustomizeCode}
+                  className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-semibold border border-indigo-200 bg-indigo-50 hover:bg-indigo-100 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:hover:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 transition-colors"
+                >
+                  <span aria-hidden="true">Customize Code</span>
                 </button>
               )}
 
@@ -401,7 +480,10 @@ export default function ComponentDetailsView({
               <button
                 className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors cursor-pointer"
                 onClick={() =>
-                  window.open("https://github.com/mahadevanr-rgb/gsus-template-hub", "_blank")
+                  window.open(
+                    "https://github.com/mahadevanr-rgb/gsus-template-hub",
+                    "_blank",
+                  )
                 }
               >
                 <span>🔗</span>

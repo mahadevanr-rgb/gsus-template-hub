@@ -6,7 +6,7 @@ export const SelectDropdown = ({ options = [], placeholder = "Select an option..
       } rounded-xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all appearance-none text-slate-700 dark:text-slate-200`}
       {...props}
     >
-      <option value="" disabled selected>{placeholder}</option>
+      <option value="" disabled>{placeholder}</option>
       {options.map((opt) => (
         <option key={opt.value} value={opt.value}>
           {opt.label}

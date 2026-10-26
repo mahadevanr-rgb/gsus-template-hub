@@ -43,13 +43,23 @@ const timeProps = {
 const datePickerProps = {
   ...appearanceProps,
   ...calendarProps,
+  placeholder: { type: "string" },
   errorMessage: { type: "string" },
   keepOpenOnOutsideClick: { type: "boolean" },
   renderCalendarHeader: { type: "function", json: false },
   renderCalendarFooter: { type: "function", json: false },
 };
 
-const dateRangePickerProps = { ...appearanceProps, ...calendarProps, ...namedProp, errorMessage: { type: "string" } };
+const dateRangePickerProps = {
+  ...appearanceProps,
+  ...calendarProps,
+  ...namedProp,
+  startLabel: { type: "string" },
+  endLabel: { type: "string" },
+  startPlaceholder: { type: "string" },
+  endPlaceholder: { type: "string" },
+  errorMessage: { type: "string" },
+};
 const monthPickerProps = { ...appearanceProps, ...namedProp, min: { type: "month" }, max: { type: "month" } };
 const yearPickerProps = { ...appearanceProps, ...namedProp, min: { type: "year" }, max: { type: "year" } };
 const weekPickerProps = {
