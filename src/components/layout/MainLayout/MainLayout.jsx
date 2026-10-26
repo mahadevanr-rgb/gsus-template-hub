@@ -10,7 +10,12 @@ export default function MainLayout({ children }) {
 
   // derive currentPage from URL
   const currentPage = pathname === "/" ? "dashboard" : pathname.split("/")[1];
-  const isCustomizer = pathname.startsWith("/cards/customize");
+  const isCustomizer =
+    pathname.startsWith("/cards/customize") ||
+    pathname.startsWith("/accordion/customize") ||
+    pathname.startsWith("/modal-overlay/customize") ||
+    pathname.startsWith("/file-system/customize") ||
+    pathname.startsWith("/navigation/customize");
 
   if (isCustomizer) {
     return (

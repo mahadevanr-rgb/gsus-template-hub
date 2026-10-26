@@ -16,3 +16,4 @@ export { default as ImageDimensionValidationDemo } from "./ImageDimensionValidat
 export { default as ImageCropDemo } from "./ImageCropDemo";
 export { default as ImageCompressionDemo } from "./ImageCompressionDemo";
 export { default as AvatarUploadDemo } from "./AvatarUploadDemo";
+export { default as MyCustomizedFileSystems } from "./MyCustomizedFileSystems";

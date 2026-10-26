@@ -19,12 +19,16 @@ const DataDisplayPage = lazy(() => import('@/pages/DataDisplay/DataDisplayPage')
 const DataDisplayDetails = lazy(() => import('@/pages/DataDisplay/DataDisplayDetails'));
 const AccordionPage = lazy(() => import('@/pages/Accordion/AccordionPage'));
 const AccordionDetails = lazy(() => import('@/pages/Accordion/AccordionDetails'));
+const AccordionCustomizerPage = lazy(() => import('@/pages/Accordion/customizer/AccordionCustomizerPage'));
 const ModalOverlayPage = lazy(() => import('@/pages/ModalOverlay/ModalOverlayPage'));
 const ModalOverlayDetails = lazy(() => import('@/pages/ModalOverlay/ModalOverlayDetails'));
+const ModalOverlayCustomizerPage = lazy(() => import('@/pages/ModalOverlay/customizer/ModalOverlayCustomizerPage'));
 const FileSystemPage = lazy(() => import('@/pages/FileSystem/FileSystemPage'));
 const FileSystemDetails = lazy(() => import('@/pages/FileSystem/FileSystemDetails'));
+const FileSystemCustomizerPage = lazy(() => import('@/pages/FileSystem/customizer/FileSystemCustomizerPage'));
 const NavigationPage = lazy(() => import('@/pages/Navigation/NavigationPage'));
 const NavigationDetails = lazy(() => import('@/pages/Navigation/NavigationDetails'));
+const NavigationCustomizerPage = lazy(() => import('@/pages/Navigation/customizer/NavigationCustomizerPage'));
 
 export const routes = [
   { path: '/', element: <HomePage /> },
@@ -47,11 +51,19 @@ export const routes = [
   { path: '/data-display', element: <DataDisplayPage /> },
   { path: '/data-display/:id', element: <DataDisplayDetails /> },
   { path: '/accordion', element: <AccordionPage /> },
+  { path: '/accordion/customize', element: <AccordionCustomizerPage /> },
+  { path: '/accordion/customize/:id', element: <AccordionCustomizerPage /> },
   { path: '/accordion/:id', element: <AccordionDetails /> },
   { path: '/modal-overlay', element: <ModalOverlayPage /> },
+  { path: '/modal-overlay/customize', element: <ModalOverlayCustomizerPage /> },
+  { path: '/modal-overlay/customize/:id', element: <ModalOverlayCustomizerPage /> },
   { path: '/modal-overlay/:id', element: <ModalOverlayDetails /> },
   { path: '/file-system', element: <FileSystemPage /> },
+  { path: '/file-system/customize', element: <FileSystemCustomizerPage /> },
+  { path: '/file-system/customize/:id', element: <FileSystemCustomizerPage /> },
   { path: '/file-system/:id', element: <FileSystemDetails /> },
   { path: '/navigation', element: <NavigationPage /> },
+  { path: '/navigation/customize', element: <NavigationCustomizerPage /> },
+  { path: '/navigation/customize/:id', element: <NavigationCustomizerPage /> },
   { path: '/navigation/:id', element: <NavigationDetails /> },
 ];

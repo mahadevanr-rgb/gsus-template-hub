@@ -79,3 +79,24 @@ create policy "Public insert/update access for customized_cards"
   on customized_cards for all
   using (true);
 
+-- Customized File Systems Table (File System Customizer)
+create table if not exists customized_file_systems (
+  id                    text primary key,
+  name                  text not null,
+  source_component_id   text not null,
+  configuration         jsonb not null default '{}',
+  schema_version        text default '1.0.0',
+  created_at            text,
+  updated_at            text
+);
+
+alter table customized_file_systems enable row level security;
+
+create policy "Public read access for customized_file_systems"
+  on customized_file_systems for select
+  using (true);
+
+create policy "Public insert/update access for customized_file_systems"
+  on customized_file_systems for all
+  using (true);
+

@@ -120,6 +120,31 @@ export default function FileSystemDetails({ selected, onBack, onNavigateHome }) 
     }
   };
 
+  const handleCustomize = () => {
+    navigate(`/file-system/customize/${currentSlug}`);
+  };
+
+  const renderSidebar = () => (
+    <div className="bg-gradient-to-br from-emerald-950/40 via-teal-950/20 to-slate-900 border border-emerald-500/30 rounded-3xl p-5 space-y-3 shadow-lg">
+      <div className="flex items-center gap-2.5">
+        <span className="text-xl">🎨</span>
+        <div>
+          <h4 className="font-bold text-sm text-white">Customize This Component</h4>
+          <p className="text-[11px] text-slate-400 mt-0.5">
+            Modify appearance, validation rules, dropzone dimensions, and export ready-to-use code.
+          </p>
+        </div>
+      </div>
+      <button
+        type="button"
+        onClick={handleCustomize}
+        className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 shadow-md shadow-emerald-500/30 active:scale-[0.98] transition-all cursor-pointer"
+      >
+        <span>⚡ Customize This File Component</span>
+      </button>
+    </div>
+  );
+
   return (
     <ComponentDetailsView
       component={component}
@@ -134,6 +159,7 @@ export default function FileSystemDetails({ selected, onBack, onNavigateHome }) 
       onBack={handleBack}
       onNavigateHome={handleHome}
       renderCustomPreview={renderCustomPreview}
+      renderSidebar={renderSidebar}
     />
   );
 }
