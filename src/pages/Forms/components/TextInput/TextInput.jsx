@@ -1,4 +1,4 @@
-import React from "react";
+import { forwardRef } from "react";
 
 const baseStyles =
   "w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-500 transition-all duration-200 disabled:opacity-50 disabled:bg-slate-50 shadow-sm";
@@ -6,20 +6,23 @@ const baseStyles =
 const errorStyles =
   "border-rose-500 focus:border-rose-500 focus:ring-rose-500/10";
 
-export const TextInput = ({ error, icon, className = "", ...props }) => {
+export const TextInput = forwardRef(({ error, icon, className = "", containerClassName = "", ...props }, ref) => {
   return (
-    <div className="relative flex w-full items-center group">
+    <div className={`relative flex ${containerClassName || "w-full"} items-center group`}>
       {icon && (
         <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-teal-500 transition-colors">
           {icon}
         </div>
       )}
       <input
+        ref={ref}
         className={`${baseStyles} ${error ? errorStyles : ""} ${icon ? "pl-11" : ""} ${className}`}
         {...props}
       />
     </div>
   );
-};
+});
+
+TextInput.displayName = "TextInput";
 
 export default TextInput;

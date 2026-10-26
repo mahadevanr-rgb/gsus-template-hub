@@ -9,6 +9,8 @@ import {
   Monitor,
   Combine,
   CreditCard,
+  CalendarDays,
+  PanelsTopLeft,
 } from "lucide-react";
 
 export default function Footer() {
@@ -56,11 +58,13 @@ export default function Footer() {
                 { label: "Buttons", path: "/buttons", icon: MousePointerClick },
                 { label: "Cards", path: "/cards", icon: CreditCard },
                 { label: "Forms", path: "/forms", icon: FormInput },
+                { label: "Date & Time", path: "/date-time", icon: CalendarDays },
                 {
                   label: "Form Compositions",
                   path: "/form-compositions",
                   icon: Combine,
                 },
+                { label: "Layout Module", path: "/layouts", icon: PanelsTopLeft },
                 { label: "Notifications", path: "/notifications", icon: Bell },
                 { label: "Data Display", path: "/data-display", icon: Monitor },
               ].map((item) => (

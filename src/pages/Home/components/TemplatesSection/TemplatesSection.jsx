@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Sparkles,
   Layers,
@@ -7,56 +6,58 @@ import {
   CreditCard,
   FormInput,
   Bell,
-  BarChart3,
+  Monitor,
+  CalendarDays,
+  Combine,
+  PanelsTopLeft,
   Atom,
   TrendingUp,
   Eye,
   ChevronRight,
+  Table2,
   ListCollapse,
+  Search,
   FolderUp,
   Compass,
+  Palette,
 } from "lucide-react";
-
 import { allComponents } from "@/codeRegistry/codeRegistry";
-import { formComponents } from "@/codeRegistry/formsRegistry";
+import { cardComponents } from "@/codeRegistry/cardsRegistry";
+import { formCompositions } from "@/codeRegistry/formCompositionsRegistry";
+import layouts from "@/codeRegistry/layoutsRegistry";
 import { notificationComponents } from "@/pages/Notifications/notification.config";
-import { dataDisplayComponents } from "@/pages/DataDisplay/dataDisplay.config";
+import { formComponents } from "@/pages/Forms/formComponents";
+import { dataDisplayComponents } from "@/pages/DataDisplay/dataDisplayComponents";
+import { dateTimeItems } from "@/pages/DateTime/dateTimeComponents";
+import { menuItems } from "@/components/layout/sidebarMenu";
+import { createHomeStats } from "@/pages/Home/homeStats";
 
-const categories = [
-  { id: "buttons", name: "Buttons", count: 10, icon: MousePointerClick, color: "bg-blue-500/10 text-blue-400 border-blue-500/20" },
-  { id: "cards", name: "Cards", count: 26, icon: CreditCard, color: "bg-purple-500/10 text-purple-400 border-purple-500/20" },
-  { id: "forms", name: "Forms", count: 20, icon: FormInput, color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" },
-  { id: "notifications", name: "Notifications", count: 9, icon: Bell, color: "bg-amber-500/10 text-amber-400 border-amber-500/20" },
-  { id: "data-display", name: "Data Display", count: 11, icon: BarChart3, color: "bg-pink-500/10 text-pink-400 border-pink-500/20" },
-  { id: "accordion", name: "Accordion", count: 6, icon: ListCollapse, color: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20" },
-  { id: "modal-overlay", name: "Modal & Overlay", count: 13, icon: Layers, color: "bg-fuchsia-500/10 text-fuchsia-400 border-fuchsia-500/20" },
-  { id: "file-system", name: "File System", count: 18, icon: FolderUp, color: "bg-teal-500/10 text-teal-400 border-teal-500/20" },
-  { id: "navigation", name: "Navigation", count: 14, icon: Compass, color: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20" },
+const categoryPresentation = [
+  { id: "buttons", icon: MousePointerClick, color: "bg-blue-500/10 text-blue-400 border-blue-500/20" },
+  { id: "cards", icon: CreditCard, color: "bg-purple-500/10 text-purple-400 border-purple-500/20" },
+  { id: "forms", icon: FormInput, color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" },
+  { id: "date-time", icon: CalendarDays, color: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20" },
+  { id: "form-compositions", icon: Combine, color: "bg-teal-500/10 text-teal-400 border-teal-500/20" },
+  { id: "layouts", icon: PanelsTopLeft, color: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20" },
+  { id: "notifications", icon: Bell, color: "bg-amber-500/10 text-amber-400 border-amber-500/20" },
+  { id: "data-display", icon: Monitor, color: "bg-pink-500/10 text-pink-400 border-pink-500/20" },
+  { id: "tables-dashboard", icon: Table2, color: "bg-sky-500/10 text-sky-400 border-sky-500/20" },
+  { id: "accordion", icon: ListCollapse, color: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20" },
+  { id: "modal-overlay", icon: Layers, color: "bg-fuchsia-500/10 text-fuchsia-400 border-fuchsia-500/20" },
+  { id: "file-system", icon: FolderUp, color: "bg-teal-500/10 text-teal-400 border-teal-500/20" },
+  { id: "navigation", icon: Compass, color: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20" },
+  { id: "selection-search", icon: Search, color: "bg-violet-500/10 text-violet-400 border-violet-500/20" },
+  { id: "design-system", icon: Palette, color: "bg-rose-500/10 text-rose-400 border-rose-500/20" },
 ];
-
-const componentCounts = {
-  buttons: allComponents.filter((component) => component.category === "buttons"),
-  cards: allComponents.filter((component) => component.category === "cards"),
-  forms: formComponents,
-  notifications: notificationComponents,
-  "data-display": dataDisplayComponents,
-  accordion: allComponents.filter((component) => component.category === "accordion"),
-  "modal-overlay": allComponents.filter((component) => component.category === "modal-overlay"),
-  "file-system": allComponents.filter((component) => component.category === "file-system"),
-  navigation: allComponents.filter((component) => component.category === "navigation"),
-};
-
-const categoriesWithCounts = categories.map((category) => ({
+const routeLabels = Object.fromEntries(
+  menuItems
+    .filter((item) => item.path !== "/")
+    .map((item) => [item.path.slice(1), item.label]),
+);
+const categories = categoryPresentation.map((category) => ({
   ...category,
-  count: componentCounts[category.id].length,
+  name: routeLabels[category.id],
 }));
-
-const kpis = [
-  { label: "Total Components", value: "121+", sub: "Ready-to-use UI elements", trend: "+14 new navigation", icon: Layers, color: "text-indigo-400", bg: "bg-indigo-500/10 border-indigo-500/20" },
-  { label: "Active Categories", value: "10", sub: "Modular domains", trend: "Full coverage", icon: FolderKanban, color: "text-purple-400", bg: "bg-purple-500/10 border-purple-500/20" },
-  { label: "Design System", value: "100%", sub: "Tailwind & SCSS tokens", trend: "Standardized", icon: Atom, color: "text-blue-400", bg: "bg-blue-500/10 border-blue-500/20" },
-  { label: "Production Ready", value: "Vite", sub: "React 19 optimized", trend: "High perf", icon: Sparkles, color: "text-amber-400", bg: "bg-amber-500/10 border-amber-500/20" },
-];
 
 const popularComponents = [
   { id: "file-system", title: "File System & Upload", description: "Dropzones, batch queues, MIME validation, image crop & compression.", badge: "File System", previewType: "button", version: "v1.0" },
@@ -66,10 +67,37 @@ const popularComponents = [
 ];
 
 export default function TemplatesSection({ onNavigate }) {
-  const totalComponents = Object.values(componentCounts).reduce(
-    (total, components) => total + components.length,
-    0
-  );
+  const additionalComponents = {
+    "tables-dashboard": [],
+    accordion: allComponents.filter((component) => component.category === "accordion"),
+    "modal-overlay": allComponents.filter((component) => component.category === "modal-overlay"),
+    "file-system": allComponents.filter((component) => component.category === "file-system"),
+    navigation: allComponents.filter((component) => component.category === "navigation"),
+    "selection-search": [],
+    "design-system": [],
+  };
+  const stats = createHomeStats({
+    categories: menuItems.filter((item) => item.path !== "/"),
+    buttons: allComponents.filter((component) => component.category === "buttons"),
+    cards: cardComponents,
+    forms: formComponents,
+    dateTime: dateTimeItems,
+    formCompositions,
+    layouts,
+    notifications: notificationComponents,
+    dataDisplay: dataDisplayComponents,
+    additionalComponents,
+  });
+  const computedCategories = categories.map((category) => ({
+    ...category,
+    count: stats.categoryCounts[category.id] ?? 0,
+  }));
+  const kpis = [
+    { label: "Total Components", value: stats.totalComponents, sub: "Distinct components", trend: `Across ${stats.categoryCount} categories`, icon: Layers, color: "text-indigo-400", bg: "bg-indigo-500/10 border-indigo-500/20" },
+    { label: "Active Categories", value: stats.categoryCount, sub: "Modular domains", trend: "Full coverage", icon: FolderKanban, color: "text-purple-400", bg: "bg-purple-500/10 border-purple-500/20" },
+    { label: "Design System", value: "100%", sub: "Tailwind & SCSS tokens", trend: "Standardized", icon: Atom, color: "text-blue-400", bg: "bg-blue-500/10 border-blue-500/20" },
+    { label: "Production Ready", value: "Vite", sub: "React 19 optimized", trend: "High perf", icon: Sparkles, color: "text-amber-400", bg: "bg-amber-500/10 border-amber-500/20" },
+  ];
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -109,7 +137,7 @@ export default function TemplatesSection({ onNavigate }) {
               <Layers className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-lg font-bold text-white leading-none">{totalComponents}</p>
+              <p className="text-lg font-bold text-white leading-none">{stats.totalComponents}</p>
               <p className="text-xs text-slate-400 mt-1">Components</p>
             </div>
           </div>
@@ -118,7 +146,7 @@ export default function TemplatesSection({ onNavigate }) {
               <FolderKanban className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-lg font-bold text-white leading-none">{categoriesWithCounts.length}</p>
+              <p className="text-lg font-bold text-white leading-none">{stats.categoryCount}</p>
               <p className="text-xs text-slate-400 mt-1">Categories</p>
             </div>
           </div>
@@ -157,7 +185,7 @@ export default function TemplatesSection({ onNavigate }) {
           <h2 className="text-lg font-bold text-white">Browse by Categories</h2>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-          {categoriesWithCounts.map((cat) => {
+          {computedCategories.map((cat) => {
             const Icon = cat.icon;
             return (
               <div
@@ -169,7 +197,7 @@ export default function TemplatesSection({ onNavigate }) {
                   <Icon className="w-5 h-5" />
                 </div>
                 <p className="text-xs font-semibold text-white truncate w-full">{cat.name}</p>
-                <p className="text-[10px] text-slate-500 mt-0.5">{cat.count} components</p>
+                <p className="text-[10px] text-slate-500 mt-0.5">{cat.count} {cat.count === 1 ? "component" : "components"}</p>
               </div>
             );
           })}

@@ -12,6 +12,7 @@ create table if not exists components (
   styling      text default 'css',
   version      text default '1.0.0',
   dependencies jsonb default '[]',
+  component_dependencies jsonb default '[]',
   tags         jsonb default '[]',
   files        jsonb default '[]',
   uses         jsonb default '[]',
@@ -19,6 +20,9 @@ create table if not exists components (
   created_at   text,
   updated_at   text
 );
+
+alter table components
+  add column if not exists component_dependencies jsonb default '[]';
 
 -- Enable Row Level Security
 alter table components enable row level security;

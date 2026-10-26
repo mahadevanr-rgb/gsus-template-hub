@@ -1,0 +1,18 @@
+export const formComponents = [
+  { id: "textInput", slug: "text-input", name: "Text Input", description: "Standard text input with icon prefix and error state support.", tag: "Input", theme: "blue" },
+  { id: "passwordInput", slug: "password-input", name: "Password Input", description: "Password field with show/hide toggle for enhanced UX.", tag: "Input", theme: "indigo" },
+  { id: "textarea", slug: "textarea", name: "Textarea", description: "Multi-line text input for longer content with resizable height.", tag: "Input", theme: "blue" },
+  { id: "searchInput", slug: "search-input", name: "Search Input", description: "Search field with built-in search icon and callback.", tag: "Input", theme: "cyan" },
+  { id: "selectDropdown", slug: "select-dropdown", name: "Select Dropdown", description: "Custom styled dropdown with options list and clear state.", tag: "Select", theme: "purple" },
+  { id: "checkbox", slug: "checkbox", name: "Checkbox", description: "Accessible custom checkbox with checkmark animation.", tag: "Choice", theme: "emerald" },
+  { id: "radioButton", slug: "radio-button", name: "Radio Button", description: "Radio button group for mutually exclusive options.", tag: "Choice", theme: "emerald" },
+  { id: "switchToggle", slug: "switch-toggle", name: "Switch Toggle", description: "Smooth animated switch toggle for boolean states.", tag: "Toggle", theme: "teal" },
+  { id: "rangeSlider", slug: "range-slider", name: "Range Slider", description: "Interactive slider for selecting numeric range values.", tag: "Slider", theme: "amber" },
+  { id: "dateInput", slug: "date-input", name: "Date Input", description: "Native date picker formatted with calendar indicators.", tag: "Picker", theme: "orange" },
+  { id: "datePicker", slug: "date-picker", name: "Date Picker", description: "Accessible calendar picker with manual entry and date constraints.", tag: "Picker", theme: "orange" },
+  { id: "fileUpload", slug: "file-upload", name: "File Upload", description: "Drag-and-drop file upload zone with file preview.", tag: "Upload", theme: "rose" },
+  { id: "otpInput", slug: "otp-input", name: "OTP Input", description: "Split 6-digit verification code input with auto-advance.", tag: "Input", theme: "fuchsia" },
+  { id: "inputLabel", slug: "input-label", name: "Input Label", description: "Accessible form field label with required star indicator.", tag: "Helper", theme: "slate" },
+  { id: "inputError", slug: "input-error", name: "Input Error", description: "Validation error message banner with alert styling.", tag: "Feedback", theme: "red" },
+  { id: "helperText", slug: "helper-text", name: "Helper Text", description: "Subtle hint text with info icon for field guidance.", tag: "Helper", theme: "slate" },
+];

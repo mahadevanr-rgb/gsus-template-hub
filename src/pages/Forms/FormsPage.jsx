@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FormInput, Palette } from "lucide-react";
 import ShowcaseCard from "@/components/common/ShowcaseCard/ShowcaseCard";
 import FormDetails from "./FormDetails";
-
 import { TextInput } from "@/pages/Forms/components/TextInput/TextInput";
 import { PasswordInput } from "@/pages/Forms/components/PasswordInput/PasswordInput";
 import { Textarea } from "@/pages/Forms/components/Textarea/Textarea";
@@ -14,7 +13,7 @@ import { RadioButton } from "@/pages/Forms/components/RadioButton/RadioButton";
 import { SwitchToggle } from "@/pages/Forms/components/SwitchToggle/SwitchToggle";
 import { RangeSlider } from "@/pages/Forms/components/RangeSlider/RangeSlider";
 import { DateInput } from "@/pages/Forms/components/DateInput/DateInput";
-import { FileUpload } from "@/pages/Forms/components/FileUpload/FileUpload";
+import { DatePicker } from "@/pages/Forms/components/DatePicker/DatePicker";
 import { OtpInput } from "@/pages/Forms/components/OtpInput/OtpInput";
 import { InputLabel } from "@/pages/Forms/components/InputLabel/InputLabel";
 import { InputError } from "@/pages/Forms/components/InputError/InputError";
@@ -121,6 +120,12 @@ function FormAtomPreview({ id }) {
           <DateInput className="w-full pointer-events-none" />
         </div>
       );
+    case "datePicker":
+      return (
+        <div className="w-full px-2">
+          <DatePicker placeholder="Select date" />
+        </div>
+      );
     case "fileUpload":
       return (
         <div className="w-full p-3 rounded-xl border border-dashed border-slate-700 bg-slate-950/60 text-center text-xs text-slate-400">
@@ -136,7 +141,9 @@ function FormAtomPreview({ id }) {
     case "inputLabel":
       return (
         <div className="w-full px-3 text-left">
-          <InputLabel required>Email Address</InputLabel>
+          <InputLabel style={{ color: "#e2e8f0" }} required>
+            Email Address
+          </InputLabel>
         </div>
       );
     case "inputError":
@@ -226,6 +233,13 @@ const formComponents = [
     id: "dateInput",
     name: "Date Input",
     description: "Native date picker formatted with calendar indicators.",
+    tag: "Picker",
+    theme: "orange",
+  },
+  {
+    id: "datePicker",
+    name: "Date Picker",
+    description: "Accessible calendar picker with manual entry and date constraints.",
     tag: "Picker",
     theme: "orange",
   },
@@ -323,7 +337,7 @@ export default function FormsPage() {
                 <div className="min-w-0">
                   <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-300">
                     <FormInput className="h-3.5 w-3.5" />
-                    15 Form Atoms
+                    {formComponents.length} Form Atoms
                   </div>
 
                   <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">

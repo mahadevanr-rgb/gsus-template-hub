@@ -11,12 +11,14 @@ import { RadioButton } from "@/pages/Forms/components/RadioButton/RadioButton";
 import { SwitchToggle } from "@/pages/Forms/components/SwitchToggle/SwitchToggle";
 import { RangeSlider } from "@/pages/Forms/components/RangeSlider/RangeSlider";
 import { DateInput } from "@/pages/Forms/components/DateInput/DateInput";
+import { DatePicker } from "@/pages/Forms/components/DatePicker/DatePicker";
 import { FileUpload } from "@/pages/Forms/components/FileUpload/FileUpload";
 import { OtpInput } from "@/pages/Forms/components/OtpInput/OtpInput";
 import { InputLabel } from "@/pages/Forms/components/InputLabel/InputLabel";
 import { InputError } from "@/pages/Forms/components/InputError/InputError";
 import { HelperText } from "@/pages/Forms/components/HelperText/HelperText";
 import ComponentDetailsView from "@/components/common/ComponentDetailsView/ComponentDetailsView";
+import otpInputSource from "@/pages/Forms/components/OtpInput/OtpInput.jsx?raw";
 
 const formSiblings = [
   { slug: "textInput", name: "Text Input" },
@@ -29,6 +31,7 @@ const formSiblings = [
   { slug: "switchToggle", name: "Switch Toggle" },
   { slug: "rangeSlider", name: "Range Slider" },
   { slug: "dateInput", name: "Date Input" },
+  { slug: "datePicker", name: "Date Picker" },
   { slug: "fileUpload", name: "File Upload" },
   { slug: "otpInput", name: "OTP Input" },
   { slug: "inputLabel", name: "Input Label" },
@@ -110,6 +113,14 @@ const formMeta = {
     code: `import DateInput from "@/components/ui/DateInput";\n\n<DateInput />`,
     files: [{ path: "components/ui/forms/DateInput.jsx" }],
   },
+  datePicker: {
+    name: "Date Picker",
+    tag: "Picker",
+    description: "Accessible calendar date picker with manual entry, date constraints, and clear support.",
+    code: `import DatePicker from "@/components/ui/DatePicker";\n\n<DatePicker\n  value={date}\n  onChange={setDate}\n  minDate={new Date()}\n  clearable\n/>`,
+    files: [{ path: "components/ui/forms/DatePicker.jsx" }],
+    dependencies: ["lucide-react"],
+  },
   fileUpload: {
     name: "File Upload",
     tag: "Upload",
@@ -121,8 +132,8 @@ const formMeta = {
     name: "OTP Input",
     tag: "Input",
     description: "Split 6-digit verification code input with auto-advance.",
-    code: `import OTPInput from "@/components/ui/OTPInput";\n\n<OTPInput length={6} onComplete={(code) => console.log(code)} />`,
-    files: [{ path: "components/ui/forms/OTPInput.jsx" }],
+    code: otpInputSource,
+    files: [{ path: "components/OTPInput.jsx", content: otpInputSource }],
   },
   inputLabel: {
     name: "Input Label",
@@ -178,7 +189,7 @@ export default function FormDetails({ selectedForm, onBack, onNavigateHome }) {
     framework: "react",
     styling: "Tailwind CSS",
     version: "1.0.0",
-    dependencies: ["None"],
+    dependencies: meta.dependencies || ["None"],
     size: "~2.0 KB",
     lastUpdated: "May 12, 2025",
     author: "TemplateHub UI Team",
@@ -303,6 +314,8 @@ export default function FormDetails({ selectedForm, onBack, onNavigateHome }) {
         );
       case "dateInput":
         return <DateInput className="w-full" />;
+      case "datePicker":
+        return <DatePicker label="Choose a date" placeholder="Select date" clearable />;
       case "fileUpload":
         return <FileUpload className="w-full" />;
       case "otpInput":

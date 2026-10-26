@@ -1,45 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import {
-  LayoutGrid,
-  MousePointerClick,
-  FormInput,
-  Bell,
-  Monitor,
   ChevronLeft,
   ChevronRight,
   Atom,
   GitFork,
-  Combine,
-  CreditCard,
-  Search,
-  ListCollapse,
-  PanelsTopLeft,
-  Layers,
-  FolderUp,
-  Compass,
-  Palette,
-  Table2,
 } from "lucide-react";
-
-const menuItems = [
-  { icon: LayoutGrid, label: "Home", path: "/" },
-  { icon: MousePointerClick, label: "Buttons", path: "/buttons" },
-  { icon: CreditCard, label: "Cards", path: "/cards" },
-  { icon: FormInput, label: "Forms", path: "/forms" },
-  { icon: Combine, label: "Form Compositions", path: "/form-compositions" },
-  { icon: PanelsTopLeft, label: "Layout Module", path: "/layouts" },
-  { icon: Bell, label: "Notifications", path: "/notifications" },
-  { icon: Monitor, label: "Data Display", path: "/data-display" },
-  { icon: Table2, label: "Tables & Dashboards", path: "/tables-dashboard" },
-  { icon: ListCollapse, label: "Accordion", path: "/accordion" },
-
-  { icon: Layers, label: "Modal & Overlay", path: "/modal-overlay" },
-  { icon: FolderUp, label: "File System", path: "/file-system" },
-  { icon: Compass, label: "Navigation", path: "/navigation" },
-
-  { icon: Search, label: "Selection & Search", path: "/selection-search" },
-  { icon: Palette, label: "Design System", path: "/design-system" },
-];
+import { menuItems } from "../sidebarMenu";
 
 export default function Sidebar({ currentPage, isCollapsed, setIsCollapsed }) {
   const navigate = useNavigate();

@@ -1,8 +1,15 @@
+
 import PrimaryButton from "@/pages/Buttons/components/PrimaryButton/PrimaryButton";
 
 const sourceCode = `import React from "react";
 
-export default function PrimaryButton({ children, label, onClick, icon, className = "" }) {
+export default function PrimaryButton({
+  children,
+  label,
+  onClick,
+  icon,
+  className = "",
+}) {
   return (
     <button
       onClick={onClick}
@@ -25,7 +32,7 @@ export default {
   language: "javascript",
   styling: "Tailwind CSS",
   version: "1.0.0",
-  dependencies: ["None"],
+  dependencies: [],
   tags: ["button", "cta", "primary", "action"],
   author: "TemplateHub UI Team",
   createdAt: "2024-01-01",

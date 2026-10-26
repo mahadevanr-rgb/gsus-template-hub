@@ -77,6 +77,17 @@ const NavigationPage = lazy(() => import("@/pages/Navigation/NavigationPage"));
 const NavigationDetails = lazy(
   () => import("@/pages/Navigation/NavigationDetails"),
 );
+const FormCompositionCustomizePage = lazy(
+  () => import("@/pages/FormCompositions/FormCompositionCustomizePage"),
+);
+const LayoutCustomizeCodePage = lazy(
+  () => import("@/pages/Layouts/LayoutCustomizeCodePage"),
+);
+const DateTimePage = lazy(() => import("@/pages/DateTime/DateTimePage"));
+const DateTimeDetails = lazy(() => import("@/pages/DateTime/DateTimeDetails"));
+const CustomizeCodePage = lazy(
+  () => import("@/pages/DateTime/components/CustomizeCodePage"),
+);
 const AccordionCustomizerPage = lazy(
   () => import("@/pages/Accordion/customizer/AccordionCustomizerPage"),
 );
@@ -121,9 +132,17 @@ export const routes = [
     path: "/form-compositions/:id",
     element: <FormCompositionDetails />,
   },
+  {
+    path: "/form-compositions/:id/customize",
+    element: <FormCompositionCustomizePage />,
+  },
 
   { path: "/layouts", element: <LayoutsPage /> },
   { path: "/layouts/:slug", element: <LayoutDetails /> },
+  {
+    path: "/layouts/:layoutId/customize",
+    element: <LayoutCustomizeCodePage />,
+  },
 
   { path: "/notifications", element: <NotificationsPage /> },
   { path: "/notifications/customize", element: <NotificationsCustomizerPage /> },
@@ -171,6 +190,13 @@ export const routes = [
     element: <NavigationCustomizerPage />,
   },
   { path: "/navigation/:id", element: <NavigationDetails /> },
+
+  { path: "/date-time", element: <DateTimePage /> },
+  { path: "/date-time/:id", element: <DateTimeDetails /> },
+  {
+    path: "/date-time/:componentId/customize",
+    element: <CustomizeCodePage />,
+  },
 
   { path: "/selection-search", element: <SelectionSearchPage /> },
   { path: "/design-system", element: <ThemeFormDesign /> },

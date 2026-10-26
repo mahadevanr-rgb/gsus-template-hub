@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DataDisplayDetails from "./DataDisplayDetails";
 import { BarChart3, ArrowRight } from "lucide-react";
-import { dataDisplayComponents } from "./dataDisplay.config";
+import { dataDisplayComponents } from "./dataDisplayComponents";
 
 export default function DataDisplayPage() {
   const [selected, setSelected] = useState(null);
